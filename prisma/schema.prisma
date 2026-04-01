@@ -1,0 +1,1280 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- ENUMS ---
+
+enum Role {
+  PATIENT
+  ONCOLOGIST
+  NURSE
+  CAREGIVER
+  ADMIN
+}
+
+model Institution {
+  id                    String   @id @default(cuid())
+  institutionName       String   @map("institution_name")
+  fhirBaseUrl           String?  @map("fhir_base_url")
+  slug                  String   @unique
+  smtpSenderAddress     String?  @map("smtp_sender_address")
+  logoUrl               String?  @map("logo_url")
+  primaryBrandColor     String?  @map("primary_brand_color")
+  emergencyPhoneNumber  String   @map("emergency_phone_number")
+  maxPanelSize          Int      @default(500) @map("max_panel_size")
+  dataRetentionYears    Int      @default(10) @map("data_retention_years")
+  
+  users                 User[]
+  patients              Patient[]
+  clinicians            Clinician[]
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("institutions")
+}
+
+model FeatureFlag {
+  id                String   @id @default(cuid())
+  flagKey           String   @unique @map("flag_key")
+  isEnabled         Boolean  @default(false) @map("is_enabled")
+  enabledForRoles   Role[]   @map("enabled_for_roles")
+  enabledForUserIds String[] @map("enabled_for_user_ids")
+  enabledPercent    Int      @default(0) @map("enabled_percent")
+  description       String?
+  
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("feature_flags")
+}
+
+enum ClinicianRole {
+  ONCOLOGIST
+  NURSE
+  RESEARCHER
+  ADMINISTRATOR
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  NON_BINARY
+  PREFER_NOT_TO_SAY
+  OTHER
+}
+
+enum SexAtBirth {
+  MALE
+  FEMALE
+  INTERSEX
+}
+
+enum BloodGroup {
+  A_POS
+  A_NEG
+  B_POS
+  B_NEG
+  O_POS
+  O_NEG
+  AB_POS
+  AB_NEG
+  UNKNOWN
+}
+
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
+  SEPARATED
+  DOMESTIC_PARTNERSHIP
+  PREFER_NOT_TO_SAY
+}
+
+enum LiteracyLevel {
+  STANDARD
+  SIMPLIFIED
+}
+
+enum ContactMethod {
+  EMAIL
+  SMS
+  BOTH
+  NONE
+}
+
+enum ContactTime {
+  MORNING
+  AFTERNOON
+  EVENING
+}
+
+enum AccountStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING_VERIFICATION
+  LOCKED
+}
+
+enum Specialization {
+  MEDICAL_ONCOLOGIST
+  SURGICAL_ONCOLOGIST
+  RADIATION_ONCOLOGIST
+  PALLIATIVE_CARE
+  NURSE_NAVIGATOR
+  ONCOLOGY_NURSE
+  SOCIAL_WORKER
+  DIETITIAN
+  PHYSIOTHERAPIST
+  PSYCHOLOGIST
+  PATIENT_COORDINATOR
+}
+
+enum Laterality {
+  RIGHT
+  LEFT
+  BILATERAL
+  MIDLINE
+  NOT_APPLICABLE
+  UNKNOWN
+}
+
+enum ConfirmationMethod {
+  HISTOLOGY
+  CYTOLOGY
+  CLINICAL
+  IMAGING
+  UNKNOWN
+}
+
+enum OverallStage {
+  STAGE_0
+  STAGE_I
+  STAGE_IA
+  STAGE_IB
+  STAGE_II
+  STAGE_IIA
+  STAGE_IIB
+  STAGE_III
+  STAGE_IIIA
+  STAGE_IIIB
+  STAGE_IIIC
+  STAGE_IV
+  UNKNOWN
+}
+
+enum MSIStatus {
+  MSI_HIGH
+  MSI_LOW
+  MSS
+  UNKNOWN
+}
+
+enum TreatmentType {
+  SURGERY
+  CHEMOTHERAPY
+  RADIATION
+  IMMUNOTHERAPY
+  TARGETED_THERAPY
+  HORMONE_THERAPY
+  STEM_CELL_TRANSPLANT
+  PALLIATIVE
+  WATCHFUL_WAITING
+  CLINICAL_TRIAL
+  OTHER
+}
+
+enum TreatmentStatus {
+  PLANNED
+  ONGOING
+  COMPLETED
+  DISCONTINUED
+  SUSPENDED
+}
+
+enum TreatmentIntent {
+  CURATIVE
+  ADJUVANT
+  NEOADJUVANT
+  PALLIATIVE
+  PROPHYLACTIC
+}
+
+enum CaregiverRelationship {
+  SPOUSE
+  PARENT
+  CHILD
+  SIBLING
+  FRIEND
+  PROFESSIONAL_CARER
+  OTHER
+}
+
+enum AccessLevel {
+  VIEW_ONLY
+  VIEW_AND_LOG
+}
+
+enum LogSenderType {
+  PATIENT
+  CAREGIVER
+}
+
+enum FrequencyAttribute {
+  NEVER
+  RARELY
+  OCCASIONALLY
+  FREQUENTLY
+  ALMOST_CONSTANTLY
+}
+
+enum InterferenceAttribute {
+  NOT_AT_ALL
+  A_LITTLE_BIT
+  SOMEWHAT
+  QUITE_A_BIT
+  VERY_MUCH
+}
+
+enum AmountAttribute {
+  A_LITTLE
+  SOMEWHAT
+  QUITE_A_BIT
+  VERY_MUCH
+}
+
+enum AlertType {
+  THRESHOLD_BREACH
+  CONSECUTIVE_DAYS
+  SEVERITY_SPIKE
+  MISSED_LOG
+  WELLBEING_DROP
+}
+
+enum AlertSeverity {
+  INFORMATIONAL
+  MODERATE
+  URGENT
+  EMERGENCY
+}
+
+enum AlertStatus {
+  PENDING
+  SENT
+  ACKNOWLEDGED
+  RESOLVED
+  ESCALATED
+}
+
+enum ThresholdConditionType {
+  SINGLE_ENTRY_GRADE
+  CONSECUTIVE_DAYS
+  ROLLING_AVERAGE
+  WELLBEING_BELOW
+}
+
+enum GuideStatus {
+  DRAFT
+  IN_REVIEW
+  APPROVED
+  PUBLISHED
+  ARCHIVED
+  NEEDS_REVIEW
+}
+
+enum TreatmentPhase {
+  PRE_TREATMENT
+  DURING_TREATMENT
+  POST_TREATMENT
+  SURVIVORSHIP
+  PALLIATIVE
+}
+
+enum LessonType {
+  VIDEO
+  ARTICLE
+  INFOGRAPHIC
+  QUIZ
+  INTERACTIVE
+}
+
+enum ProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  LIKERT_SCALE
+}
+
+enum RehabProgramType {
+  PHYSICAL
+  COGNITIVE
+  NUTRITIONAL
+  COMBINED
+}
+
+enum RehabProgramStatus {
+  NOT_STARTED
+  ACTIVE
+  PAUSED
+  COMPLETED
+  DISCONTINUED
+}
+
+enum SessionStatus {
+  SCHEDULED
+  COMPLETED
+  PARTIALLY_COMPLETED
+  MISSED
+  REST_DAY
+}
+
+enum ExerciseCategory {
+  STRENGTH
+  FLEXIBILITY
+  BALANCE
+  CARDIO
+  BREATHING
+  COGNITIVE
+  RELAXATION
+}
+
+enum EffortRating {
+  VERY_EASY
+  EASY
+  MODERATE
+  HARD
+  VERY_HARD
+}
+
+enum ApptType {
+  ONCOLOGY_CLINIC
+  SURGICAL_REVIEW
+  RADIATION_PLANNING
+  CHEMOTHERAPY_INFUSION
+  IMAGING_SCAN
+  LABORATORY
+  PATHOLOGY
+  REHABILITATION
+  PALLIATIVE_CARE
+  SURVIVORSHIP
+  GENETIC_COUNSELING
+  PSYCHO_ONCOLOGY
+  NUTRITION_COUNSELING
+  OTHER
+}
+
+enum ApptStatus {
+  SCHEDULED
+  CONFIRMED
+  CHECKED_IN
+  COMPLETED
+  MISSED
+  RESCHEDULED
+  CANCELLED
+}
+
+enum MissedReason {
+  PATIENT_UNWELL
+  TRANSPORT_ISSUE
+  FORGOT
+  CANCELLED_BY_CLINIC
+  OTHER
+}
+
+enum ReminderChannel {
+  EMAIL
+  SMS
+  IN_APP
+  PUSH_NOTIFICATION
+}
+
+enum ReminderStatus {
+  PENDING
+  SENT
+  FAILED
+  CANCELLED
+}
+
+enum ReminderType {
+  SEVEN_DAY
+  FORTY_EIGHT_HOUR
+  TWO_HOUR
+  DAY_OF
+  CUSTOM
+}
+
+enum SenderRole {
+  PATIENT
+  CAREGIVER
+  CLINICIAN
+  SYSTEM
+}
+
+enum RecipientType {
+  INDIVIDUAL
+  NURSE_NAVIGATOR_TEAM
+  CLINIC_INBOX
+}
+
+enum RelatedResourceType {
+  APPOINTMENT
+  SYMPTOM_LOG
+  REHAB_SESSION
+  GUIDE
+}
+
+enum NotificationType {
+  ALERT_THRESHOLD
+  APPOINTMENT_REMINDER
+  MESSAGE_RECEIVED
+  GUIDE_ASSIGNED
+  PATH_ASSIGNED
+  REHAB_SESSION_REMINDER
+  ACCOUNT_SECURITY
+  SYSTEM_ANNOUNCEMENT
+}
+
+enum AuditAction {
+  CREATE
+  READ
+  UPDATE
+  DELETE_SOFT
+  EXPORT
+  LOGIN
+  LOGOUT
+  LOGIN_FAILED
+  MFA_SUCCESS
+  MFA_FAILED
+  ALERT_ACKNOWLEDGED
+  CONSENT_GIVEN
+  PASSWORD_RESET
+}
+
+// --- MODELS ---
+
+model User {
+  id                    String        @id @default(cuid())
+  email                 String        @unique
+  emailVerified         DateTime?     @map("email_verified")
+  passwordHash          String        @map("password_hash") @db.Text
+  passwordLastChangedAt DateTime      @default(now()) @map("password_last_changed_at")
+  role                  Role          @default(PATIENT)
+  accountStatus         AccountStatus @default(ACTIVE) @map("account_status")
+
+  firstName  String? @map("first_name")
+  middleName String? @map("middle_name")
+  lastName   String? @map("last_name")
+  image      String?
+  institutionId String? @map("institution_id")
+  institution   Institution? @relation(fields: [institutionId], references: [id])
+
+  mfaEnabled     Boolean  @default(false) @map("mfa_enabled")
+  mfaSecret      String?  @map("mfa_secret") @db.Text
+  mfaBackupCodes String[] @map("mfa_backup_codes")
+
+  failedLoginAttempts Int       @default(0) @map("failed_login_attempts")
+  lockedUntil         DateTime? @map("locked_until")
+  lastLoginAt         DateTime? @map("last_login_at")
+  lastLoginIp         String?   @map("last_login_ip")
+
+  passwordResetToken     String? @map("password_reset_token") @db.Text
+  emailVerificationToken String? @map("email_verification_token") @db.Text
+
+  accounts Account[]
+  sessions Session[]
+
+  patient   Patient?
+  clinician Clinician?
+  caregiver Caregiver?
+
+  sentMessages     Message[]      @relation("SentMessages")
+  receivedMessages Message[]      @relation("ReceivedMessages")
+  notifications    Notification[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Patient {
+  id         String  @id @default(cuid())
+  userId     String  @unique @map("user_id")
+  publicId   String  @unique @default(cuid()) @map("public_id")
+  mrn        String  @unique
+  registryId String? @map("registry_id")
+  uhid       String? @map("uhid") // abha/nhs/etc.
+  institutionId String @map("institution_id")
+  institution   Institution @relation(fields: [institutionId], references: [id])
+  
+  // Section 3: Full-text Search Vector
+  // Updated via raw SQL: GENERATED ALWAYS AS (to_tsvector('english', coalesce(first_name, '') || ' ' || coalesce(last_name, '') || ' ' || coalesce(mrn, ''))) STORED
+  searchVector Unsupported("tsvector")? @map("search_vector")
+
+  preferredName     String?       @map("preferred_name")
+  dateOfBirth       DateTime      @map("date_of_birth")
+  gender            Gender
+  sexAtBirth        SexAtBirth    @map("sex_at_birth")
+  bloodGroup        BloodGroup    @default(UNKNOWN) @map("blood_group")
+  maritalStatus     MaritalStatus @map("marital_status")
+  preferredLanguage String        @default("en") @map("preferred_language")
+  literacyLevel     LiteracyLevel @default(STANDARD) @map("literacy_level")
+  profilePhotoUrl   String?       @map("profile_photo_url")
+
+  // Contact (Sync from User mainly)
+  primaryPhone           String        @map("primary_phone")
+  secondaryPhone         String?       @map("secondary_phone")
+  phoneVerified          Boolean       @default(false) @map("phone_verified")
+  preferredContactMethod ContactMethod @default(EMAIL) @map("preferred_contact_method")
+  preferredContactTime   ContactTime   @default(MORNING) @map("preferred_contact_time")
+
+  // Address
+  addressLine1 String? @map("address_line1")
+  addressLine2 String? @map("address_line2")
+  city         String? @map("city")
+  state        String? @map("state")
+  postalCode   String? @map("postal_code")
+  country      String  @default("IN") @map("country")
+  timezone     String  @default("Asia/Kolkata") @map("timezone")
+
+  // Consent & TOS
+  consentGiven         Boolean   @default(false) @map("consent_given")
+  consentTimestamp     DateTime? @map("consent_timestamp")
+  consentVersion       String?   @map("consent_version")
+  termsAcceptedAt      DateTime? @map("terms_accepted_at")
+  privacyPolicyVersion String?   @map("privacy_policy_version")
+
+  user              User                           @relation(fields: [userId], references: [id])
+  clinicalTeam      PatientClinicalTeam[]
+  caregiverAccess   PatientCaregiverAccess[]
+  diagnoses         Diagnosis[]
+  symptomLogs       SymptomLog[]
+  rehabPrograms     RehabProgram[]
+  appointments      Appointment[]
+  learningProgress  LearningProgress[]
+  thresholds        AlertThreshold[]
+  notificationPrefs PatientNotificationPreference?
+  consentRecords    ConsentRecord[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("patients")
+}
+
+model Clinician {
+  id                String         @id @default(cuid())
+  userId            String         @unique @map("user_id")
+  specialization    Specialization
+  licenseNumber     String         @map("license_number")
+  department        String?
+  isAlertRecipient  Boolean        @default(true) @map("is_alert_recipient")
+  patientPanelLimit Int            @default(50) @map("patient_panel_limit")
+  institutionId     String         @map("institution_id")
+  institution       Institution    @relation(fields: [institutionId], references: [id])
+
+  user               User             @relation(fields: [userId], references: [id])
+  patients           PatientClinicalTeam[]
+  assignedPaths      LearningPath[]
+  acknowledgedAlerts Alert[]          @relation("AlertAcknowledge")
+  createdThresholds  AlertThreshold[]
+  prescribedRehab    RehabProgram[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("clinicians")
+}
+
+model Caregiver {
+  id     String @id @default(cuid())
+  userId String @unique @map("user_id")
+
+  user     User                     @relation(fields: [userId], references: [id])
+  patients PatientCaregiverAccess[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("caregivers")
+}
+
+model PatientClinicalTeam {
+  id              String        @id @default(cuid())
+  patientId       String        @map("patient_id")
+  clinicianId     String        @map("clinician_id")
+  clinicianRole   ClinicianRole @map("clinician_role")
+  isPrimary       Boolean       @default(false) @map("is_primary")
+  
+  assignedAt      DateTime      @default(now()) @map("assigned_at")
+  endedAt         DateTime?     @map("ended_at")
+  
+  patient         Patient       @relation(fields: [patientId], references: [id])
+  clinician       Clinician     @relation(fields: [clinicianId], references: [id])
+
+  @@unique([patientId, clinicianId, endedAt])
+  @@map("patient_clinical_team")
+}
+
+model PatientCaregiverAccess {
+  id              String        @id @default(cuid())
+  patientId       String        @map("patient_id")
+  caregiverId     String        @map("caregiver_id")
+  accessLevel     AccessLevel   @default(VIEW_ONLY) @map("access_level")
+  
+  consentGrantedBy String       @map("consent_granted_by") // userId of the patient
+  consentGrantedAt DateTime     @default(now()) @map("consent_granted_at")
+  isActive        Boolean       @default(true) @map("is_active")
+  deactivatedAt   DateTime?     @map("deactivated_at")
+  deactivatedBy   String?       @map("deactivated_by")
+
+  patient         Patient       @relation(fields: [patientId], references: [id])
+  caregiver       Caregiver     @relation(fields: [caregiverId], references: [id])
+
+  @@unique([patientId, caregiverId, isActive])
+  @@map("patient_caregiver_access")
+}
+
+model Diagnosis {
+  id                     String             @id @default(cuid())
+  patientId              String             @map("patient_id")
+  
+  // ICD-10 (General Diagnosis)
+  icd10Code              String             @map("icd_10_code")
+  icd10Description       String             @map("icd_10_description")
+  
+  // ICD-O-3 (Oncology Specific)
+  primarySiteCode        String             @map("primary_site_code")
+  primarySiteDescription String             @map("primary_site_description")
+  laterality             Laterality         @default(UNKNOWN)
+  morphologyCode         String             @map("morphology_code")
+  morphologyDescription  String             @map("morphology_description")
+  gradeCode              String?            @map("grade_code")
+  diagnosisDate          DateTime           @map("diagnosis_date")
+  diagnosisConfirmedBy   ConfirmationMethod @default(UNKNOWN) @map("diagnosis_confirmed_by")
+
+  // TNM Staging
+  clinicalT      String?      @map("clinical_t")
+  clinicalN      String?      @map("clinical_n")
+  clinicalM      String?      @map("clinical_m")
+  pathologicalT  String?      @map("pathological_t")
+  pathologicalN  String?      @map("pathological_n")
+  pathologicalM  String?      @map("pathological_m")
+  overallStage   OverallStage @default(UNKNOWN) @map("overall_stage")
+  stagingEdition String?      @map("staging_edition")
+  stagingDate    DateTime?    @map("staging_date")
+
+  // Molecular
+  receptorStatus        Json?     @map("receptor_status")
+  mutationProfile       Json?     @map("mutation_profile")
+  microsatelliteStatus  MSIStatus @default(UNKNOWN) @map("microsatellite_status")
+  tumorMutationalBurden Float?    @map("tumor_mutational_burden")
+  pdl1ExpressionPercent Int?      @map("pdl1_expression_percent")
+
+  patient     Patient      @relation(fields: [patientId], references: [id])
+  treatments  Treatment[]
+  symptomLogs SymptomLog[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("diagnoses")
+}
+
+model Treatment {
+  id                    String          @id @default(cuid())
+  diagnosisId           String          @map("diagnosis_id")
+  treatmentType         TreatmentType   @map("treatment_type")
+  treatmentName         String          @map("treatment_name")
+  treatmentStartDate    DateTime        @map("treatment_start_date")
+  treatmentEndDate      DateTime?       @map("treatment_end_date")
+  treatmentStatus       TreatmentStatus @map("treatment_status")
+  discontinuationReason String?         @map("discontinuation_reason")
+  treatmentIntent       TreatmentIntent @map("treatment_intent")
+
+  numberOfCycles        Int?    @map("number_of_cycles")
+  cyclesCompleted       Int?    @map("cycles_completed")
+  radiationDoseGy       Float?  @map("radiation_dose_gy")
+  radiationFractions    Int?    @map("radiation_fractions")
+  radiationSite         String? @map("radiation_site")
+  performingInstitution String? @map("performing_institution")
+  performingClinician   String? @map("performing_clinician")
+
+  diagnosis Diagnosis @relation(fields: [diagnosisId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("treatments")
+}
+
+model SymptomLog {
+  id                 String        @id @default(cuid())
+  patientId          String        @map("patient_id")
+  diagnosisId        String        @map("diagnosis_id")
+  submittedBy        String        @map("submitted_by")
+  submittedByType    LogSenderType @map("submitted_by_type")
+  logDate            DateTime      @map("log_date") // Calendar date
+  submittedAt        DateTime      @default(now()) @map("submitted_at")
+  wellbeingScore     Int           @map("wellbeing_score") // 0-10
+  wellbeingNarrative String?       @map("wellbeing_narrative") @db.Text
+  isProxyEntry       Boolean       @default(false) @map("is_proxy_entry")
+
+  patient   Patient        @relation(fields: [patientId], references: [id])
+  diagnosis Diagnosis      @relation(fields: [diagnosisId], references: [id])
+  entries   SymptomEntry[]
+  alerts    Alert[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@index([patientId, logDate])
+  @@map("symptom_logs")
+}
+
+model SymptomEntry {
+  id             String                 @id @default(cuid())
+  logId          String                 @map("log_id")
+  ctcaeConceptId String                 @map("ctcae_concept_id")
+  ctcaeTermName  String                 @map("ctcae_term_name")
+  severity       Int // 0-4
+  frequency      FrequencyAttribute?
+  interference   InterferenceAttribute?
+  amount         AmountAttribute?
+  notes          String?                @db.Text
+  bodyLocation   String?                @map("body_location")
+  onsetDate      DateTime?              @map("onset_date")
+  isNew          Boolean                @default(false) @map("is_new")
+
+  log    SymptomLog @relation(fields: [logId], references: [id])
+  alerts Alert[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("symptom_entries")
+}
+
+model Alert {
+  id                    String        @id @default(cuid())
+  triggeredByLogId      String        @map("triggered_by_log_id")
+  triggeredByEntryId    String?       @map("triggered_by_entry_id")
+  alertType             AlertType     @map("alert_type")
+  alertSeverity         AlertSeverity @map("alert_severity")
+  alertStatus           AlertStatus   @default(PENDING) @map("alert_status")
+  acknowledgedBy        String?       @map("acknowledged_by")
+  acknowledgedAt        DateTime?     @map("acknowledged_at")
+  resolutionNote        String?       @map("resolution_note") @db.Text
+  thresholdDefinitionId String?       @map("threshold_definition_id")
+
+  log       SymptomLog      @relation(fields: [triggeredByLogId], references: [id])
+  entry     SymptomEntry?   @relation(fields: [triggeredByEntryId], references: [id])
+  clinician Clinician?      @relation("AlertAcknowledge", fields: [acknowledgedBy], references: [id])
+  threshold AlertThreshold? @relation(fields: [thresholdDefinitionId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("alerts")
+}
+
+model AlertThreshold {
+  id                 String                 @id @default(cuid())
+  patientId          String?                @map("patient_id")
+  symptomConceptId   String?                @map("symptom_concept_id")
+  conditionType      ThresholdConditionType @map("condition_type")
+  gradeThreshold     Int?                   @map("grade_threshold")
+  consecutiveDays    Int?                   @map("consecutive_days")
+  rollingWindowDays  Int?                   @map("rolling_window_days")
+  wellbeingThreshold Int?                   @map("wellbeing_threshold")
+  isActive           Boolean                @default(true) @map("is_active")
+  createdBy          String                 @map("created_by")
+
+  patient   Patient?  @relation(fields: [patientId], references: [id])
+  clinician Clinician @relation(fields: [createdBy], references: [id])
+  alerts    Alert[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("alert_thresholds")
+}
+
+model Guide {
+  id                       String          @id @default(cuid())
+  slug                     String          @unique
+  title                    String
+  subtitle                 String?
+  cancerType               String          @map("cancer_type")
+  icdO3Codes               String[]        @map("icd_o3_codes")
+  applicableStages         OverallStage[]  @map("applicable_stages")
+  applicableTreatmentTypes TreatmentType[] @map("applicable_treatment_types")
+  readingLevel             LiteracyLevel   @default(STANDARD) @map("reading_level")
+  contentBody              Json            @map("content_body") // MDX/RichText blocks
+  contentVersion           Int             @default(1) @map("content_version")
+  publishedAt              DateTime?       @map("published_at")
+  lastReviewedAt           DateTime?       @map("last_reviewed_at")
+  nextReviewDueAt          DateTime?       @map("next_review_due_at")
+  reviewedBy               String?         @map("reviewed_by")
+  status                   GuideStatus     @default(DRAFT)
+  languageCode             String          @default("en") @map("language_code")
+  relatedGuideIds          String[]        @map("related_guide_ids")
+
+  guideViewCount Int    @default(0) @map("guide_view_count")
+  helpfulRating  Float? @map("helpful_rating")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("guides")
+}
+
+model LearningPath {
+  id                       String         @id @default(cuid())
+  pathName                 String         @map("path_name")
+  targetCancerType         String?        @map("target_cancer_type")
+  targetTreatmentPhase     TreatmentPhase @map("target_treatment_phase")
+  estimatedDurationMinutes Int?           @map("estimated_duration_minutes")
+  totalLessons             Int            @default(0) @map("total_lessons")
+  isClinicianAssignable    Boolean        @default(true) @map("is_clinician_assignable")
+  isAutoAssigned           Boolean        @default(false) @map("is_auto_assigned")
+  prerequisitePathId       String?        @map("prerequisite_path_id")
+
+  lessons      Lesson[]
+  progress     LearningProgress[]
+  assignedBy   Clinician?         @relation(fields: [assignedById], references: [id])
+  assignedById String?            @map("assigned_by_id")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("learning_paths")
+}
+
+model Lesson {
+  id               String        @id @default(cuid())
+  pathId           String        @map("path_id")
+  lessonTitle      String        @map("lesson_title")
+  lessonType       LessonType    @map("lesson_type")
+  lessonOrder      Int           @map("lesson_order")
+  estimatedMinutes Int?          @map("estimated_minutes")
+  muxAssetId       String?       @map("mux_asset_id")
+  muxPlaybackId    String?       @map("mux_playback_id")
+  articleContent   Json?         @map("article_content")
+  thumbnailUrl     String?       @map("thumbnail_url")
+  transcriptUrl    String?       @map("transcript_url")
+  isGated          Boolean       @default(false) @map("is_gated")
+  isMandatory      Boolean       @default(true) @map("is_mandatory")
+  readingLevel     LiteracyLevel @default(STANDARD) @map("reading_level")
+
+  path     LearningPath       @relation(fields: [pathId], references: [id])
+  progress LearningProgress[]
+  quizzes  Quiz[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("lessons")
+}
+
+model LearningProgress {
+  id                  String         @id @default(cuid())
+  patientId           String         @map("patient_id")
+  pathId              String         @map("path_id")
+  lessonId            String         @map("lesson_id")
+  status              ProgressStatus @default(NOT_STARTED)
+  percentComplete     Int            @default(0) @map("percent_complete")
+  videoWatchedSeconds Int?           @map("video_watched_seconds")
+  completedAt         DateTime?      @map("completed_at")
+  clinicianAssignedAt DateTime?      @map("clinician_assigned_at")
+
+  patient Patient      @relation(fields: [patientId], references: [id])
+  path    LearningPath @relation(fields: [pathId], references: [id])
+  lesson  Lesson       @relation(fields: [lessonId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@unique([patientId, lessonId])
+  @@map("learning_progress")
+}
+
+model Quiz {
+  id           String         @id @default(cuid())
+  lessonId     String         @map("lesson_id")
+  passingScore Int            @default(70) @map("passing_score")
+  maxAttempts  Int            @default(-1) @map("max_attempts")
+  questions    QuizQuestion[]
+  attempts     QuizAttempt[]
+
+  lesson Lesson @relation(fields: [lessonId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("quizzes")
+}
+
+model QuizQuestion {
+  id           String       @id @default(cuid())
+  quizId       String       @map("quiz_id")
+  questionText String       @map("question_text") @db.Text
+  questionType QuestionType @map("question_type")
+  options      Json         @map("options") // Array of {optionId, text, isCorrect}
+
+  quiz Quiz @relation(fields: [quizId], references: [id])
+
+  @@map("quiz_questions")
+}
+
+model QuizAttempt {
+  id            String   @id @default(cuid())
+  quizId        String   @map("quiz_id")
+  patientId     String   @map("patient_id")
+  score         Int
+  passed        Boolean
+  responses     Json     @map("responses")
+  attemptedAt   DateTime @default(now()) @map("attempted_at")
+  attemptNumber Int      @map("attempt_number")
+
+  quiz Quiz @relation(fields: [quizId], references: [id])
+
+  @@map("quiz_attempts")
+}
+
+model RehabProgram {
+  id                       String             @id @default(cuid())
+  patientId                String             @map("patient_id")
+  programType              RehabProgramType   @map("program_type")
+  programName              String             @map("program_name")
+  prescribedBy             String             @map("prescribed_by")
+  prescribedAt             DateTime           @default(now()) @map("prescribed_at")
+  startDate                DateTime           @map("start_date")
+  endDate                  DateTime?          @map("end_date")
+  durationWeeks            Int                @map("duration_weeks")
+  status                   RehabProgramStatus @default(NOT_STARTED)
+  pauseReason              String?            @map("pause_reason")
+  overallCompletionPercent Float              @default(0) @map("overall_completion_percent")
+
+  patient   Patient        @relation(fields: [patientId], references: [id])
+  clinician Clinician      @relation(fields: [prescribedBy], references: [id])
+  sessions  RehabSession[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("rehab_programs")
+}
+
+model RehabSession {
+  id              String        @id @default(cuid())
+  programId       String        @map("program_id")
+  scheduledDate   DateTime      @map("scheduled_date")
+  sessionNumber   Int           @map("session_number")
+  weekNumber      Int           @map("week_number")
+  dayOfWeek       String        @map("day_of_week")
+  isRestDay       Boolean       @default(false) @map("is_rest_day")
+  sessionStatus   SessionStatus @default(SCHEDULED) @map("session_status")
+  completedAt     DateTime?     @map("completed_at")
+  effortRating    EffortRating? @map("effort_rating")
+  painExperienced Boolean?      @map("pain_experienced")
+  painDescription String?       @map("pain_description") @db.Text
+  sessionNotes    String?       @map("session_notes") @db.Text
+  clinicianNote   String?       @map("clinician_note") @db.Text
+
+  program      RehabProgram  @relation(fields: [programId], references: [id])
+  exerciseLogs ExerciseLog[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("rehab_sessions")
+}
+
+model Exercise {
+  id                    String           @id @default(cuid())
+  exerciseName          String           @map("exercise_name")
+  exerciseCategory      ExerciseCategory @map("exercise_category")
+  targetMuscleGroups    String[]         @map("target_muscle_groups")
+  contraindicationsText String?          @map("contraindications_text") @db.Text
+  standardVideoMuxId    String?          @map("standard_video_mux_id")
+  modifiedVideoMuxId    String?          @map("modified_video_mux_id")
+  targetReps            Int?             @map("target_reps")
+  targetSets            Int?             @map("target_sets")
+  targetDurationSeconds Int?             @map("target_duration_seconds")
+  restBetweenSetSeconds Int?             @map("rest_between_set_seconds")
+  equipmentRequired     String[]         @map("equipment_required")
+
+  logs ExerciseLog[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("exercises")
+}
+
+model ExerciseLog {
+  id                    String  @id @default(cuid())
+  sessionId             String  @map("session_id")
+  exerciseId            String  @map("exercise_id")
+  wasCompleted          Boolean @default(false) @map("was_completed")
+  wasModified           Boolean @default(false) @map("was_modified")
+  actualReps            Int?    @map("actual_reps")
+  actualSets            Int?    @map("actual_sets")
+  actualDurationSeconds Int?    @map("actual_duration_seconds")
+  skippedReason         String? @map("skipped_reason")
+
+  session  RehabSession @relation(fields: [sessionId], references: [id])
+  exercise Exercise     @relation(fields: [exerciseId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("exercise_logs")
+}
+
+model Appointment {
+  id                      String        @id @default(cuid())
+  fhirAppointmentId       String?       @map("fhir_appointment_id")
+  patientId               String        @map("patient_id")
+  appointmentType         ApptType      @map("appointment_type")
+  appointmentTitle        String        @map("appointment_title")
+  scheduledDate           DateTime      @map("scheduled_date")
+  durationMinutes         Int?          @map("duration_minutes")
+  location                String?
+  attendingClinician      String?       @map("attending_clinician")
+  virtualMeetingUrl       String?       @map("virtual_meeting_url")
+  isVirtual               Boolean       @default(false) @map("is_virtual")
+  status                  ApptStatus    @default(SCHEDULED)
+  missedReason            MissedReason? @map("missed_reason")
+  rescheduledToId         String?       @map("rescheduled_to_id")
+  preparationInstructions String?       @map("preparation_instructions") @db.Text
+  requiresFasting         Boolean       @default(false) @map("requires_fasting")
+  fastingHours            Int?          @map("fasting_hours")
+  postAppointmentNotes    String?       @map("post_appointment_notes") @db.Text
+  resultsAvailableAt      DateTime?     @map("results_available_at")
+  resultsUrl              String?       @map("results_url")
+
+  patient   Patient    @relation(fields: [patientId], references: [id])
+  reminders Reminder[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("appointments")
+}
+
+model Reminder {
+  id              String          @id @default(cuid())
+  appointmentId   String          @map("appointment_id")
+  channel         ReminderChannel
+  scheduledSendAt DateTime        @map("scheduled_send_at")
+  actualSentAt    DateTime?       @map("actual_sent_at")
+  status          ReminderStatus  @default(PENDING)
+  failureReason   String?         @map("failure_reason")
+  reminderType    ReminderType    @map("reminder_type")
+  retryCount      Int             @default(0) @map("retry_count")
+
+  appointment Appointment @relation(fields: [appointmentId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("reminders")
+}
+
+model Message {
+  id                  String               @id @default(cuid())
+  threadId            String               @map("thread_id")
+  senderId            String               @map("sender_id")
+  senderRole          SenderRole           @map("sender_role")
+  recipientId         String               @map("recipient_id")
+  recipientType       RecipientType        @map("recipient_type")
+  messageBody         String               @map("message_body") @db.Text
+  sentAt              DateTime             @default(now()) @map("sent_at")
+  readAt              DateTime?            @map("read_at")
+  isSystemGenerated   Boolean              @default(false) @map("is_system_generated")
+  attachmentUrl       String?              @map("attachment_url")
+  relatedResourceType RelatedResourceType? @map("related_resource_type")
+  relatedResourceId   String?              @map("related_resource_id")
+  isUrgent            Boolean              @default(false) @map("is_urgent")
+
+  sender    User @relation("SentMessages", fields: [senderId], references: [id])
+  recipient User @relation("ReceivedMessages", fields: [recipientId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("messages")
+}
+
+model Notification {
+  id               String           @id @default(cuid())
+  userId           String           @map("user_id")
+  notificationType NotificationType @map("notification_type")
+  title            String
+  body             String           @db.Text
+  isRead           Boolean          @default(false) @map("is_read")
+  readAt           DateTime?        @map("read_at")
+  actionUrl        String?          @map("action_url")
+  deliveredVia     String?          @map("delivered_via")
+
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("notifications")
+}
+
+model PatientNotificationPreference {
+  id                          String  @id @default(cuid())
+  patientId                   String  @unique @map("patient_id")
+  appointmentRemindersEnabled Boolean @default(true) @map("appointment_reminders_enabled")
+  symptomLogReminderEnabled   Boolean @default(true) @map("symptom_log_reminder_enabled")
+  symptomLogReminderTime      String  @default("09:00") @map("symptom_log_reminder_time")
+  educationNudgesEnabled      Boolean @default(true) @map("education_nudges_enabled")
+  rehabReminderEnabled        Boolean @default(true) @map("rehab_reminder_enabled")
+  rehabReminderTime           String  @default("10:00") @map("rehab_reminder_time")
+  messageNotificationsEnabled Boolean @default(true) @map("message_notifications_enabled")
+  alertNotificationsEnabled   Boolean @default(true) @map("alert_notifications_enabled")
+  preferredReminderChannel    String  @default("BOTH") @map("preferred_reminder_channel")
+  doNotDisturbStart           String? @map("do_not_disturb_start") // HH:MM
+  doNotDisturbEnd             String? @map("do_not_disturb_end")
+
+  patient Patient @relation(fields: [patientId], references: [id])
+
+  @@map("patient_notification_preferences")
+}
+
+model AuditLog {
+  id             String      @id @default(cuid())
+  userId         String      @map("user_id")
+  userRole       Role        @map("user_role")
+  sessionId      String?     @map("session_id")
+  ipAddress      String?     @map("ip_address")
+  userAgent      String?     @map("user_agent")
+  action         AuditAction
+  resourceType   String      @map("resource_type")
+  resourceId     String      @map("resource_id")
+  changedFields  Json?       @map("changed_fields")
+  requestPath    String?     @map("request_path")
+  requestMethod  String?     @map("request_method")
+  responseStatus Int?        @map("response_status")
+  durationMs     Int?        @map("duration_ms")
+  occurredAt     DateTime    @default(now()) @map("occurred_at")
+  notes          String?     @db.Text
+
+  @@map("audit_logs")
+}
+
+enum ConsentType {
+  PLATFORM_USE
+  DATA_PROCESSING
+  RESEARCH_PARTICIPATION
+  CAREGIVER_ACCESS
+  THIRD_PARTY_SHARING
+}
+
+enum ConsentMethod {
+  DIGITAL_CHECKBOX
+  VERBAL_WITNESSED
+  PAPER_FORM_SCANNED
+}
+
+model ConsentDocument {
+  id              String   @id @default(cuid())
+  version         String   @unique
+  documentText    String   @map("document_text") @db.Text
+  contentHash     String   @map("content_hash") // SHA-256
+  isCurrent       Boolean  @default(false) @map("is_current")
+  
+  consentRecords  ConsentRecord[]
+  
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("consent_documents")
+}
+
+model ConsentRecord {
+  id                String        @id @default(cuid())
+  patientId         String        @map("patient_id")
+  consentDocumentId String        @map("consent_document_id")
+  consentType       ConsentType   @map("consent_type")
+  consentGiven      Boolean       @default(false) @map("consent_given")
+  consentTimestamp  DateTime      @default(now()) @map("consent_timestamp")
+  consentMethod     ConsentMethod @default(DIGITAL_CHECKBOX) @map("consent_method")
+  witnessedBy       String?       @map("witnessed_by") // userId
+  withdrawnAt       DateTime?     @map("withdrawn_at")
+
+  patient         Patient         @relation(fields: [patientId], references: [id])
+  consentDocument ConsentDocument @relation(fields: [consentDocumentId], references: [id])
+
+  @@unique([patientId, consentDocumentId, consentType])
+  @@map("consent_records")
+}
