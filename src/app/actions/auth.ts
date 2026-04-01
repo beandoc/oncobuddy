@@ -32,6 +32,18 @@ export async function registerPatient(prevState: any, formData: FormData) {
     
     // Create User and Patient in transaction
     const result = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+      // Fetch default institution (Section 12)
+      let institution = await tx.institution.findFirst();
+      if (!institution) {
+        institution = await tx.institution.create({
+          data: {
+            institutionName: "OncoBuddy Clinical Network",
+            slug: "default",
+            emergencyPhoneNumber: "911",
+          }
+        });
+      }
+
       const user = await tx.user.create({
         data: {
           email,
@@ -40,12 +52,14 @@ export async function registerPatient(prevState: any, formData: FormData) {
           firstName,
           lastName,
           accountStatus: AccountStatus.ACTIVE,
+          institutionId: institution.id,
         }
       });
 
       const patient = await tx.patient.create({
         data: {
           userId: user.id,
+          institutionId: institution.id,
           mrn: `MRN-${Math.random().toString(36).substring(7).toUpperCase()}`,
           dateOfBirth: new Date("1980-01-01"),
           gender: Gender.PREFER_NOT_TO_SAY,

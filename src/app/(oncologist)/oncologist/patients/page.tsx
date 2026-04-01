@@ -48,7 +48,7 @@ export default async function OncologistPatientPanel() {
   });
 
   const patients = clinician?.patients || [];
-  const activeAlerts = patients.reduce((acc, p) => acc + p.patient.alerts.length, 0);
+  const activeAlerts = patients.reduce((acc: any, p: any) => acc + (p.patient.alerts || []).length, 0);
 
   const StatPill = ({ label, value, color }: any) => (
     <div className={`flex flex-col gap-1 px-8 py-4 rounded-[28px] border bg-white shadow-sm transition-all hover:bg-indigo-50/20 group cursor-pointer border-slate-100`}>
@@ -104,7 +104,7 @@ export default async function OncologistPatientPanel() {
                   </tr>
                </thead>
                <tbody className="divide-y divide-slate-50">
-                  {patients.map(({ patient }) => (
+                  {patients.map(({ patient }: any) => (
                      <tr key={patient.id} className="group hover:bg-indigo-50/20 transition-all cursor-pointer">
                         <td className="px-8 py-6">
                            <div className="flex items-center gap-4">
@@ -119,7 +119,7 @@ export default async function OncologistPatientPanel() {
                         </td>
                         <td className="px-8 py-6">
                            <div className="space-y-2">
-                              <p className="text-xs font-bold text-slate-700 italic italic leading-none">{patient.diagnoses[0]?.diagnosisBodySite || "Advanced Malignancy"}</p>
+                              <p className="text-xs font-bold text-slate-700 italic italic leading-none">{patient.diagnoses[0]?.primarySiteDescription || "Advanced Malignancy"}</p>
                               <div className="flex items-center gap-2 pt-1.5 font-sans leading-none">
                                  <div className="h-1.5 w-16 bg-slate-100 rounded-full overflow-hidden">
                                     <div className="h-full bg-indigo-500 w-[75%]" />

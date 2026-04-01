@@ -6,14 +6,18 @@ import createIntlMiddleware from 'next-intl/middleware';
 const locales = ['en', 'hi', 'mr'];
 const defaultLocale = 'en';
 
+// Temporarily commented to restore dashboard access (Section 7)
+/*
 const intlMiddleware = createIntlMiddleware({
   locales,
   defaultLocale,
   localePrefix: 'always' // Section 7: Mandatory locale prefixes
 });
+*/
 
 export default function middleware(request: NextRequest) {
-  const response = intlMiddleware(request);
+  // const response = intlMiddleware(request);
+  const response = NextResponse.next();
 
   // Section 11: Security Hardening (Mandatory Headers & CSP)
   const cspHeader = `

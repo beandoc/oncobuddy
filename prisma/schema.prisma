@@ -597,6 +597,7 @@ model Patient {
   thresholds        AlertThreshold[]
   notificationPrefs PatientNotificationPreference?
   consentRecords    ConsentRecord[]
+  alerts            Alert[]
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
@@ -815,7 +816,9 @@ model Alert {
   acknowledgedAt        DateTime?     @map("acknowledged_at")
   resolutionNote        String?       @map("resolution_note") @db.Text
   thresholdDefinitionId String?       @map("threshold_definition_id")
+  patientId             String        @map("patient_id")
 
+  patient   Patient         @relation(fields: [patientId], references: [id])
   log       SymptomLog      @relation(fields: [triggeredByLogId], references: [id])
   entry     SymptomEntry?   @relation(fields: [triggeredByEntryId], references: [id])
   clinician Clinician?      @relation("AlertAcknowledge", fields: [acknowledgedBy], references: [id])
