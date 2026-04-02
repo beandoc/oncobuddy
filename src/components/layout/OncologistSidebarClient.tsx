@@ -63,18 +63,21 @@ export function OncologistSidebarClient({ session, patientCount, alertCount }: a
   return (
     <div className="flex flex-col h-full bg-white border-r border-slate-100 transition-all duration-500">
       <div className={`${isOpen ? 'p-6 space-y-6' : 'p-4 space-y-5 pt-6'}`}>
-        <div className={`flex items-center ${isOpen ? 'justify-between' : 'justify-center'}`}>
-          <Link href="/oncologist/dashboard" className={`flex items-center ${isOpen ? 'gap-4' : 'justify-center'}`}>
-             <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white shrink-0 shadow-lg">
-                <Activity className="w-6 h-6" />
-             </div>
+        <div className={`flex items-center ${isOpen ? 'justify-between' : 'justify-center'} group/header`}>
+          <div className="flex items-center gap-4">
+             <button 
+               onClick={() => toggle()}
+               className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white shrink-0 shadow-lg hover:scale-105 transition-all active:scale-95"
+             >
+                {isOpen ? <Activity className="w-6 h-6" /> : <Menu className="w-5 h-5" />}
+             </button>
              {isOpen && (
-               <div className="overflow-hidden whitespace-nowrap animate-in fade-in slide-in-from-left-2 duration-500">
+               <Link href="/oncologist/dashboard" className="overflow-hidden whitespace-nowrap animate-in fade-in slide-in-from-left-2 duration-500">
                   <span className="font-bold font-outfit text-xl tracking-tight text-slate-900">OncoBuddy</span>
                   <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider leading-none mt-1">Clinical Suite</p>
-               </div>
+               </Link>
              )}
-          </Link>
+          </div>
           {isOpen && (
             <button 
               onClick={() => toggle()}
@@ -84,14 +87,6 @@ export function OncologistSidebarClient({ session, patientCount, alertCount }: a
             </button>
           )}
         </div>
-        {!isOpen && (
-          <button 
-            onClick={() => toggle()}
-            className="w-10 h-10 rounded-xl hover:bg-slate-50 text-slate-400 transition-all flex items-center justify-center border border-slate-50 hidden lg:flex"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-        )}
 
         {/* Identity Core Block */}
         <div className={`flex items-center bg-slate-50 rounded-2xl border border-slate-100 translate-z-0 transition-all duration-500 ${isOpen ? 'gap-4 p-4' : 'p-2 justify-center'}`}>

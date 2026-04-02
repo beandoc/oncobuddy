@@ -9,8 +9,7 @@ export default function OncologistLayout({
   children: React.ReactNode;
 }) {
   return (
-    <NavProvider>
-      <div className="min-h-screen bg-slate-50 flex font-inter">
+    <div className="min-h-screen bg-slate-50 flex font-inter">
         {/* 🟢 Column 1: Left Sidebar (Fixed 288px) */}
         <OncologistSidebar />
 
@@ -35,6 +34,5 @@ export default function OncologistLayout({
            </div>
         </aside>
       </div>
-    </NavProvider>
   );
 }
