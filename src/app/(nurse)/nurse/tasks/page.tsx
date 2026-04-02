@@ -1,7 +1,6 @@
 import { auth } from "@/lib/auth";
 import { 
   CheckSquare, 
-  Search, 
   Filter, 
   PlusCircle, 
   Clock, 
@@ -9,7 +8,8 @@ import {
   Calendar, 
   MessageSquare, 
   Activity,
-  ArrowRight
+  ArrowRight,
+  ClipboardList
 } from "lucide-react";
 import { Button, GlassCard } from "@/components/ui/core";
 import { Role } from "@prisma/client";
@@ -25,69 +25,70 @@ export default async function NurseTasks() {
   if (!session || session.user.role !== Role.NURSE) redirect("/login");
 
   const TaskCard = ({ type, title, patient, due, priority, source }: any) => (
-    <GlassCard className={`!p-0 border-0 shadow-sm relative overflow-hidden group cursor-pointer transition-all hover:translate-x-1 hover:shadow-indigo-100`}>
-       <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${priority === 'high' ? 'bg-rose-500' : 'bg-indigo-400'}`} />
-       <div className="p-6 pl-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="flex items-start gap-4">
-             <div className={`w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center font-bold ${priority === 'high' ? 'text-rose-600' : 'text-slate-400'}`}>
-                {source === 'appointment' ? <Calendar className="w-5 h-5" /> : source === 'log' ? <Activity className="w-5 h-5" /> : <MessageSquare className="w-5 h-5" />}
+    <GlassCard className={`!p-0 border-slate-100 shadow-sm relative overflow-hidden group cursor-pointer transition-all hover:translate-x-2 hover:shadow-2xl hover:shadow-indigo-100/50 rounded-[32px]`}>
+       <div className={`absolute left-0 top-0 bottom-0 w-2 ${priority === 'high' ? 'bg-rose-600 animate-pulse' : 'bg-indigo-600'}`} />
+       <div className="p-8 pl-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+          <div className="flex items-start gap-6">
+             <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-colors ${priority === 'high' ? 'bg-rose-50 text-rose-600' : 'bg-indigo-50 text-indigo-600'}`}>
+                {source === 'appointment' ? <Calendar className="w-6 h-6" /> : source === 'log' ? <Activity className="w-6 h-6" /> : <MessageSquare className="w-6 h-6" />}
              </div>
-             <div>
-                <p className={`text-sm font-bold leading-tight ${priority === 'high' ? 'text-rose-900' : 'text-slate-900'} group-hover:text-indigo-600 transition-colors`}>{title}</p>
-                <div className="flex items-center gap-3 mt-1.5">
-                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{patient}</p>
-                   <div className="w-1 h-1 rounded-full bg-slate-300" />
-                   <div className="flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-slate-400" />
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Due {due}</p>
+             <div className="space-y-2">
+                <p className={`text-lg font-black leading-tight italic italic ${priority === 'high' ? 'text-slate-900 group-hover:text-rose-600' : 'text-slate-900 group-hover:text-indigo-600'} transition-colors uppercase`}>{title}</p>
+                <div className="flex items-center gap-4">
+                   <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] italic">{patient}</p>
+                   <div className="w-1.5 h-1.5 rounded-full bg-slate-200" />
+                   <div className="flex items-center gap-2">
+                      <Clock className="w-3.5 h-3.5 text-slate-400" />
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Due {due}</p>
                    </div>
                 </div>
              </div>
           </div>
           <div className="flex items-center gap-3">
-             <Button variant="ghost" size="sm" className="h-9 px-4 text-xs font-bold text-slate-400 hover:text-slate-900 border border-slate-100">Add Note</Button>
-             <Button variant="secondary" className="h-9 px-4 text-xs font-bold bg-slate-950 hover:bg-black shadow-lg">Complete</Button>
+             <Button variant="ghost" className="h-11 px-6 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 border border-slate-100 rounded-2xl">Note</Button>
+             <Button className="h-11 px-8 text-[10px] font-black uppercase tracking-widest bg-slate-950 text-white hover:bg-indigo-600 hover:scale-105 transition-all shadow-xl rounded-2xl">Complete</Button>
           </div>
        </div>
     </GlassCard>
   );
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 pb-20">
+    <div className="max-w-6xl mx-auto space-y-12 animate-in fade-in duration-700 pb-20">
       
       {/* Task Header (Section A5) */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-         <div>
-            <h1 className="text-4xl font-bold font-outfit tracking-tight">Work <span className="text-indigo-600">List</span></h1>
-            <p className="text-slate-500 mt-2 font-medium">Auto-generated clinical follow-up priority.</p>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-slate-100">
+         <div className="space-y-1">
+            <h1 className="text-5xl font-black font-outfit tracking-tight text-slate-900 italic italic">Work <span className="text-indigo-600 underline underline-offset-8 decoration-indigo-100">Terminal</span></h1>
+            <p className="text-base font-bold text-slate-600 italic">Auto-generated priority follow-ups for {session.user.name}.</p>
          </div>
          <div className="flex items-center gap-3">
-            <Button variant="outline" size="sm" className="h-10 px-4 gap-2 font-bold text-[10px] uppercase tracking-widest border-slate-100">
-               <Filter className="w-3.5 h-3.5" /> Filter
+            <Button variant="outline" className="h-12 px-6 gap-2 text-[10px] font-black uppercase tracking-widest border-slate-200 text-slate-600 hover:bg-slate-50">
+               <Filter className="w-4 h-4" /> Filter Vector
             </Button>
-            <Button variant="secondary" className="h-10 px-6 gap-2 bg-indigo-600 hover:bg-indigo-700 font-bold text-xs shadow-lg">
-               <PlusCircle className="w-4 h-4" /> Create Task
+            <Button className="h-12 px-8 gap-3 bg-slate-950 text-white font-black text-[11px] uppercase tracking-widest shadow-2xl hover:scale-105 transition-all">
+               <PlusCircle className="w-5 h-5" /> Manual Action
             </Button>
          </div>
       </div>
 
       {/* Task View Toggle (Section A5) */}
-      <div className="flex items-center gap-2 p-1 bg-slate-50 border border-slate-100 rounded-2xl w-fit">
-         <button className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest bg-white text-indigo-600 rounded-xl shadow-sm">My Tasks Today</button>
-         <button className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-slate-600">All Patient Tasks</button>
-         <button className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-slate-600">Completed</button>
+      <div className="flex items-center gap-2 p-2 bg-slate-50 border border-slate-100 rounded-[28px] w-fit">
+         <button className="px-6 py-2.5 text-[11px] font-black uppercase tracking-widest bg-white text-indigo-600 rounded-2xl shadow-xl border border-indigo-50">My Operational Window</button>
+         <button className="px-6 py-2.5 text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors">Across Institutional Panel</button>
+         <button className="px-6 py-2.5 text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors">Archived History</button>
       </div>
 
       {/* Prioritized Task List (Section A5) */}
-      <div className="space-y-6">
+      <div className="space-y-12">
          
          {/* Urgent Tasks Section */}
-         <div className="space-y-4">
-            <h3 className="text-sm font-black text-rose-600 uppercase tracking-[0.3em] flex items-center gap-2">
-               Urgent Follow-ups
-               <AlertTriangle className="w-3.5 h-3.5" />
+         <div className="space-y-6">
+            <h3 className="text-[11px] font-black text-rose-600 uppercase tracking-[0.4em] flex items-center gap-3 italic">
+               Emergency Follow-ups
+               <div className="h-px bg-rose-100 flex-1" />
+               <AlertTriangle className="w-4 h-4" />
             </h3>
-            <div className="space-y-3">
+            <div className="space-y-4">
                <TaskCard 
                   title="Follow up on missed Oncology Clinic appointment" 
                   patient="Patient MRN-982312" 
@@ -106,11 +107,13 @@ export default async function NurseTasks() {
          </div>
 
          {/* Routine Tasks Section */}
-         <div className="space-y-4 pt-8">
-            <h3 className="text-sm font-black text-slate-400 uppercase tracking-[0.3em]">
-               Daily Clinical Routine
+         <div className="space-y-6">
+            <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.4em] flex items-center gap-3 italic">
+               Operational Routine
+               <div className="h-px bg-slate-100 flex-1" />
+               <ClipboardList className="w-4 h-4" />
             </h3>
-            <div className="space-y-3">
+            <div className="space-y-4">
                <TaskCard 
                   title="Review Cycle 4 Education Engagement" 
                   patient="Patient MRN-449102" 
@@ -125,32 +128,26 @@ export default async function NurseTasks() {
                   priority="routine" 
                   source="registry" 
                />
-               <TaskCard 
-                  title="Follow up on unanswered message thread" 
-                  patient="Patient MRN-882103" 
-                  due="Today 18:30" 
-                  priority="routine" 
-                  source="message" 
-               />
             </div>
          </div>
       </div>
 
       {/* Task Insight Strip (Section A5) */}
-      <GlassCard className="bg-slate-950 text-white border-0 shadow-2xl overflow-hidden mt-12 relative">
-         <div className="absolute right-0 top-0 bottom-0 w-48 opacity-10 flex items-center justify-center p-12 bg-white/10 group">
-             <CheckSquare className="w-full h-full scale-150 rotate-12 transition-transform group-hover:scale-[2]" />
-         </div>
-         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-               <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.2em] mb-2">Clinical Completion Rate</p>
-               <h4 className="text-2xl font-bold font-outfit leading-tight italic">94% Attendance Follow-up Compliance this week</h4>
-               <p className="text-xs text-slate-400 mt-2 font-medium">Highest among Oncology Teams — Keep the streak active.</p>
+      <GlassCard className="bg-slate-950 text-white border-0 shadow-2xl rounded-[48px] overflow-hidden mt-20 relative group p-10 cursor-default">
+         <div className="absolute right-[-20px] top-[-20px] w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl group-hover:bg-indigo-600/20 transition-all duration-1000" />
+         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
+            <div className="space-y-2">
+               <p className="text-[11px] font-black text-indigo-400 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
+                  <Activity className="w-3.5 h-3.5" /> Clinical Compliance Multiplier
+               </p>
+               <h4 className="text-3xl font-black font-outfit leading-tight italic italic">94% Attendance Follow-up Compliance</h4>
+               <p className="text-sm text-slate-400 font-bold italic">Highest performing team in the institutional oncology cluster.</p>
             </div>
-            <Button variant="ghost" className="h-11 px-6 rounded-full border border-white/20 text-white hover:bg-white hover:text-black font-bold gap-2 group">
-               View Performance <ArrowRight className="w-4 h-4 group-hover:translate-x-1" />
+            <Button variant="ghost" className="h-14 px-10 rounded-3xl border-2 border-white/10 text-white hover:bg-white hover:text-slate-950 font-black gap-3 text-[11px] uppercase tracking-widest transition-all">
+               View Performance Vectors <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
             </Button>
          </div>
+         <CheckSquare className="absolute bottom-[-40px] right-[-40px] w-64 h-64 text-white/5 rotate-12 group-hover:scale-110 transition-transform duration-1000" />
       </GlassCard>
     </div>
   );

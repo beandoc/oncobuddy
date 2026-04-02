@@ -24,13 +24,13 @@ async function main() {
     update: { 
       passwordHash: oncologistPassword,
       firstName: 'Dr. Anvesh',
-      lastName: 'Rathod',
+      lastName: 'Rathore',
     },
     create: {
       email: 'oncologist@oncobuddy.com',
       passwordHash: oncologistPassword,
       firstName: 'Dr. Anvesh',
-      lastName: 'Rathod',
+      lastName: 'Rathore',
       role: Role.ONCOLOGIST,
       accountStatus: AccountStatus.ACTIVE,
       institutionId: institution.id,

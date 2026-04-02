@@ -19,8 +19,8 @@ export default async function PatientLayout({ children }: { children: React.Reac
       <PatientNavbar />
 
       {/* Main Content (Section B1) */}
-      <main className="flex-1 w-full max-w-5xl mx-auto pt-24 pb-48 px-6 md:px-8">
-        <div className="animate-in fade-in slide-in-from-bottom-2 duration-700">
+      <main className="flex-1 w-full max-w-7xl mx-auto pt-44 pb-64 px-10">
+        <div className="reveal-content">
            {children}
         </div>
       </main>

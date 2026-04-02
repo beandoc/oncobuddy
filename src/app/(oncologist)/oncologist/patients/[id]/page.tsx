@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { GlassCard, Button } from "@/components/ui/core";
 import Link from "next/link";
 import { PatientProfileEditor } from "@/components/dashboard/PatientProfileEditor";
+import LabVaultStub from "@/components/dashboard/LabVaultStub";
 import { 
   Activity, 
   Calendar, 
@@ -17,7 +18,8 @@ import {
   MoreVertical,
   Clock,
   CheckCircle2,
-  AlertTriangle
+  AlertTriangle,
+  User
 } from "lucide-react";
 import { Role, AlertSeverity, AlertStatus } from "@prisma/client";
 
@@ -27,7 +29,7 @@ import { Role, AlertSeverity, AlertStatus } from "@prisma/client";
  */
 export default async function PatientProfilePage({ params }: { params: { id: string } }) {
   const session = await auth();
-  if (!session || session.user.role !== Role.ONCOLOGIST) redirect("/login");
+  if (!session || (session.user.role !== Role.ONCOLOGIST && session.user.role !== Role.NURSE)) redirect("/login");
 
   const patient = await prisma.patient.findUnique({
     where: { publicId: params.id },
@@ -57,18 +59,28 @@ export default async function PatientProfilePage({ params }: { params: { id: str
   const activeTreatment = activeDiagnosis?.treatments[0];
   const totalAlerts = patient.alerts.length;
 
+  // Robust Age Calculation
+  const birthDate = patient.dateOfBirth ? new Date(patient.dateOfBirth) : null;
+  const age = birthDate && !isNaN(birthDate.getTime()) 
+    ? new Date().getFullYear() - birthDate.getFullYear() 
+    : "NA";
+
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
       
       {/* 1. Vanguard Context Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-slate-100 pb-12">
          <div className="space-y-4">
-            <Link href="/oncologist/patients" className="inline-flex items-center gap-2 text-[10px] font-black uppercase text-slate-400 tracking-widest hover:text-indigo-600 transition-colors group">
+            <Link href={session.user.role === Role.ONCOLOGIST ? "/oncologist/patients" : "/nurse/patients"} className="inline-flex items-center gap-2 text-[10px] font-black uppercase text-slate-500 tracking-widest hover:text-indigo-600 transition-colors group px-3 py-1 bg-slate-50 rounded-lg border border-slate-100">
                <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Panel
             </Link>
             <div className="flex items-center gap-6">
-                <div className="w-24 h-24 rounded-[32px] bg-slate-100 flex items-center justify-center text-3xl font-black text-slate-400 border-4 border-white shadow-2xl">
-                    {patient.preferredName?.charAt(0) || patient.user.firstName?.charAt(0)}
+                <div className="w-24 h-24 rounded-[32px] bg-slate-100 flex items-center justify-center text-3xl font-black text-slate-400 border-4 border-white shadow-2xl overflow-hidden">
+                    {patient.user.image ? (
+                        <img src={patient.user.image} className="w-full h-full object-cover" />
+                    ) : (
+                        patient.preferredName?.charAt(0) || patient.user.firstName?.charAt(0)
+                    )}
                 </div>
                 <div className="space-y-1">
                     <div className="flex items-center gap-3">
@@ -80,7 +92,7 @@ export default async function PatientProfilePage({ params }: { params: { id: str
                     <div className="flex items-center gap-4 pt-2">
                         <p className="text-[11px] font-black uppercase text-slate-400 tracking-[0.2em] italic font-serif">MRN: {patient.mrn}</p>
                         <span className="w-1.5 h-1.5 rounded-full bg-slate-200" />
-                        <p className="text-[11px] font-black uppercase text-slate-400 tracking-[0.2em] italic font-serif">Aet: {new Date().getFullYear() - (patient.dateOfBirth?.getFullYear() || 0)} Years</p>
+                        <p className="text-[11px] font-black uppercase text-slate-400 tracking-[0.2em] italic font-serif">Aet: {age} Years</p>
                     </div>
                 </div>
             </div>
@@ -106,7 +118,10 @@ export default async function PatientProfilePage({ params }: { params: { id: str
                initialNotes={patient.clinicalNotes} 
             />
 
-            <div className="flex items-center justify-between pt-8">
+            {/* Lab Vault Reconciliation Hub (Request 6) */}
+            <LabVaultStub />
+
+            <div className="flex items-center justify-between pt-16">
                <h3 className="text-2xl font-black font-outfit text-slate-900 italic italic">Symptom <span className="text-indigo-600">Trajectory</span></h3>
                <Link href="#" className="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline">Full Longitudinal Study</Link>
             </div>

@@ -16,9 +16,13 @@ import {
   Users2, 
   Settings, 
   LogOut,
-  HelpCircle
+  HelpCircle,
+  UserPlus,
+  ChevronRight
 } from "lucide-react";
 import Image from "next/image";
+
+import { SidebarWrapper } from "./SidebarWrapper";
 
 /**
  * Oncologist Sidebar - React Server Component.
@@ -46,12 +50,14 @@ export async function OncologistSidebar() {
   const NavItem = ({ href, icon: Icon, label, badge }: { href: string; icon: any; label: string; badge?: number }) => (
     <Link 
       href={href}
-      className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-all group"
+      className="flex items-center justify-between px-5 py-3.5 rounded-[18px] transition-all duration-500 group text-slate-900/60 hover:bg-slate-50 hover:text-indigo-600"
     >
-      <Icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
-      <span className="flex-1">{label}</span>
+      <div className="flex items-center gap-4">
+        <Icon className="w-5 h-5 text-slate-400 group-hover:text-indigo-600 transition-all duration-500 group-hover:scale-110" />
+        <span className="flex-1 text-[11px] font-black uppercase tracking-[0.2em] font-outfit">{label}</span>
+      </div>
       {badge !== undefined && badge > 0 && (
-        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${badge > 0 ? 'bg-rose-100 text-rose-600 animate-pulse' : 'bg-slate-100 text-slate-500'}`}>
+        <span className={`px-2.5 py-1 rounded-full text-[9px] font-black border-2 border-white shadow-xl ${badge > 0 ? 'bg-rose-600 text-white animate-pulse' : 'bg-slate-100 text-slate-500'}`}>
           {badge > 99 ? "99+" : badge}
         </span>
       )}
@@ -59,84 +65,93 @@ export async function OncologistSidebar() {
   );
 
   const SectionLabel = ({ children }: { children: string }) => (
-    <p className="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-8 mb-2">
-      {children}
+    <p className="px-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] mt-12 mb-6 italic italic opacity-60">
+       {children}
     </p>
   );
 
   return (
-    <aside className="w-72 h-screen fixed left-0 top-0 bg-white border-r border-slate-100 flex flex-col z-40">
-      {/* Header & Identity */}
-      <div className="p-6">
-        <Link href="/oncologist/dashboard" className="flex items-center gap-2 mb-8">
-           <div className="w-10 h-10 rounded-xl bg-slate-950 flex items-center justify-center text-white font-bold text-xl">O</div>
-           <span className="font-outfit font-bold text-xl tracking-tight">Onco<span className="text-indigo-600">buddy</span></span>
-        </Link>
+    <SidebarWrapper>
+      <div className="flex flex-col h-full bg-white border-r-2 border-slate-50 shadow-2xl">
+        {/* Header & Identity - Ultra Premium (Section 3) */}
+        <div className="p-8 space-y-10">
+          <Link href="/oncologist/dashboard" className="flex items-center gap-5 transition-transform active:rotate-[-4deg]">
+             <div className="w-12 h-12 rounded-[22px] bg-slate-950 flex items-center justify-center text-white shadow-2xl shadow-slate-900/40 rotate-[-4deg] hover:rotate-0 transition-transform">
+                <Activity className="w-7 h-7" />
+             </div>
+             <div className="text-left">
+                <span className="font-black font-outfit text-3xl tracking-tighter italic italic block leading-none">Onco<span className="text-indigo-600">buddy</span></span>
+                <p className="text-[8px] font-black uppercase text-slate-400 tracking-[0.5em] mt-1.5 ml-1 font-serif">Clinical Suite</p>
+             </div>
+          </Link>
 
-        <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
-           <div className="w-10 h-10 rounded-full bg-indigo-100 border-2 border-white overflow-hidden relative">
-              {session.user.image ? (
-                <Image src={session.user.image} alt={session.user.name || ""} fill className="object-cover" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-indigo-600 font-bold">
-                  {session.user.name?.charAt(0) || "D"}
+          {/* Identity Core Block */}
+          <div className="flex items-center gap-5 p-5 bg-slate-950 rounded-[30px] shadow-2xl shadow-slate-200 border border-slate-800 group">
+             <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center font-black text-slate-950 text-lg shadow-xl group-hover:rotate-6 transition-all duration-500 italic">
+                {session.user.name?.charAt(0) || "D"}
+             </div>
+             <div className="flex-1 min-w-0">
+                <p className="text-[13px] font-black text-white italic truncate leading-none uppercase tracking-tight">Dr. {session.user.name?.split(' ').pop() || "Oncologist"}</p>
+                <p className="text-[9px] text-indigo-400 font-black uppercase tracking-widest mt-2 px-2 py-0.5 bg-indigo-500/10 rounded-full inline-block">Institution PI</p>
+             </div>
+          </div>
+
+          {/* Clinical Performance Indicators */}
+          <div className="grid grid-cols-2 gap-4">
+             <div className="bg-slate-50/50 p-4 rounded-[24px] border-2 border-slate-50 text-left shadow-sm">
+                <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest leading-none mb-2 italic italic">Panel</p>
+                <div className="flex items-baseline gap-2">
+                   <p className="text-2xl font-black text-slate-950 font-outfit italic leading-none">{patientCount}</p>
+                   <span className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">Live</span>
                 </div>
-              )}
-           </div>
-           <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold truncate">Dr. {session.user.name?.split(' ').pop() || "Oncologist"}</p>
-              <p className="text-[10px] text-slate-500 font-medium uppercase tracking-tighter">Medical Oncology</p>
-           </div>
+             </div>
+             <div className={`p-4 rounded-[24px] border-2 text-left shadow-sm transition-all duration-700 ${alertCount > 0 ? 'border-rose-100 bg-rose-50/50 animate-pulse' : 'border-slate-50 bg-slate-50/50'}`}>
+                <p className="text-[9px] text-slate-400 font-black uppercase tracking-widest leading-none mb-2 italic italic">Alerts</p>
+                <div className="flex items-baseline gap-2">
+                   <p className={`text-2xl font-black font-outfit leading-none italic ${alertCount > 0 ? 'text-rose-600' : 'text-slate-950'}`}>{alertCount}</p>
+                   {alertCount > 0 && <div className="w-2 h-2 rounded-full bg-rose-600 mb-1" />}
+                </div>
+             </div>
+          </div>
         </div>
 
-        {/* Live Metrics */}
-        <div className="mt-4 flex gap-2">
-           <div className="flex-1 bg-white p-2 rounded-xl border border-slate-100 text-center">
-              <p className="text-[10px] text-slate-400 font-bold uppercase">Patients</p>
-              <p className="text-sm font-bold text-slate-700">{patientCount}</p>
-           </div>
-           <div className={`flex-1 bg-white p-2 rounded-xl border border-slate-100 text-center ${alertCount > 0 ? 'border-rose-100' : ''}`}>
-              <p className="text-[10px] text-slate-400 font-bold uppercase">Alerts</p>
-              <p className={`text-sm font-bold ${alertCount > 0 ? 'text-rose-600' : 'text-slate-700'}`}>{alertCount}</p>
-           </div>
-        </div>
-      </div>
+        {/* Navigation Vectors (Section 3) */}
+        <nav className="flex-1 px-6 py-2 overflow-y-auto no-scrollbar selection:bg-indigo-100 space-y-1">
+          <SectionLabel>Control Tower</SectionLabel>
+          <NavItem href="/oncologist/dashboard" icon={LayoutGrid} label="Panel HUD" />
+          <NavItem href="/oncologist/patients" icon={Users} label="Patient Vault" />
+          <NavItem href="/oncologist/daycare" icon={Activity} label="Monitoring Unit" />
+          <NavItem href="/oncologist/alerts" icon={Bell} label="Signal Box" badge={alertCount} />
+          <NavItem href="/oncologist/calendar" icon={Calendar} label="Agenda" />
 
-      {/* Navigation */}
-      <nav className="flex-1 px-3 py-2 overflow-y-auto no-scrollbar">
-        <SectionLabel>Clinical</SectionLabel>
-        <NavItem href="/oncologist/dashboard" icon={LayoutGrid} label="Dashboard" />
-        <NavItem href="/oncologist/patients" icon={Users} label="My Patients" />
-        <NavItem href="/oncologist/daycare" icon={Activity} label="Day Care Unit" />
-        <NavItem href="/oncologist/alerts" icon={Bell} label="Alert Inbox" badge={alertCount} />
-        <NavItem href="/oncologist/calendar" icon={Calendar} label="Appointments" />
-        <NavItem href="/oncologist/messages" icon={MessageSquare} label="Messages" />
+          <SectionLabel>Clinical Lab</SectionLabel>
+          <NavItem href="/oncologist/library" icon={BookOpen} label="Asset Vault" />
+          <NavItem href="/nurse/registration" icon={UserPlus} label="Enrollment Hub" />
+          <NavItem href="/oncologist/assign" icon={Inbox} label="Task Queue" />
+          <NavItem href="/oncologist/registry" icon={Database} label="Meta Registry" />
+          <NavItem href="/oncologist/reports" icon={BarChart3} label="Panel Insight" />
 
-        <SectionLabel>Clinical Tools</SectionLabel>
-        <NavItem href="/oncologist/library" icon={BookOpen} label="Education Library" />
-        <NavItem href="/oncologist/assign" icon={Inbox} label="Assign Content" />
-        <NavItem href="/oncologist/registry" icon={Database} label="Registry" />
-        <NavItem href="/oncologist/reports" icon={BarChart3} label="Reports" />
+          <SectionLabel>Institutional</SectionLabel>
+          <NavItem href="/oncologist/team" icon={Users2} label="Clinical Staff" />
+          <NavItem href="/oncologist/settings" icon={Settings} label="Access Core" />
+        </nav>
 
-        <SectionLabel>Administration</SectionLabel>
-        <NavItem href="/oncologist/team" icon={Users2} label="Care Team" />
-        <NavItem href="/oncologist/settings" icon={Settings} label="Settings" />
-      </nav>
-
-      {/* Footer */}
-      <div className="p-4 border-t border-slate-50">
-        <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-slate-600 transition-colors">
-          <HelpCircle className="w-5 h-5" />
-          <span>Help & Support</span>
-        </button>
-        <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-rose-600 transition-colors">
-          <LogOut className="w-5 h-5" />
-          <span>Log Out</span>
-        </button>
-        <div className="mt-2 px-4">
-           <span className="text-[10px] text-slate-300 font-medium">v1.4.2 • Oncobuddy Build</span>
+        {/* Integrated Action Footer (Section 3) */}
+        <div className="p-8 border-t-2 border-slate-50 space-y-3 pb-12 bg-white">
+          <button className="w-full flex items-center justify-between px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-indigo-600 hover:bg-slate-50 rounded-2xl transition-all group">
+            <div className="flex items-center gap-4">
+               <HelpCircle className="w-4 h-4" />
+               <span>Protocol Support</span>
+            </div>
+            <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-2 transition-transform duration-500" />
+          </button>
+          
+          <div className="flex items-center justify-between px-6 pt-2">
+             <Link href="/api/auth/signout" className="text-[10px] font-black text-rose-400 hover:text-rose-600 transition-colors uppercase tracking-widest italic italic underline underline-offset-4 decoration-rose-100">Discard Session</Link>
+             <span className="text-[8px] text-slate-200 font-black uppercase tracking-[0.2em]">Build 2.4.0</span>
+          </div>
         </div>
       </div>
-    </aside>
+    </SidebarWrapper>
   );
 }

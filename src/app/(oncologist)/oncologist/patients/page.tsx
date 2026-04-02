@@ -85,9 +85,11 @@ export default async function OncologistPatientPanel() {
             <Button variant="outline" className="h-12 px-6 gap-2 font-bold text-[10px] uppercase tracking-widest border-slate-100 bg-white hover:bg-slate-50 text-slate-500 shadow-sm transition-all">
                <Filter className="w-4 h-4" /> Filter Panel
             </Button>
-            <Button variant="secondary" className="h-12 px-8 gap-3 bg-indigo-600 hover:bg-slate-950 font-black text-[11px] uppercase tracking-widest shadow-2xl transition-all">
-               <PlusCircle className="w-5 h-5" /> Register Patient
-            </Button>
+            <Link href="/nurse/registration">
+                <Button variant="secondary" className="h-12 px-8 gap-3 bg-indigo-600 hover:bg-slate-950 font-black text-[11px] uppercase tracking-widest shadow-2xl transition-all">
+                   <PlusCircle className="w-5 h-5" /> Register Patient
+                </Button>
+            </Link>
          </div>
       </div>
 
@@ -113,7 +115,9 @@ export default async function OncologistPatientPanel() {
                                  {patient.preferredName?.charAt(0) || patient.user.firstName?.charAt(0)}
                               </div>
                               <div className="space-y-1">
-                                 <p className="text-sm font-bold text-slate-900 group-hover:text-indigo-600 transition-colors leading-none italic italic underline decoration-transparent group-hover:decoration-indigo-200 underline-offset-4 decoration-2">{patient.preferredName || `${patient.user.firstName} ${patient.user.lastName}`}</p>
+                                 <Link href={`/oncologist/patients/${patient.publicId}`} className="group/name">
+                                    <p className="text-sm font-bold text-slate-900 group-hover/name:text-indigo-600 transition-colors leading-none italic italic underline decoration-transparent group-hover/name:decoration-indigo-200 underline-offset-4 decoration-2">{patient.preferredName || `${patient.user.firstName} ${patient.user.lastName}`}</p>
+                                 </Link>
                                  <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mt-2 block leading-none italic italic">MRN: {patient.mrn}</p>
                               </div>
                            </div>

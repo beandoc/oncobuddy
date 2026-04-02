@@ -87,22 +87,22 @@ export default async function OncologistDashboard({ searchParams }: { searchPara
 
   // Vanguard Metric Card HUD (Section 20)
   const MetricCard = ({ title, value, label, trend, trendValue, colorClass, icon: Icon }: any) => (
-    <GlassCard className="relative group overflow-hidden border-white/50 hover:border-indigo-100 hover:shadow-[0_20px_50px_rgba(79,70,229,0.08)] transition-all !p-8 bg-white/60">
+    <GlassCard className="relative group overflow-hidden border-2 border-slate-50 hover:border-indigo-100 hover:shadow-[0_40px_80px_rgba(79,70,229,0.12)] transition-all !p-8 bg-white">
        <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-600/5 blur-3xl rounded-full translate-x-8 -translate-y-8 group-hover:translate-x-4 group-hover:-translate-y-4 transition-transform" />
-       <div className="flex justify-between items-start mb-4">
-          <div className={`p-3 rounded-2xl ${colorClass.replace('text-', 'bg-').replace('700', '50')} ${colorClass} shadow-sm border border-current/10`}>
-             <Icon className="w-5 h-5 shadow-sm" />
+       <div className="flex justify-between items-start mb-6">
+          <div className={`p-4 rounded-2xl ${colorClass.replace('text-', 'bg-').replace('700', '50').replace('900', '50')} ${colorClass} shadow-sm border border-current/10`}>
+             <Icon className="w-6 h-6 shadow-sm" />
           </div>
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-slate-50 border border-slate-100">
-             {trend === 'up' ? <ArrowUpRight className="w-3 h-3 text-emerald-500" /> : <ArrowDownRight className="w-3 h-3 text-rose-500" />}
-             <span className={`text-[10px] font-black ${trend === 'up' ? 'text-emerald-500' : 'text-rose-500'}`}>{trendValue}%</span>
+          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 border-2 border-white shadow-inner">
+             {trend === 'up' ? <ArrowUpRight className="w-3.5 h-3.5 text-emerald-600" /> : <ArrowDownRight className="w-3.5 h-3.5 text-rose-600" />}
+             <span className={`text-[10px] font-black ${trend === 'up' ? 'text-emerald-600' : 'text-rose-600'}`}>{trendValue}%</span>
           </div>
        </div>
        <div className="space-y-1">
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{title}</p>
-          <div className="flex items-baseline gap-2">
-             <h3 className={`text-4xl font-black font-outfit tracking-tighter ${colorClass}`}>{value}</h3>
-             <span className="text-[11px] text-slate-400 font-bold uppercase tracking-widest">{label}</span>
+          <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] font-serif italic italic">{title}</p>
+          <div className="flex items-baseline gap-3">
+             <h3 className={`text-5xl font-black font-outfit tracking-tighter ${colorClass} italic`}>{value}</h3>
+             <span className="text-[11px] text-slate-900 font-bold uppercase tracking-widest">{label}</span>
           </div>
        </div>
     </GlassCard>
@@ -112,22 +112,24 @@ export default async function OncologistDashboard({ searchParams }: { searchPara
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
       
       {/* 1. Vanguard Clinical Header (Section 3) */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-100 pb-10">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b-2 border-slate-50 pb-10">
          <div className="space-y-2">
-            <div className="flex items-center gap-2 mb-2">
-               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_#10b981]" />
-               <span className="text-[10px] font-black text-emerald-600 uppercase tracking-[0.3em] font-serif">Clinical Oversight Active</span>
+            <div className="flex items-center gap-3 mb-2">
+               <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_12px_#10b981]" />
+               <span className="text-[10px] font-black text-emerald-600 uppercase tracking-[0.4em] font-serif italic">Clinical Priority Hub Active</span>
             </div>
-            <h1 className="text-5xl font-black font-outfit tracking-tight text-slate-950 italic italic leading-none">
+            <h1 className="text-6xl font-black font-outfit tracking-tight text-slate-950 italic italic leading-none">
               {greeting}, <span className="text-indigo-600 underline decoration-indigo-100 underline-offset-8">Dr. {session.user.name?.split(' ').pop()}</span>
             </h1>
-            <p className="text-slate-500 font-medium italic italic opacity-80 pt-2">Situational awareness hub for the {clinician.specialization.replace(/_/g, ' ')} panel.</p>
+            <p className="text-slate-900 font-bold italic italic opacity-60 pt-2 text-base">Situational awareness hub for your {clinician.specialization.replace(/_/g, ' ')} panel.</p>
          </div>
          <div className="flex items-center gap-4">
-            <Button className="h-14 px-8 bg-slate-950 text-white rounded-[24px] font-black text-xs uppercase tracking-widest shadow-2xl hover:scale-105 transition-all flex items-center gap-3">
-               <UserPlus className="w-4 h-4" /> Add Patient
-            </Button>
-            <Button variant="outline" className="h-14 w-14 rounded-[24px] border-slate-100 bg-white hover:bg-slate-50 !p-0 shadow-sm"><Filter className="w-4 h-4" /></Button>
+            <Link href="/nurse/registration">
+                <Button className="h-16 px-10 bg-slate-950 text-white rounded-[28px] font-black text-xs uppercase tracking-[0.2em] shadow-2xl hover:bg-indigo-600 transition-all flex items-center gap-3 active:scale-95">
+                   <UserPlus className="w-5 h-5" /> New Case Release
+                </Button>
+            </Link>
+            <Button variant="outline" className="h-16 w-16 rounded-[28px] border-2 border-slate-100 bg-white hover:bg-slate-50 !p-0 shadow-sm"><Filter className="w-5 h-5" /></Button>
          </div>
       </div>
 

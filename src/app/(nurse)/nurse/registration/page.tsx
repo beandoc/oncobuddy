@@ -1,136 +1,225 @@
-import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
-import { redirect } from "next/navigation";
+"use client";
+
+import { useState } from "react";
 import { GlassCard, Button } from "@/components/ui/core";
 import { 
   UserPlus, 
   ShieldCheck, 
   Mail, 
-  Calendar, 
-  ClipboardList, 
+  ChevronRight, 
+  ChevronLeft,
   Stethoscope, 
   Heart, 
   CheckCircle2, 
-  Eye, 
-  ChevronRight,
-  Info 
+  Activity,
+  ClipboardList,
+  Fingerprint
 } from "lucide-react";
-import { Role } from "@prisma/client";
+
+import { registerNewPatient } from "@/lib/actions/clinical.actions";
+import { useRouter } from "next/navigation";
 
 /**
- * Nurse Patient Registration - Screen 7.
- * 3-step clinical onboarding workflow.
- * Identity, Clinical Assignment, and Patient Onboarding steps (Section A7).
+ * Nurse/Oncologist Patient Registration - Screen 7.
+ * Hardened 3-step clinical onboarding workflow.
  */
-export default async function NursePatientRegistration() {
-  const session = await auth();
-  if (!session || session.user.role !== Role.NURSE) redirect("/login");
+export default function NursePatientRegistration() {
+  const router = useRouter();
+  const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    mrn: "",
+    dateOfBirth: "",
+  });
 
-  const FormStep = ({ num, label, active, completed }: any) => (
-    <div className="flex flex-col items-center gap-2 group cursor-pointer transition-all">
-       <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm tracking-tighter ${active ? "bg-indigo-600 text-white shadow-lg shadow-indigo-100" : completed ? "bg-emerald-500 text-white" : "bg-slate-100 text-slate-400 group-hover:bg-slate-200"}`}>
-          {completed ? <CheckCircle2 className="w-5 h-5" /> : num}
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleRegister = async () => {
+    setIsSubmitting(true);
+    const result = await registerNewPatient({
+      ...formData,
+      institutionId: "default",
+    });
+
+    if (result.success) {
+      setStep(3);
+    } else {
+      alert(result.error);
+    }
+    setIsSubmitting(false);
+  };
+
+  const FormStepIndicator = ({ num, label, active, completed }: any) => (
+    <div className={`flex flex-col items-center gap-3 group transition-all ${active ? "scale-110" : ""}`}>
+       <div className={`w-14 h-14 rounded-[20px] flex items-center justify-center font-black text-lg tracking-tighter transition-all duration-500 ${active ? "bg-slate-950 text-white shadow-2xl shadow-indigo-200 rotate-3" : completed ? "bg-emerald-500 text-white shadow-lg" : "bg-white border-2 border-slate-100 text-slate-300"}`}>
+          {completed ? <CheckCircle2 className="w-7 h-7" /> : num}
        </div>
-       <p className={`text-[10px] font-black uppercase tracking-widest ${active ? "text-indigo-600" : "text-slate-400"}`}>{label}</p>
+       <p className={`text-[10px] font-black uppercase tracking-[0.2em] transition-colors ${active ? "text-slate-900" : "text-slate-400"}`}>{label}</p>
     </div>
   );
 
   return (
-    <div className="max-w-4xl mx-auto space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
-      
-      {/* Registration Header (Section A7) */}
-      <div className="text-center space-y-3">
-         <div className="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
-            <UserPlus className="w-8 h-8" />
+    <div className="max-w-5xl mx-auto space-y-16 animate-in fade-in slide-in-from-bottom-6 duration-700 pb-32 pt-8">
+      {/* Clinical Header ... */}
+      <div className="text-center space-y-4">
+         <div className="flex items-center justify-center gap-3 mb-2 px-6 py-2 bg-slate-50 border border-slate-100 rounded-full w-fit mx-auto shadow-inner">
+            <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+            <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] italic font-serif">Registry Enrollment Protocol</span>
          </div>
-         <h1 className="text-4xl font-bold font-outfit tracking-tight">Onboard <span className="text-indigo-600">New Patient</span></h1>
-         <p className="text-slate-500 font-medium">Initiate clinical team assignment and ICD-O-3 enrollment.</p>
+         <h1 className="text-5xl font-black font-outfit tracking-tighter text-slate-950 italic">Clinical <span className="text-indigo-600">Onboarding</span></h1>
+         <p className="text-slate-500 font-bold italic italic opacity-70 max-w-xl mx-auto">Initiate high-fidelity case management and ICD-O-3 registry enrollment.</p>
       </div>
 
-      {/* Step Tracker (Section A7) */}
-      <div className="flex items-center justify-center gap-16 relative">
-         <div className="absolute top-5 left-1/2 -translate-x-1/2 w-48 h-px bg-slate-100 -z-10" />
-         <FormStep num="1" label="Identity" active />
-         <FormStep num="2" label="Clinical Team" />
-         <FormStep num="3" label="Access & Onboarding" />
+      <div className="flex items-center justify-center gap-16 md:gap-24 relative max-w-2xl mx-auto">
+         <div className="absolute top-7 left-0 right-0 h-1 bg-slate-100 -z-10 rounded-full overflow-hidden">
+            <div className={`h-full bg-indigo-600 transition-all duration-1000 ease-out`} style={{ width: `${((step - 1) / 2) * 100}%` }} />
+         </div>
+         <FormStepIndicator num="1" label="Identity" active={step === 1} completed={step > 1} />
+         <FormStepIndicator num="2" label="Clinical Team" active={step === 2} completed={step > 2} />
+         <FormStepIndicator num="3" label="Access Hub" active={step === 3} completed={step > 3} />
       </div>
 
-      {/* Identity Form - Step 1 (Section A7) */}
-      <GlassCard className="!p-12 border-slate-100 shadow-xl overflow-hidden relative group">
-         <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform"><UserPlus className="w-48 h-48" /></div>
-         
-         <div className="space-y-12 relative z-10">
-            <div className="flex items-center justify-between border-b border-slate-50 pb-6">
-               <h3 className="text-xl font-bold font-outfit flex items-center gap-3">
-                  <ShieldCheck className="w-6 h-6 text-indigo-600" />
-                  Primary Identity & Demographics
-               </h3>
-               <Button variant="ghost" size="sm" className="h-8 !px-3 font-bold text-indigo-600 hover:bg-indigo-50 border border-transparent hover:border-indigo-100">Check for Duplicates</Button>
-            </div>
+      <div className={`transition-all duration-500`}>
+         {step === 1 && (
+            <GlassCard className="!p-16 border-2 border-slate-50 shadow-[0_50px_100px_rgba(0,0,0,0.04)] rounded-[56px] bg-white relative overflow-hidden group">
+               <div className="absolute top-[-50px] right-[-50px] w-96 h-96 bg-indigo-50/50 rounded-full blur-[100px] pointer-events-none" />
+               <div className="space-y-12 relative z-10">
+                  <div className="flex items-center justify-between border-b-2 border-slate-50 pb-8">
+                     <h3 className="text-2xl font-black font-outfit flex items-center gap-4 italic italic">
+                        <Fingerprint className="w-8 h-8 text-indigo-600" />
+                        Patient Identity Matrix
+                     </h3>
+                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-4 py-2 rounded-full border border-slate-100">Step 01 / 03</span>
+                  </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-               <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">First Name (Legal)</label>
-                  <input type="text" placeholder="John" className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-1 focus:ring-indigo-100 transition-all font-medium" />
-               </div>
-               <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Last Name (Legal)</label>
-                  <input type="text" placeholder="Doe" className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-1 focus:ring-indigo-100 transition-all font-medium" />
-               </div>
-               <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Medical Record Number (MRN)</label>
-                  <div className="relative">
-                     <input type="text" placeholder="MRN-000000" className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-1 focus:ring-indigo-100 transition-all font-bold tracking-widest" />
-                     <button className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black uppercase text-indigo-600 hover:scale-110 transition-transform">Auto-Generate</button>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                     <div className="space-y-3">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2 italic">Legal First Name</label>
+                        <input type="text" value={formData.firstName} onChange={e => handleInputChange('firstName', e.target.value)} placeholder="John" className="w-full h-16 px-8 bg-slate-50/50 border-2 border-transparent focus:border-indigo-100 focus:bg-white rounded-[24px] text-base font-black italic tracking-tight transition-all placeholder:text-slate-300 outline-none shadow-inner" />
+                     </div>
+                     <div className="space-y-3">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2 italic">Legal Last Name</label>
+                        <input type="text" value={formData.lastName} onChange={e => handleInputChange('lastName', e.target.value)} placeholder="Doe" className="w-full h-16 px-8 bg-slate-50/50 border-2 border-transparent focus:border-indigo-100 focus:bg-white rounded-[24px] text-base font-black italic tracking-tight transition-all placeholder:text-slate-300 outline-none shadow-inner" />
+                     </div>
+                     <div className="space-y-3">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2 italic">Institutional MRN</label>
+                        <input type="text" value={formData.mrn} onChange={e => handleInputChange('mrn', e.target.value)} placeholder="MRN-882910" className="w-full h-16 px-8 bg-slate-50/50 border-2 border-transparent focus:border-indigo-100 focus:bg-white rounded-[24px] text-base font-black tracking-widest text-indigo-600 transition-all outline-none shadow-inner" />
+                     </div>
+                     <div className="space-y-3">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2 italic">Biological DOB</label>
+                        <input type="date" value={formData.dateOfBirth} onChange={e => handleInputChange('dateOfBirth', e.target.value)} className="w-full h-16 px-8 bg-slate-50/50 border-2 border-transparent focus:border-indigo-100 focus:bg-white rounded-[24px] text-base font-black transition-all outline-none shadow-inner" />
+                     </div>
+                     <div className="space-y-3 md:col-span-2">
+                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2 italic">Principal Patient Email</label>
+                        <input type="email" value={formData.email} onChange={e => handleInputChange('email', e.target.value)} placeholder="john.doe@oncology.cloud" className="w-full h-16 px-8 bg-slate-50/50 border-2 border-transparent focus:border-indigo-100 focus:bg-white rounded-[24px] text-base font-black italic tracking-tight transition-all outline-none shadow-inner" />
+                     </div>
+                  </div>
+
+                  <div className="flex items-center justify-end pt-10 border-t-2 border-slate-50">
+                     <Button onClick={() => setStep(2)} className="h-16 px-12 gap-4 bg-slate-950 text-white rounded-[28px] font-black uppercase text-xs tracking-[0.3em] shadow-2xl hover:bg-indigo-600 transition-all hover:scale-105 active:scale-95 group">
+                        Proceed to Clinical Team
+                        <ChevronRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+                     </Button>
                   </div>
                </div>
+            </GlassCard>
+         )}
+
+         {step === 2 && (
+            <GlassCard className="!p-16 border-2 border-slate-50 shadow-[0_50px_100px_rgba(0,0,0,0.04)] rounded-[56px] bg-white relative overflow-hidden group">
+               <div className="space-y-12 relative z-10">
+                  <div className="flex items-center justify-between border-b-2 border-slate-50 pb-8">
+                     <h3 className="text-2xl font-black font-outfit flex items-center gap-4 italic italic">
+                        <Stethoscope className="w-8 h-8 text-indigo-600" />
+                        Clinical Cluster Assignment
+                     </h3>
+                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-4 py-2 rounded-full border border-slate-100">Step 02 / 03</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                     <div className="space-y-8">
+                        <div className="space-y-4">
+                           <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-2 italic">Primary Medical Oncologist</label>
+                           <div className="p-6 rounded-[32px] border-2 border-indigo-100 bg-indigo-50/30 flex items-center gap-5 shadow-inner">
+                              <div className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center text-white font-black">AR</div>
+                              <div className="flex-1">
+                                 <p className="text-base font-black text-slate-900 italic">Dr. Anvesh Rathore</p>
+                                 <p className="text-[9px] font-bold text-indigo-600 uppercase tracking-widest">Selected Lead</p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div className="space-y-8 bg-slate-50/50 p-10 rounded-[40px] border-2 border-slate-100 shadow-inner">
+                        <h4 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.4em] italic mb-6">Initial Clinical Pulse</h4>
+                        <div className="space-y-6 text-center">
+                           <p className="text-sm font-bold text-slate-600 italic">Data will be broadcast to clinical terminals in real-time.</p>
+                           <div className="w-20 h-20 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-lg animate-pulse">
+                              <Activity className="w-10 h-10" />
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-10 border-t-2 border-slate-50">
+                     <Button onClick={() => setStep(1)} variant="ghost" className="h-16 px-10 gap-3 text-slate-400 font-black uppercase text-xs tracking-widest">
+                        <ChevronLeft className="w-6 h-6" /> Back
+                     </Button>
+                     <Button onClick={handleRegister} disabled={isSubmitting} className="h-16 px-12 gap-4 bg-slate-950 text-white rounded-[28px] font-black uppercase text-xs tracking-[0.3em] shadow-2xl hover:bg-emerald-600 transition-all active:scale-95 group">
+                        {isSubmitting ? "Enrolling Case..." : "Finalize Release"}
+                        <ChevronRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+                     </Button>
+                  </div>
+               </div>
+            </GlassCard>
+         )}
+
+         {step === 3 && (
+            <GlassCard className="!p-16 border-2 border-emerald-100 shadow-[0_50px_100px_rgba(16,185,129,0.06)] rounded-[56px] bg-white relative overflow-hidden group">
+               <div className="space-y-12 relative z-10 text-center">
+                  <div className="w-24 h-24 bg-emerald-50 text-emerald-600 rounded-[32px] flex items-center justify-center mx-auto mb-10 shadow-2xl shadow-emerald-100/50 rotate-[-4deg] animate-bounce">
+                     <CheckCircle2 className="w-12 h-12" />
+                  </div>
+                  
+                  <div className="space-y-4">
+                     <h3 className="text-4xl font-black font-outfit italic italic tracking-tight text-slate-950 uppercase">Case Released.</h3>
+                     <p className="text-base text-slate-500 font-bold italic italic max-w-md mx-auto">
+                        Identity established. {formData.firstName} has been successfully added to the clinical registry. Live sync is active across all institution terminals.
+                     </p>
+                  </div>
+
+                  <div className="flex flex-col items-center gap-8 pt-12 border-t-2 border-slate-50">
+                     <Button onClick={() => router.push('/nurse/patients')} className="h-20 px-24 bg-indigo-600 text-white rounded-[32px] font-black uppercase text-sm tracking-[0.4em] shadow-2xl shadow-indigo-100 hover:bg-slate-950 transition-all hover:scale-105 active:scale-95 group">
+                        Go to Patient Panel
+                        <Activity className="w-6 h-6 ml-4" />
+                     </Button>
+                  </div>
+               </div>
+            </GlassCard>
+         )}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+         {[
+            { icon: ClipboardList, label: "Registry Sync", color: "indigo", text: "Enabling registry on creation auto-assigns molecular markers." },
+            { icon: Activity, label: "High Precision", color: "emerald", text: "Atomic transactions ensure registry integrity." },
+            { icon: Heart, label: "Live Broadcast", color: "rose", text: "Oncology terminals update as soon as the case is released." }
+         ].map((block, i) => (
+            <GlassCard key={i} className="!p-10 border-slate-50 bg-white/50 space-y-6">
+               <div className={`w-12 h-12 bg-slate-950 text-white rounded-2xl flex items-center justify-center`}>
+                  <block.icon className="w-6 h-6" />
+               </div>
                <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Date of Birth</label>
-                  <div className="relative">
-                     <input type="date" className="w-full h-12 px-5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-1 focus:ring-indigo-100 transition-all font-medium" />
-                  </div>
+                  <h4 className="text-base font-black text-slate-900 italic italic uppercase">{block.label}</h4>
+                  <p className="text-xs text-slate-500 font-bold italic italic leading-relaxed opacity-70">{block.text}</p>
                </div>
-               <div className="space-y-2 md:col-span-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">Primary Clinical Contact (Email)</label>
-                  <div className="relative group">
-                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-600 transition-colors" />
-                     <input type="email" placeholder="john.doe@patient.care" className="w-full h-12 pl-12 pr-5 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-1 focus:ring-indigo-100 transition-all font-medium" />
-                  </div>
-               </div>
-            </div>
-
-            <div className="flex items-center justify-between pt-12">
-               <div className="flex items-center gap-3 text-slate-400">
-                  <Info className="w-4 h-4" />
-                  <p className="text-[10px] uppercase font-black">Verify all registry data before completing Step 2</p>
-               </div>
-               <div className="flex items-center gap-4">
-                  <Button variant="ghost" className="h-12 px-8 font-bold text-slate-400">Save as Draft</Button>
-                  <Button variant="secondary" className="h-12 px-10 gap-2 bg-slate-950 hover:bg-black font-black uppercase text-xs tracking-widest shadow-xl shadow-black/10">
-                     Next Phase <ChevronRight className="w-4 h-4" />
-                  </Button>
-               </div>
-            </div>
-         </div>
-      </GlassCard>
-
-      {/* Protocol Reminders - Sticky Section (Section A7) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-         <div className="p-6 bg-indigo-50/50 rounded-3xl border border-indigo-100/50 flex flex-col gap-4">
-            <ClipboardList className="w-6 h-6 text-indigo-600" />
-            <h4 className="text-sm font-bold font-outfit uppercase tracking-tight">Clinical Registry Workflow</h4>
-            <p className="text-xs text-indigo-900/60 leading-relaxed font-medium italic">Enabling registry on account creation auto-assigns relevant ICD-O-3 pathology markers.</p>
-         </div>
-         <div className="p-6 bg-emerald-50/50 rounded-3xl border border-emerald-100/50 flex flex-col gap-4">
-            <Stethoscope className="w-6 h-6 text-emerald-600" />
-            <h4 className="text-sm font-bold font-outfit uppercase tracking-tight">Oncologist Linkage</h4>
-            <p className="text-xs text-emerald-900/60 leading-relaxed font-medium italic">Assign primary oncologist in Step 2 to enable real-time alert forwarding.</p>
-         </div>
-         <div className="p-6 bg-rose-50/50 rounded-3xl border border-rose-100/50 flex flex-col gap-4">
-            <Heart className="w-6 h-6 text-rose-600" />
-            <h4 className="text-sm font-bold font-outfit uppercase tracking-tight">Onboarding Invitation</h4>
-            <p className="text-xs text-rose-900/60 leading-relaxed font-medium italic">Preview registration invitation before dispatch to ensure literacy level alignment.</p>
-         </div>
+            </GlassCard>
+         ))}
       </div>
     </div>
   );
