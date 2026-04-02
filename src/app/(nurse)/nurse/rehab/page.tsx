@@ -28,7 +28,7 @@ export default async function RehabTrackerPage() {
   // Fetching live data for assigned patients
   const patients = await prisma.patient.findMany({
     where: { 
-        endedAt: null 
+        deletedAt: null 
     },
     include: {
       user: true,

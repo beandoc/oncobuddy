@@ -114,7 +114,7 @@ export default async function PatientDashboardHome() {
                <div className="flex-1 space-y-4 text-center md:text-left">
                   <div className="space-y-1">
                      <h2 className="text-2xl font-black font-outfit text-slate-950 tracking-tight italic">Emergency Red Flags</h2>
-                     <p className="text-sm text-slate-600 font-bold leading-relaxed italic">Fever > 100.4°F, Severe pain, or Shortness of Breath require immediate triage.</p>
+                     <p className="text-sm text-slate-600 font-bold leading-relaxed italic">Fever &gt; 100.4°F, Severe pain, or Shortness of Breath require immediate triage.</p>
                   </div>
                   <div className="flex flex-wrap gap-3">
                      <Link href="/patient/messages" className="bg-rose-600 text-white px-6 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-950 transition-all shadow-lg active:scale-95">Report Red Flag Now</Link>

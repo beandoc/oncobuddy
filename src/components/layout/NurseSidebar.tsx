@@ -15,7 +15,9 @@ import {
   Settings, 
   LogOut, 
   HelpCircle,
-  AlertTriangle
+  AlertTriangle,
+  ShieldCheck,
+  LayoutGrid
 } from "lucide-react";
 import Link from "next/link";
 import { Role, AlertStatus } from "@prisma/client";
@@ -142,21 +144,22 @@ export default async function NurseSidebar() {
         </nav>
 
         {/* Sidebar Footer - High Authority (Section A2) */}
-        <div className="p-8 border-t-2 border-slate-50 space-y-3 pb-12 bg-white">
+        <div className="p-8 border-t-2 border-slate-50 space-y-4 pb-12 bg-white">
            <Button variant="outline" className="w-full border-rose-300 text-rose-700 hover:bg-rose-50 h-14 rounded-[20px] font-black text-[10px] uppercase tracking-[0.3em] gap-3">
               <AlertTriangle className="w-5 h-5" />
               ESCALATE CASE
            </Button>
            
-           <div className="flex items-center justify-between px-4 pt-2">
-              <button className="text-[10px] font-black text-slate-400 hover:text-indigo-600 transition-colors uppercase tracking-widest italic italic">Help Support</button>
-              <button className="text-[10px] font-black text-rose-400 hover:text-rose-600 transition-colors uppercase tracking-widest italic italic">Discard Session</button>
+           <Link href="/api/auth/signout" className="flex items-center justify-center gap-3 w-full h-14 rounded-[20px] bg-slate-50 text-slate-900 font-black text-[10px] uppercase tracking-[0.3em] hover:bg-rose-50 hover:text-rose-600 transition-all group">
+              <LogOut className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              Sign Out Hub
+           </Link>
+           
+           <div className="flex items-center justify-center pt-2">
+              <button className="text-[9px] font-black text-slate-300 hover:text-indigo-600 transition-colors uppercase tracking-widest italic italic">Protocol Support v2.4.1</button>
            </div>
-           <p className="text-[9px] text-center text-slate-200 font-black uppercase tracking-[0.2em] pt-6">Clinical Engine • v2.4.0</p>
         </div>
       </div>
     </SidebarWrapper>
   );
 }
-
-import { ShieldCheck, LayoutGrid } from "lucide-react";

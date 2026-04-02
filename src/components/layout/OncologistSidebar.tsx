@@ -136,19 +136,16 @@ export async function OncologistSidebar() {
           <NavItem href="/oncologist/settings" icon={Settings} label="Access Core" />
         </nav>
 
-        {/* Integrated Action Footer (Section 3) */}
-        <div className="p-8 border-t-2 border-slate-50 space-y-3 pb-12 bg-white">
-          <button className="w-full flex items-center justify-between px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-indigo-600 hover:bg-slate-50 rounded-2xl transition-all group">
-            <div className="flex items-center gap-4">
-               <HelpCircle className="w-4 h-4" />
-               <span>Protocol Support</span>
-            </div>
-            <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-2 transition-transform duration-500" />
-          </button>
+        {/* Integrated Action Footer - Ultra High Fidelity (Section 3) */}
+        <div className="p-8 border-t-2 border-slate-50 space-y-4 pb-12 bg-white">
+          <Link href="/api/auth/signout" className="flex items-center justify-center gap-3 w-full h-16 rounded-[24px] bg-slate-50 text-slate-900 font-black text-[11px] uppercase tracking-[0.3em] hover:bg-rose-50 hover:text-rose-600 transition-all group shadow-sm">
+             <LogOut className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+             Institutional Sign Out
+          </Link>
           
           <div className="flex items-center justify-between px-6 pt-2">
-             <Link href="/api/auth/signout" className="text-[10px] font-black text-rose-400 hover:text-rose-600 transition-colors uppercase tracking-widest italic italic underline underline-offset-4 decoration-rose-100">Discard Session</Link>
-             <span className="text-[8px] text-slate-200 font-black uppercase tracking-[0.2em]">Build 2.4.0</span>
+             <button className="text-[9px] font-black text-slate-300 hover:text-indigo-600 transition-colors uppercase tracking-widest italic">Protocol Hub</button>
+             <span className="text-[8px] text-slate-200 font-black uppercase tracking-[0.2em]">Build 2.4.1</span>
           </div>
         </div>
       </div>
