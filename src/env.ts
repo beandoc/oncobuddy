@@ -16,10 +16,10 @@ const envSchema = z.object({
   AWS_REGION: z.string().min(1).default("us-east-1"),
   
   // Redis for BullMQ
-  REDIS_URL: z.string().url().optional(),
+  REDIS_URL: z.preprocess((v) => (v === "" ? undefined : v), z.string().url().optional()),
 
   // CMS
-  SANITY_PROJECT_ID: z.string().min(1).optional(),
+  SANITY_PROJECT_ID: z.preprocess((v) => (v === "" ? undefined : v), z.string().min(1).optional()),
   SANITY_DATASET: z.string().min(1).default("production"),
 });
 
