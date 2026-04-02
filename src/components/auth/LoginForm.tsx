@@ -34,7 +34,8 @@ export default function LoginForm() {
       setError("Authorization failed. Ensure your institutional credentials are correct.");
       setIsLoading(false);
     } else {
-      router.push("/"); // Will trigger the dynamic redirect in the root middleware/landing
+      // Direct high-fidelity redirect to clinician workspace
+      router.push("/oncologist/dashboard");
     }
   };
 
