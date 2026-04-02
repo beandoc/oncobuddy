@@ -18,7 +18,7 @@ export function SidebarWrapper({ children }: { children: React.ReactNode }) {
       )}
 
       <aside className={`
-        fixed left-0 top-0 h-screen w-72 bg-white border-r border-slate-100 flex flex-col z-50
+        fixed left-0 top-0 h-screen w-64 bg-white border-r border-slate-100 flex flex-col z-50
         transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>

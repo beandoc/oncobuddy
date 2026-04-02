@@ -101,7 +101,7 @@ export default async function OncologistDashboard({ searchParams }: { searchPara
        <div className="space-y-1">
           <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] font-serif italic italic">{title}</p>
           <div className="flex items-baseline gap-3">
-             <h3 className={`text-5xl font-black font-outfit tracking-tighter ${colorClass} italic`}>{value}</h3>
+             <h3 className={`text-4xl font-black font-outfit tracking-tighter ${colorClass} italic`}>{value}</h3>
              <span className="text-[11px] text-slate-900 font-bold uppercase tracking-widest">{label}</span>
           </div>
        </div>
@@ -118,7 +118,7 @@ export default async function OncologistDashboard({ searchParams }: { searchPara
                <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_12px_#10b981]" />
                <span className="text-[10px] font-black text-emerald-600 uppercase tracking-[0.4em] font-serif italic">Clinical Priority Hub Active</span>
             </div>
-            <h1 className="text-6xl font-black font-outfit tracking-tight text-slate-950 italic italic leading-none">
+            <h1 className="text-5xl font-black font-outfit tracking-tight text-slate-950 italic leading-none">
               {greeting}, <span className="text-indigo-600 underline decoration-indigo-100 underline-offset-8">Dr. {session.user.name?.split(' ').pop()}</span>
             </h1>
             <p className="text-slate-900 font-bold italic italic opacity-60 pt-2 text-base">Situational awareness hub for your {clinician.specialization.replace(/_/g, ' ')} panel.</p>

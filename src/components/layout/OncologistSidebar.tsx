@@ -50,7 +50,7 @@ export async function OncologistSidebar() {
   const NavItem = ({ href, icon: Icon, label, badge }: { href: string; icon: any; label: string; badge?: number }) => (
     <Link 
       href={href}
-      className="flex items-center justify-between px-5 py-3.5 rounded-[18px] transition-all duration-500 group text-slate-900/60 hover:bg-slate-50 hover:text-indigo-600"
+      className="flex items-center justify-between px-5 py-2.5 rounded-[15px] transition-all duration-500 group text-slate-900/60 hover:bg-slate-50 hover:text-indigo-600"
     >
       <div className="flex items-center gap-4">
         <Icon className="w-5 h-5 text-slate-400 group-hover:text-indigo-600 transition-all duration-500 group-hover:scale-110" />
@@ -80,7 +80,7 @@ export async function OncologistSidebar() {
                 <Activity className="w-7 h-7" />
              </div>
              <div className="text-left">
-                <span className="font-black font-outfit text-3xl tracking-tighter italic italic block leading-none">Onco<span className="text-indigo-600">buddy</span></span>
+                <span className="font-black font-outfit text-2xl tracking-tighter italic block leading-none">Onco<span className="text-indigo-600">buddy</span></span>
                 <p className="text-[8px] font-black uppercase text-slate-400 tracking-[0.5em] mt-1.5 ml-1 font-serif">Clinical Suite</p>
              </div>
           </Link>
