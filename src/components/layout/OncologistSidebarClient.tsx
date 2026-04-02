@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useNav } from "@/lib/nav-context";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 import { 
   LayoutGrid, 
   Users, 
@@ -148,10 +149,13 @@ export function OncologistSidebarClient({ session, patientCount, alertCount }: a
       </nav>
 
       <div className={`${isOpen ? 'p-6' : 'p-4'} border-t border-slate-100 space-y-3 pb-6`}>
-        <Link href="/api/auth/signout" className={`flex items-center justify-center w-full h-12 rounded-xl bg-slate-50 text-slate-600 font-bold text-[10px] uppercase tracking-widest hover:bg-rose-50 hover:text-rose-600 transition-all ${!isOpen && 'px-0'}`}>
+        <button 
+          onClick={() => signOut({ callbackUrl: "/" })}
+          className={`flex items-center justify-center w-full h-12 rounded-xl bg-slate-50 text-slate-600 font-bold text-[10px] uppercase tracking-widest hover:bg-rose-50 hover:text-rose-600 transition-all ${!isOpen && 'px-0'}`}
+        >
            <LogOut className="w-4 h-4" />
            {isOpen && <span className="ml-3">Sign Out</span>}
-        </Link>
+        </button>
         {isOpen && <p className="text-[8px] font-bold text-slate-300 text-center uppercase tracking-widest">Build 2.4.1</p>}
       </div>
     </div>
