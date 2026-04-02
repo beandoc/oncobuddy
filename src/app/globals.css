@@ -17,8 +17,8 @@
   --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.05), 0 10px 10px -5px rgba(0,0,0,0.02);
   --shadow-xl: 0 35px 60px -15px rgba(0,0,0,0.1);
   
-  --glass-border: 1px solid rgba(255, 255, 255, 0.4);
-  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: 1px solid #e2e8f0; /* slate-200 */
+  --glass-bg: #ffffff;
 
   --font-outfit: 'Outfit', sans-serif;
   --font-inter: 'Inter', sans-serif;
@@ -54,8 +54,8 @@ body {
 /* Premium Typography Standards */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-outfit);
-  letter-spacing: -0.04em;
-  @apply font-black leading-none;
+  letter-spacing: -0.02em;
+  @apply font-bold leading-tight;
 }
 
 .font-outfit { font-family: var(--font-outfit); }
@@ -64,14 +64,12 @@ h1, h2, h3, h4, h5, h6 {
 /* Ultra-Premium Glassmorphism Class */
 .glass-surface {
   background: var(--glass-bg);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: var(--glass-border);
   box-shadow: var(--shadow-sm);
 }
 
 .glass-card {
-  @apply glass-surface rounded-[40px] shadow-xl hover:shadow-2xl transition-all duration-700;
+  @apply glass-surface rounded-xl shadow-sm transition-all duration-300;
 }
 
 /* Custom Micro-Animations */
@@ -122,13 +120,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Layout Utilities */
+/* Explicitly disabling no-scrollbar for clinical utility (Section 4) */
 .no-scrollbar::-webkit-scrollbar {
-  display: none;
+  display: block;
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  -ms-overflow-style: auto;
+  scrollbar-width: auto;
 }
 
 /* Page Transition Wrapper */

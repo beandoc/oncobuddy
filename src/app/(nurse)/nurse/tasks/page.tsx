@@ -25,7 +25,7 @@ export default async function NurseTasks() {
   if (!session || session.user.role !== Role.NURSE) redirect("/login");
 
   const TaskCard = ({ type, title, patient, due, priority, source }: any) => (
-    <GlassCard className={`!p-0 border-slate-100 shadow-sm relative overflow-hidden group cursor-pointer transition-all hover:translate-x-2 hover:shadow-2xl hover:shadow-indigo-100/50 rounded-[32px]`}>
+    <GlassCard className={`!p-0 border-slate-100 shadow-sm relative overflow-hidden group cursor-pointer transition-all hover:translate-x-2 hover:shadow-sm hover:shadow-indigo-100/50 rounded-xl`}>
        <div className={`absolute left-0 top-0 bottom-0 w-2 ${priority === 'high' ? 'bg-rose-600 animate-pulse' : 'bg-indigo-600'}`} />
        <div className="p-8 pl-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
           <div className="flex items-start gap-6">
@@ -33,20 +33,20 @@ export default async function NurseTasks() {
                 {source === 'appointment' ? <Calendar className="w-6 h-6" /> : source === 'log' ? <Activity className="w-6 h-6" /> : <MessageSquare className="w-6 h-6" />}
              </div>
              <div className="space-y-2">
-                <p className={`text-lg font-black leading-tight italic italic ${priority === 'high' ? 'text-slate-900 group-hover:text-rose-600' : 'text-slate-900 group-hover:text-indigo-600'} transition-colors uppercase`}>{title}</p>
+                <p className={`text-lg font-bold leading-tight italic ${priority === 'high' ? 'text-slate-900 group-hover:text-rose-600' : 'text-slate-900 group-hover:text-indigo-600'} transition-colors uppercase`}>{title}</p>
                 <div className="flex items-center gap-4">
-                   <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] italic">{patient}</p>
+                   <p className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">{patient}</p>
                    <div className="w-1.5 h-1.5 rounded-full bg-slate-200" />
                    <div className="flex items-center gap-2">
                       <Clock className="w-3.5 h-3.5 text-slate-400" />
-                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Due {due}</p>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">Due {due}</p>
                    </div>
                 </div>
              </div>
           </div>
           <div className="flex items-center gap-3">
-             <Button variant="ghost" className="h-11 px-6 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 border border-slate-100 rounded-2xl">Note</Button>
-             <Button className="h-11 px-8 text-[10px] font-black uppercase tracking-widest bg-slate-950 text-white hover:bg-indigo-600 hover:scale-105 transition-all shadow-xl rounded-2xl">Complete</Button>
+             <Button variant="ghost" className="h-11 px-6 text-[10px] font-bold uppercase tracking-wider text-slate-400 hover:text-slate-900 border border-slate-100 rounded-2xl">Note</Button>
+             <Button className="h-11 px-8 text-[10px] font-bold uppercase tracking-wider bg-slate-950 text-white hover:bg-indigo-600 hover:scale-105 transition-all shadow-sm rounded-2xl">Complete</Button>
           </div>
        </div>
     </GlassCard>
@@ -58,14 +58,14 @@ export default async function NurseTasks() {
       {/* Task Header (Section A5) */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-slate-100">
          <div className="space-y-1">
-            <h1 className="text-5xl font-black font-outfit tracking-tight text-slate-900 italic italic">Work <span className="text-indigo-600 underline underline-offset-8 decoration-indigo-100">Terminal</span></h1>
-            <p className="text-base font-bold text-slate-600 italic">Auto-generated priority follow-ups for {session.user.name}.</p>
+            <h1 className="text-5xl font-bold font-outfit tracking-tight text-slate-900">Work <span className="text-indigo-600 underline underline-offset-8 decoration-indigo-100">Terminal</span></h1>
+            <p className="text-base font-bold text-slate-600">Auto-generated priority follow-ups for {session.user.name}.</p>
          </div>
          <div className="flex items-center gap-3">
-            <Button variant="outline" className="h-12 px-6 gap-2 text-[10px] font-black uppercase tracking-widest border-slate-200 text-slate-600 hover:bg-slate-50">
+            <Button variant="outline" className="h-12 px-6 gap-2 text-[10px] font-bold uppercase tracking-wider border-slate-200 text-slate-600 hover:bg-slate-50">
                <Filter className="w-4 h-4" /> Filter Vector
             </Button>
-            <Button className="h-12 px-8 gap-3 bg-slate-950 text-white font-black text-[11px] uppercase tracking-widest shadow-2xl hover:scale-105 transition-all">
+            <Button className="h-12 px-8 gap-3 bg-slate-950 text-white font-bold text-[11px] uppercase tracking-wider shadow-sm hover:scale-105 transition-all">
                <PlusCircle className="w-5 h-5" /> Manual Action
             </Button>
          </div>
@@ -73,9 +73,9 @@ export default async function NurseTasks() {
 
       {/* Task View Toggle (Section A5) */}
       <div className="flex items-center gap-2 p-2 bg-slate-50 border border-slate-100 rounded-[28px] w-fit">
-         <button className="px-6 py-2.5 text-[11px] font-black uppercase tracking-widest bg-white text-indigo-600 rounded-2xl shadow-xl border border-indigo-50">My Operational Window</button>
-         <button className="px-6 py-2.5 text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors">Across Institutional Panel</button>
-         <button className="px-6 py-2.5 text-[11px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors">Archived History</button>
+         <button className="px-6 py-2.5 text-[11px] font-bold uppercase tracking-wider bg-white text-indigo-600 rounded-2xl shadow-sm border border-indigo-50">My Operational Window</button>
+         <button className="px-6 py-2.5 text-[11px] font-bold uppercase tracking-wider text-slate-400 hover:text-slate-600 transition-colors">Across Institutional Panel</button>
+         <button className="px-6 py-2.5 text-[11px] font-bold uppercase tracking-wider text-slate-400 hover:text-slate-600 transition-colors">Archived History</button>
       </div>
 
       {/* Prioritized Task List (Section A5) */}
@@ -83,7 +83,7 @@ export default async function NurseTasks() {
          
          {/* Urgent Tasks Section */}
          <div className="space-y-6">
-            <h3 className="text-[11px] font-black text-rose-600 uppercase tracking-[0.4em] flex items-center gap-3 italic">
+            <h3 className="text-[11px] font-bold text-rose-600 uppercase tracking-wider flex items-center gap-3">
                Emergency Follow-ups
                <div className="h-px bg-rose-100 flex-1" />
                <AlertTriangle className="w-4 h-4" />
@@ -108,7 +108,7 @@ export default async function NurseTasks() {
 
          {/* Routine Tasks Section */}
          <div className="space-y-6">
-            <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-[0.4em] flex items-center gap-3 italic">
+            <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-3">
                Operational Routine
                <div className="h-px bg-slate-100 flex-1" />
                <ClipboardList className="w-4 h-4" />
@@ -133,21 +133,21 @@ export default async function NurseTasks() {
       </div>
 
       {/* Task Insight Strip (Section A5) */}
-      <GlassCard className="bg-slate-950 text-white border-0 shadow-2xl rounded-[48px] overflow-hidden mt-20 relative group p-10 cursor-default">
+      <GlassCard className="bg-slate-950 text-white border-0 shadow-sm rounded-[48px] overflow-hidden mt-20 relative group p-10 cursor-default">
          <div className="absolute right-[-20px] top-[-20px] w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl group-hover:bg-indigo-600/20 transition-all duration-1000" />
          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
             <div className="space-y-2">
-               <p className="text-[11px] font-black text-indigo-400 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
+               <p className="text-[11px] font-bold text-indigo-400 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
                   <Activity className="w-3.5 h-3.5" /> Clinical Compliance Multiplier
                </p>
-               <h4 className="text-3xl font-black font-outfit leading-tight italic italic">94% Attendance Follow-up Compliance</h4>
-               <p className="text-sm text-slate-400 font-bold italic">Highest performing team in the institutional oncology cluster.</p>
+               <h4 className="text-3xl font-bold font-outfit leading-tight">94% Attendance Follow-up Compliance</h4>
+               <p className="text-sm text-slate-400 font-bold">Highest performing team in the institutional oncology cluster.</p>
             </div>
-            <Button variant="ghost" className="h-14 px-10 rounded-3xl border-2 border-white/10 text-white hover:bg-white hover:text-slate-950 font-black gap-3 text-[11px] uppercase tracking-widest transition-all">
+            <Button variant="ghost" className="h-14 px-10 rounded-3xl border-2 border-white/10 text-white hover:bg-white hover:text-slate-950 font-bold gap-3 text-[11px] uppercase tracking-wider transition-all">
                View Performance Vectors <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
             </Button>
          </div>
-         <CheckSquare className="absolute bottom-[-40px] right-[-40px] w-64 h-64 text-white/5 rotate-12 group-hover:scale-110 transition-transform duration-1000" />
+         <CheckSquare className="absolute bottom-[-40px] right-[-40px] w-64 h-64 text-white/5 rotate-12  transition-transform duration-1000" />
       </GlassCard>
     </div>
   );

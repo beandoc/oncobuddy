@@ -50,14 +50,14 @@ export default async function RehabTrackerPage() {
       {/* Header Context */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
          <div className="space-y-1">
-            <h1 className="text-4xl font-black font-outfit text-slate-900 tracking-tight italic">Rehabilitation <span className="text-indigo-600">Analytics</span></h1>
+            <h1 className="text-4xl font-bold font-outfit text-slate-900 tracking-tight">Rehabilitation <span className="text-indigo-600">Analytics</span></h1>
             <p className="text-sm font-bold text-slate-600">Cross-domain compliance monitoring for assigned clinical panels.</p>
          </div>
          <div className="flex items-center gap-3">
-            <Button variant="outline" className="h-12 border-slate-200 text-slate-800 font-black text-xs uppercase tracking-widest gap-2">
+            <Button variant="outline" className="h-12 border-slate-200 text-slate-800 font-bold text-xs uppercase tracking-wider gap-2">
                 <Calendar className="w-4 h-4" /> Export Report
             </Button>
-            <Button className="h-12 bg-slate-900 text-white rounded-xl font-black text-xs uppercase tracking-widest gap-2 shadow-xl hover:scale-105 transition-all">
+            <Button className="h-12 bg-slate-900 text-white rounded-xl font-bold text-xs uppercase tracking-wider gap-2 shadow-sm hover:scale-105 transition-all">
                 Update Protocol
             </Button>
          </div>
@@ -69,12 +69,12 @@ export default async function RehabTrackerPage() {
            <GlassCard key={m.label} className="!p-6 border-slate-100 hover:border-indigo-100 transition-all group">
               <div className="flex items-center justify-between mb-4">
                  <div className={`w-12 h-12 rounded-2xl ${m.bg} flex items-center justify-center ${m.color}`}>
-                    <m.icon className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                    <m.icon className="w-6 h-6  transition-transform" />
                  </div>
-                 <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg uppercase tracking-widest">{m.trend}</span>
+                 <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg uppercase tracking-wider">{m.trend}</span>
               </div>
-              <p className="text-[10px] font-black text-slate-900 uppercase tracking-widest leading-none mb-1 opacity-70">{m.label}</p>
-              <h3 className="text-3xl font-black font-outfit text-slate-900 italic">{m.value}</h3>
+              <p className="text-[10px] font-bold text-slate-900 uppercase tracking-wider leading-none mb-1 opacity-70">{m.label}</p>
+              <h3 className="text-3xl font-bold font-outfit text-slate-900">{m.value}</h3>
            </GlassCard>
          ))}
       </div>
@@ -84,21 +84,21 @@ export default async function RehabTrackerPage() {
          {/* Patient Compliance Inventory */}
          <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-black font-outfit text-slate-900 italic">Compliance <span className="text-indigo-600">Watchlist</span></h2>
+                <h2 className="text-2xl font-bold font-outfit text-slate-900">Compliance <span className="text-indigo-600">Watchlist</span></h2>
                 <div className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full bg-emerald-500" />
-                    <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Active Monitoring</span>
+                    <span className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">Active Monitoring</span>
                 </div>
             </div>
 
-            <div className="bg-white rounded-[32px] border border-slate-100 shadow-sm overflow-hidden overflow-x-auto no-scrollbar">
+            <div className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden overflow-x-auto no-scrollbar">
                 <table className="w-full text-left border-collapse min-w-[700px]">
                     <thead className="bg-slate-50 border-b border-slate-100">
                         <tr>
-                            <th className="px-8 py-5 text-[10px] font-black text-slate-900 uppercase tracking-widest">Patient Details</th>
-                            <th className="px-8 py-5 text-[10px] font-black text-slate-900 uppercase tracking-widest">Physical Adherence</th>
-                            <th className="px-8 py-5 text-[10px] font-black text-slate-900 uppercase tracking-widest">Nutritional Log</th>
-                            <th className="px-8 py-5 text-[10px] font-black text-slate-900 uppercase tracking-widest">Status</th>
+                            <th className="px-8 py-5 text-[10px] font-bold text-slate-900 uppercase tracking-wider">Patient Details</th>
+                            <th className="px-8 py-5 text-[10px] font-bold text-slate-900 uppercase tracking-wider">Physical Adherence</th>
+                            <th className="px-8 py-5 text-[10px] font-bold text-slate-900 uppercase tracking-wider">Nutritional Log</th>
+                            <th className="px-8 py-5 text-[10px] font-bold text-slate-900 uppercase tracking-wider">Status</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-50">
@@ -106,12 +106,12 @@ export default async function RehabTrackerPage() {
                           <tr key={p.id} className="hover:bg-slate-50/50 transition-colors group">
                              <td className="px-8 py-6">
                                 <div className="flex items-center gap-3">
-                                   <div className="w-10 h-10 rounded-full bg-slate-100 overflow-hidden border-2 border-white shadow-sm font-black text-slate-400 flex items-center justify-center">
+                                   <div className="w-10 h-10 rounded-full bg-slate-100 overflow-hidden border-2 border-white shadow-sm font-bold text-slate-400 flex items-center justify-center">
                                       {p.user.image ? <img src={p.user.image} className="w-full h-full object-cover" /> : p.preferredName?.charAt(0)}
                                    </div>
                                    <div>
-                                      <p className="text-sm font-black text-slate-900 leading-none mb-1">{p.preferredName || p.user.firstName}</p>
-                                      <p className="text-[10px] font-bold text-slate-600 uppercase tracking-tighter italic">MRN: {p.mrn}</p>
+                                      <p className="text-sm font-bold text-slate-900 leading-none mb-1">{p.preferredName || p.user.firstName}</p>
+                                      <p className="text-[10px] font-bold text-slate-600 uppercase tracking-tighter">MRN: {p.mrn}</p>
                                    </div>
                                 </div>
                              </td>
@@ -120,11 +120,11 @@ export default async function RehabTrackerPage() {
                                    <div className="h-2 flex-1 bg-slate-100 rounded-full overflow-hidden">
                                       <div className="h-full bg-emerald-500" style={{ width: '74%' }} />
                                    </div>
-                                   <span className="text-xs font-black text-emerald-600">74%</span>
+                                   <span className="text-xs font-bold text-emerald-600">74%</span>
                                 </div>
                              </td>
                              <td className="px-8 py-6">
-                                <div className="flex items-center gap-2 text-xs font-bold text-slate-700 italic">
+                                <div className="flex items-center gap-2 text-xs font-bold text-slate-700">
                                    <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                                    Logged Today
                                 </div>
@@ -145,32 +145,32 @@ export default async function RehabTrackerPage() {
 
          {/* Insights & Interventions */}
          <div className="space-y-8">
-            <h2 className="text-2xl font-black font-outfit text-slate-900 italic">Task <span className="text-rose-600">Interventions</span></h2>
+            <h2 className="text-2xl font-bold font-outfit text-slate-900">Task <span className="text-rose-600">Interventions</span></h2>
             
-            <GlassCard className="bg-slate-900 border-0 shadow-2xl !p-8 rounded-[36px] text-white space-y-6">
+            <GlassCard className="bg-slate-900 border-0 shadow-sm !p-8 rounded-[36px] text-white space-y-6">
                 <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
                         <TrendingUp className="w-6 h-6 text-indigo-400" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em]">Efficiency Gain</p>
-                        <h4 className="text-xl font-black italic">Recovery IQ</h4>
+                        <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.2em]">Efficiency Gain</p>
+                        <h4 className="text-xl font-bold">Recovery IQ</h4>
                     </div>
                 </div>
-                <p className="text-sm text-slate-400 leading-relaxed font-medium italic">Your assigned patients are showing an average compliance increase of <span className="text-indigo-400 font-black">12.4%</span> this week. Recommend updating Physical Therapy thresholds for stabilized cases.</p>
-                <Button className="w-full h-14 bg-indigo-600 hover:bg-indigo-500 font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl">Batch Update Limits</Button>
+                <p className="text-sm text-slate-400 leading-relaxed font-medium">Your assigned patients are showing an average compliance increase of <span className="text-indigo-400 font-bold">12.4%</span> this week. Recommend updating Physical Therapy thresholds for stabilized cases.</p>
+                <Button className="w-full h-14 bg-indigo-600 hover:bg-indigo-500 font-bold text-xs uppercase tracking-wider rounded-2xl shadow-sm">Batch Update Limits</Button>
             </GlassCard>
 
             {/* Quick Filter / Categorization */}
             <div className="space-y-4">
-               <p className="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em] ml-2">Monitor Filters</p>
+               <p className="text-[10px] font-bold text-slate-900 uppercase tracking-[0.2em] ml-2">Monitor Filters</p>
                <div className="grid grid-cols-1 gap-2">
                   <button className="flex items-center justify-between p-4 bg-white rounded-2xl border-2 border-slate-50 hover:border-indigo-100 transition-all">
-                     <span className="text-sm font-black text-slate-900 italic">High Intensity Track</span>
+                     <span className="text-sm font-bold text-slate-900">High Intensity Track</span>
                      <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-lg">12</span>
                   </button>
                   <button className="flex items-center justify-between p-4 bg-white rounded-2xl border-2 border-slate-50 hover:border-amber-100 transition-all opacity-60">
-                     <span className="text-sm font-black text-slate-900 italic">Nutritional Watch</span>
+                     <span className="text-sm font-bold text-slate-900">Nutritional Watch</span>
                      <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-lg">4</span>
                   </button>
                </div>

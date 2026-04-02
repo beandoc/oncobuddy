@@ -11,6 +11,14 @@ export async function registerNewPatient(formData: {
   email: string;
   mrn: string;
   dateOfBirth: string;
+  gender: string;
+  sexAtBirth: string;
+  maritalStatus: string;
+  address: string;
+  occupation: string;
+  educationLevel: string;
+  tobaccoUsage: string;
+  alcoholUsage: string;
   oncologistId?: string;
   institutionId: string;
 }) {
@@ -32,7 +40,7 @@ export async function registerNewPatient(formData: {
         },
       });
 
-      // 2. Create Clinical Patient Record
+      // 2. Create Clinical Patient Record (Global Registry Section)
       const patient = await tx.patient.create({
         data: {
           userId: user.id,
@@ -40,10 +48,16 @@ export async function registerNewPatient(formData: {
           preferredName: formData.firstName,
           dateOfBirth: new Date(formData.dateOfBirth),
           institutionId: formData.institutionId,
-          gender: "PREFER_NOT_TO_SAY",
-          sexAtBirth: "FEMALE",
-          maritalStatus: "MARRIED",
+          gender: formData.gender as any,
+          sexAtBirth: formData.sexAtBirth as any,
+          maritalStatus: formData.maritalStatus as any,
           primaryPhone: "9999999999",
+          addressLine1: formData.address,
+          occupation: formData.occupation,
+          educationLevel: formData.educationLevel,
+          tobaccoUsage: formData.tobaccoUsage,
+          alcoholUsage: formData.alcoholUsage,
+          vitalStatus: "ALIVE",
         },
       });
 
@@ -75,5 +89,66 @@ export async function registerNewPatient(formData: {
       success: false, 
       error: (error as any).code === 'P2002' ? "Identity Crash: MRN or Email already in registry." : errorMessage
     };
+  }
+}
+
+/**
+ * High-Fidelity Multidisciplinary Referral (Section A2)
+ * Orchestrates cross-specialty clinical transitions.
+ */
+export async function referToSpecialist(data: {
+  patientId: string;
+  specialistId: string;
+  referralRole: ClinicianRole;
+  isPrimary?: boolean;
+}) {
+  try {
+    const result = await prisma.patientClinicalTeam.upsert({
+      where: { 
+        patientId_clinicianId_endedAt: {
+          patientId: data.patientId,
+          clinicianId: data.specialistId,
+          endedAt: null
+        }
+      },
+      update: {
+        clinicianRole: data.referralRole,
+        isPrimary: data.isPrimary ?? false
+      },
+      create: {
+        patientId: data.patientId,
+        clinicianId: data.specialistId,
+        clinicianRole: data.referralRole,
+        isPrimary: data.isPrimary ?? false
+      }
+    });
+
+    revalidatePath("/oncologist/patients");
+    revalidatePath(`/oncologist/patients/${data.patientId}`);
+    return { success: true, referral: result };
+  } catch (error) {
+    console.error("❌ Referral Fault:", error);
+    return { success: false, error: "Referral clinical engine exception." };
+  }
+}
+
+/**
+ * Multidisciplinary Treatment Execution (Section 734)
+ * Hardens surgery and radiation lifecycle tracking.
+ */
+export async function updateClinicalTreatment(treatmentId: string, data: any) {
+  try {
+    const treatment = await prisma.treatment.update({
+      where: { id: treatmentId },
+      data: {
+        ...data,
+        updatedAt: new Date()
+      }
+    });
+    revalidatePath("/oncologist/patients");
+    return { success: true, treatment };
+  } catch (error) {
+    console.error("❌ Treatment Update Fault:", error);
+    return { success: false, error: "Clinical treatment reconciliation error." };
   }
 }

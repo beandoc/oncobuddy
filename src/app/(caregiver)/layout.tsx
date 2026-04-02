@@ -25,7 +25,7 @@ export default async function CaregiverLayout({ children }: { children: React.Re
       <div className="pt-20">
          {/* Persistent Patient Visibility Banner - MANDATORY (Section C1) */}
          <div className="w-full h-10 bg-teal-50 border-b border-teal-100 flex items-center justify-center px-6 relative z-40">
-            <p className="text-[10px] font-black text-teal-700 uppercase tracking-[0.2em] flex items-center gap-2">
+            <p className="text-[10px] font-bold text-teal-700 uppercase tracking-[0.2em] flex items-center gap-2">
                <Info className="w-3.5 h-3.5" />
                Currently viewing {activePatientName}'s treatment information
             </p>
@@ -41,7 +41,7 @@ export default async function CaregiverLayout({ children }: { children: React.Re
 
       {/* Desktop Accessibility Footer (Optional Context) */}
       <footer className="hidden md:flex h-16 border-t border-slate-100 items-center justify-center bg-white">
-         <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest leading-none">Oncobuddy Health Companion v2.4.0-C | Caregiver Mode Secured</p>
+         <p className="text-[10px] font-bold text-slate-300 uppercase tracking-wider leading-none">Oncobuddy Health Companion v2.4.0-C | Caregiver Mode Secured</p>
       </footer>
     </div>
   );

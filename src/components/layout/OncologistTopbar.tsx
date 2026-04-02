@@ -61,12 +61,12 @@ export function OncologistTopbar({ title, breadcrumbs }: { title: string; breadc
            <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-rose-600 border-2 border-white ring-1 ring-rose-200 animate-pulse" />
         </button>
 
-        {/* Profile Dropdown Trigger */}
-        <div className="flex items-center gap-3 p-1.5 pl-3 border border-slate-100 rounded-2xl hover:bg-slate-50 cursor-pointer transition-colors group">
-           <div className="hidden sm:flex flex-col text-right">
-              <span className="text-xs font-black text-slate-900 leading-tight italic">Dr. {session.user.name?.split(' ').pop()}</span>
-              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-tighter">Oncologist</span>
-           </div>
+         {/* Profile Dropdown Trigger */}
+         <div className="flex items-center gap-3 p-1.5 pl-3 border border-slate-100 rounded-2xl hover:bg-slate-50 cursor-pointer transition-colors group">
+            <div className="hidden sm:flex flex-col text-right">
+               <span className="text-xs font-bold text-slate-900 leading-tight">Dr. {session.user.name?.split(' ').pop()}</span>
+               <span className="text-[10px] text-slate-500 font-bold uppercase tracking-tight">Oncologist</span>
+            </div>
            <div className="w-8 h-8 rounded-full bg-slate-100 relative overflow-hidden border border-white">
               {session.user.image ? (
                 <Image src={session.user.image} alt="" fill className="object-cover" />

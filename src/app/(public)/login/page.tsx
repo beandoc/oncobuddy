@@ -27,17 +27,17 @@ export default function LoginPage() {
          />
 
          <div className="absolute bottom-20 left-20 right-20 z-20 space-y-6">
-            <div className="w-16 h-16 rounded-3xl bg-white/10 backdrop-blur-3xl border border-white/20 flex items-center justify-center text-white shadow-2xl">
+            <div className="w-16 h-16 rounded-3xl bg-white/10 backdrop-blur-3xl border border-white/20 flex items-center justify-center text-white shadow-sm">
                <Activity className="w-8 h-8" />
             </div>
             <div className="space-y-2">
-               <h2 className="text-5xl font-black font-outfit text-white tracking-tight leading-tight italic">Coordinating <span className="text-indigo-400">Onco-Pathology</span> IQ</h2>
-               <p className="text-lg text-white/50 font-medium italic italic">A unified ecosystem for toxicity triage and clinical oversight.</p>
+               <h2 className="text-5xl font-bold font-outfit text-white tracking-tight leading-tight">Excellence in <span className="text-indigo-400">Onco care</span></h2>
+               <p className="text-lg text-white/50 font-medium">A unified ecosystem for toxicity triage and clinical oversight.</p>
             </div>
             <div className="flex items-center gap-6 pt-10 border-t border-white/5 opacity-50 grayscale hover:grayscale-0 transition-all duration-700">
-               <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.4em]">PRO-CTCAE</span>
-               <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.4em]">HIPAA COMPLIANT</span>
-               <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.4em]">ICD-O-3 Sync</span>
+               <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider">PRO-CTCAE</span>
+               <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider">HIPAA COMPLIANT</span>
+               <span className="text-[10px] font-bold text-white/40 uppercase tracking-wider">ICD-O-3 Sync</span>
             </div>
          </div>
       </div>
@@ -51,7 +51,7 @@ export default function LoginPage() {
                <div className="w-10 h-10 rounded-2xl bg-white border border-slate-100 flex items-center justify-center shadow-sm group-hover:border-indigo-100">
                   <ChevronLeft className="w-4 h-4" />
                </div>
-               <span className="text-[10px] font-black uppercase tracking-[0.2em] italic font-serif">Back to Entry</span>
+               <span className="text-[10px] font-bold uppercase tracking-[0.2em] font-serif">Back to Entry</span>
             </Link>
          </div>
 
@@ -59,16 +59,16 @@ export default function LoginPage() {
             <div className="flex flex-col items-center lg:items-start text-center lg:text-left space-y-2">
                <div className="flex items-center gap-2 mb-4">
                   <div className="w-3 h-3 rounded-full bg-indigo-600 animate-pulse shadow-[0_0_10px_#4f46e5]" />
-                  <span className="text-[11px] font-black text-indigo-600 uppercase tracking-[0.5em] font-serif">Oncobuddy Gateway</span>
+                  <span className="text-[11px] font-bold text-indigo-600 uppercase tracking-[0.5em] font-serif">Oncobuddy Gateway</span>
                </div>
-               <h1 className="text-4xl font-black font-outfit text-slate-950 tracking-tighter leading-none italic">Secured Institutional Endpoint</h1>
-               <p className="text-sm text-slate-400 font-medium italic opacity-70">Access your clinical dashboard via protected Mrn-Token protocol.</p>
+               <h1 className="text-4xl font-bold font-outfit text-slate-950 tracking-tighter leading-none">Secured Institutional Endpoint</h1>
+               <p className="text-sm text-slate-400 font-medium opacity-70">Access your clinical dashboard via protected Mrn-Token protocol.</p>
             </div>
 
             <LoginForm />
 
             <div className="pt-20 border-t border-slate-50">
-               <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.4em] leading-relaxed text-center lg:text-left italic">
+               <p className="text-[9px] font-bold text-slate-300 uppercase tracking-wider leading-relaxed text-center lg:text-left">
                   Protected Health Information (PHI) access monitored under <br/> institutional oversight (DPDPA Section 20, 2026).
                </p>
             </div>

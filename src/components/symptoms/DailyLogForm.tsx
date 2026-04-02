@@ -59,14 +59,14 @@ export default function DailyLogForm() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto py-8">
-      <div className="mb-12 text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-50 text-rose-600 text-xs font-bold mb-4">
-          <Activity className="w-3.5 h-3.5" />
-          NCI PRO-CTCAE Validated
+    <div className="max-w-2xl mx-auto py-4">
+      <div className="mb-8 text-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-50 text-rose-600 text-[10px] font-bold mb-3 uppercase tracking-wider">
+          <Activity className="w-3 h-3" />
+          Validated PRO-CTCAE Engine
         </div>
-        <h1 className="text-3xl font-bold font-outfit">How are you today?</h1>
-        <p className="text-slate-500 mt-2">Your daily log helps your care team track your progress.</p>
+        <h1 className="text-2xl font-bold font-outfit text-slate-900">How are you today?</h1>
+        <p className="text-slate-500 mt-1.5 text-sm">Your daily log helps your care team track your progress.</p>
       </div>
 
       <div className="relative">
@@ -131,12 +131,12 @@ export default function DailyLogForm() {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-8"
             >
-              <div className="flex items-center justify-between">
-                 <h3 className="text-xl font-bold font-outfit">
-                    Report Symptom: <span className="text-secondary">{currentSymptom?.name}</span>
+              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                 <h3 className="text-lg font-bold font-outfit text-slate-900">
+                    Symptom: <span className="text-indigo-600">{currentSymptom?.name}</span>
                  </h3>
-                 <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                    {step - 1} OF {selectedSymptoms.length}
+                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    STEP {step - 1} OF {selectedSymptoms.length}
                  </p>
               </div>
 
@@ -154,7 +154,7 @@ export default function DailyLogForm() {
                             type="button"
                             onClick={() => updateRating(currentSymptomId, "severity", g)}
                             className={cn(
-                              "h-14 rounded-xl font-bold flex flex-col items-center justify-center border-2 transition-all",
+                              "h-12 rounded-lg font-bold flex flex-col items-center justify-center border-2 transition-all",
                               ratings[currentSymptomId]?.severity === g 
                                 ? "bg-secondary border-secondary text-white shadow-lg shadow-secondary/20" 
                                 : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 text-slate-400"
@@ -220,7 +220,7 @@ export default function DailyLogForm() {
                   <div className="p-6 rounded-2xl bg-gradient-to-br from-indigo-50 to-emerald-50 dark:from-indigo-950/20 dark:to-emerald-950/20 border border-indigo-100 dark:border-indigo-900/30">
                     <div className="flex items-center justify-between mb-6">
                        <label className="text-sm font-bold">Global Wellbeing (0-10)</label>
-                       <span className="text-2xl font-black text-indigo-600">{wellbeing}</span>
+                       <span className="text-2xl font-bold text-indigo-600">{wellbeing}</span>
                     </div>
                     <div className="flex items-center gap-4">
                        <Frown className="w-6 h-6 text-slate-400" />

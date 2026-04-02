@@ -74,7 +74,7 @@ export default async function MyPatientsPage() {
         </div>
 
         <div className="flex items-center gap-3">
-           <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mr-2">Showing {totalCount} patients</p>
+           <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mr-2">Showing {totalCount} patients</p>
            <Button variant="outline" size="sm" className="text-slate-500 border-slate-100 h-9 gap-2 font-bold">
               Sort: Urgency
               <ChevronDown className="w-3.5 h-3.5 opacity-50" />
@@ -88,13 +88,13 @@ export default async function MyPatientsPage() {
           <table className="w-full text-left">
             <thead className="bg-white border-b border-slate-100">
               <tr>
-                <th className="px-6 py-4 w-12 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest"><Activity className="w-4 h-4 mx-auto" /></th>
-                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Patient Identity</th>
-                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Clinical Diagnosis</th>
-                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Phase</th>
-                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Last Log</th>
-                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Wellness</th>
-                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">Actions</th>
+                <th className="px-6 py-4 w-12 text-center text-[10px] font-bold text-slate-400 uppercase tracking-wider"><Activity className="w-4 h-4 mx-auto" /></th>
+                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Patient Identity</th>
+                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Clinical Diagnosis</th>
+                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Phase</th>
+                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Last Log</th>
+                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Wellness</th>
+                <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
@@ -117,7 +117,7 @@ export default async function MyPatientsPage() {
                   <td className="px-6 py-4">
                      <div className="space-y-1">
                         <p className="text-xs font-bold text-slate-700 truncate max-w-xs">{p.patient.diagnoses[0]?.icd10Description || "No Registry Record"}</p>
-                        <span className="px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600 text-[9px] font-bold uppercase tracking-widest">
+                        <span className="px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-600 text-[9px] font-bold uppercase tracking-wider">
                            {p.patient.diagnoses[0]?.overallStage?.replace('STAGE_', '') || "STAGE TBD"}
                         </span>
                      </div>
@@ -163,10 +163,10 @@ export default async function MyPatientsPage() {
         
         {/* Pagination (Section 4) */}
         <div className="px-6 py-4 border-t border-slate-50 flex items-center justify-between bg-white">
-           <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Page 1 of 4 • 20 per page</p>
+           <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Page 1 of 4 • 20 per page</p>
            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" className="h-8 px-4 text-[10px] uppercase font-bold tracking-widest disabled:opacity-30" disabled>Previous</Button>
-              <Button variant="outline" size="sm" className="h-8 px-4 text-[10px] uppercase font-bold tracking-widest hover:border-indigo-200 hover:text-indigo-600 transition-all">Next</Button>
+              <Button variant="outline" size="sm" className="h-8 px-4 text-[10px] uppercase font-bold tracking-wider disabled:opacity-30" disabled>Previous</Button>
+              <Button variant="outline" size="sm" className="h-8 px-4 text-[10px] uppercase font-bold tracking-wider hover:border-indigo-200 hover:text-indigo-600 transition-all">Next</Button>
            </div>
         </div>
       </GlassCard>

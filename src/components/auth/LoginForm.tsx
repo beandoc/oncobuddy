@@ -39,28 +39,28 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-sm space-y-10">
-      <div className="space-y-4">
+    <div className="w-full max-w-sm space-y-8">
+      <div className="space-y-3">
         <div className="flex items-center justify-between">
-           <h2 className="text-3xl font-black font-outfit text-slate-950 tracking-tight leading-none italic">Credentials Required</h2>
-           <div className="flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-full">
+           <h2 className="text-2xl font-bold font-outfit text-slate-900 tracking-tight leading-none">Credentials Required</h2>
+           <div className="flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-lg">
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span className="text-[9px] font-black uppercase tracking-widest">TLS ENCRYPTED</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider">TLS ENCRYPTED</span>
            </div>
         </div>
-        <p className="text-sm text-slate-500 font-medium italic leading-relaxed">
-           Enter your professional MRN or institutional email. Unauthorised access is prohibited. (Section 12).
+        <p className="text-sm text-slate-500 font-medium leading-relaxed">
+           Enter your professional MRN or institutional email. Security protocols are active.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <AnimatePresence>
           {error && (
             <motion.div 
                initial={{ opacity: 0, height: 0 }}
                animate={{ opacity: 1, height: 'auto' }}
                exit={{ opacity: 0, height: 0 }}
-               className="flex items-center gap-3 p-4 rounded-2xl bg-rose-50 text-rose-600 text-xs font-bold border border-rose-100 italic"
+               className="flex items-center gap-3 p-4 rounded-xl bg-rose-50 text-rose-600 text-xs font-bold border border-rose-100"
             >
               <AlertCircle className="w-4 h-4 shrink-0" />
               {error}
@@ -68,34 +68,34 @@ export default function LoginForm() {
           )}
         </AnimatePresence>
 
-        <div className="space-y-2">
-          <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em] ml-1">Institutional ID</label>
+        <div className="space-y-1.5">
+          <label className="text-[11px] font-bold uppercase text-slate-400 tracking-wider ml-1">Institutional ID</label>
           <div className="relative group">
-            <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-600 w-4 h-4 transition-colors" />
+            <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-600 w-4 h-4 transition-colors" />
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full h-16 pl-14 pr-6 rounded-2xl border-2 border-slate-50 bg-slate-50/50 text-slate-900 text-sm font-bold placeholder:text-slate-200 focus:border-indigo-600 focus:bg-white outline-none transition-all shadow-sm"
+              className="w-full h-12 pl-12 pr-6 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm font-bold placeholder:text-slate-300 focus:border-indigo-600 outline-none transition-all shadow-sm"
               placeholder="vmeta@oncobuddy.com"
             />
           </div>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <div className="flex items-center justify-between ml-1">
-            <label className="text-[10px] font-black uppercase text-slate-400 tracking-[0.2em]">Clinical Key</label>
-            <a href="#" className="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:text-slate-950 transition-colors">Forgot PIN?</a>
+            <label className="text-[11px] font-bold uppercase text-slate-400 tracking-wider">Clinical Key</label>
+            <a href="#" className="text-[11px] font-bold text-indigo-600 uppercase tracking-wide hover:text-slate-950 transition-colors">Forgot?</a>
           </div>
           <div className="relative group">
-            <KeyRound className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-600 w-4 h-4 transition-colors" />
+            <KeyRound className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-600 w-4 h-4 transition-colors" />
             <input
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full h-16 pl-14 pr-6 rounded-2xl border-2 border-slate-50 bg-slate-50/50 text-slate-900 text-sm font-bold placeholder:text-slate-200 focus:border-indigo-600 focus:bg-white outline-none transition-all shadow-sm"
+              className="w-full h-12 pl-12 pr-6 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm font-bold placeholder:text-slate-200 focus:border-indigo-600 outline-none transition-all shadow-sm"
               placeholder="••••••••"
             />
           </div>
@@ -103,18 +103,18 @@ export default function LoginForm() {
 
         <Button 
           type="submit" 
-          className="w-full h-16 bg-slate-950 text-white rounded-2xl font-black text-xs uppercase tracking-[0.3em] shadow-2xl shadow-slate-200 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3" 
+          className="w-full h-14 bg-slate-900 text-white rounded-xl font-bold text-sm uppercase tracking-wider shadow-lg hover:bg-slate-950 transition-all flex items-center justify-center gap-3" 
           disabled={isLoading}
         >
           {isLoading ? (
             <Loader2 className="w-5 h-5 animate-spin" />
           ) : (
-            <>AUTHORIZE ENTRY <Fingerprint className="w-5 h-5" /></>
+            <>LOG IN <Fingerprint className="w-5 h-5" /></>
           )}
         </Button>
 
-        <p className="text-center text-[10px] font-black text-slate-400 uppercase tracking-widest pt-4">
-          New Stakeholder? <a href="/register" className="text-indigo-600 font-black hover:underline underline-offset-4 ml-1">Request Token</a>
+        <p className="text-center text-[11px] font-bold text-slate-400 uppercase tracking-wider pt-2">
+          New Stakeholder? <a href="/register" className="text-indigo-600 font-bold hover:underline underline-offset-4 ml-1">Request Token</a>
         </p>
       </form>
     </div>

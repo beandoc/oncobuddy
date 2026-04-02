@@ -28,10 +28,10 @@ export default async function ReportsPage() {
   if (!session || session.user.role !== Role.ONCOLOGIST) redirect("/login");
 
   const SummaryCard = ({ title, value, label, trend, trendValue, colorClass }: any) => (
-    <GlassCard className="transition-all hover:translate-y-[-4px]">
-       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">{title}</p>
+    <GlassCard className="transition-all ">
+       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none mb-1">{title}</p>
        <div className="flex items-baseline gap-2">
-          <h3 className={`text-4xl font-black font-outfit ${colorClass || "text-slate-900"}`}>{value}</h3>
+          <h3 className={`text-4xl font-bold font-outfit ${colorClass || "text-slate-900"}`}>{value}</h3>
           <span className="text-xs font-bold text-slate-500">{label}</span>
        </div>
        <div className="flex items-center gap-1 mt-4">
@@ -64,10 +64,10 @@ export default async function ReportsPage() {
 
       {/* Date Range Selector (Section 10) */}
       <GlassCard className="!p-1 border-slate-100 flex items-center bg-white w-fit">
-         <Button variant="ghost" size="sm" className="h-8 px-4 text-[10px] font-bold uppercase tracking-widest text-indigo-600 bg-indigo-50/50">Last 30 Days</Button>
-         <Button variant="ghost" size="sm" className="h-8 px-4 text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-slate-600">60 Days</Button>
-         <Button variant="ghost" size="sm" className="h-8 px-4 text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-slate-600">90 Days</Button>
-         <Button variant="ghost" size="sm" className="h-8 px-4 text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-slate-600">All Time</Button>
+         <Button variant="ghost" size="sm" className="h-8 px-4 text-[10px] font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50/50">Last 30 Days</Button>
+         <Button variant="ghost" size="sm" className="h-8 px-4 text-[10px] font-bold uppercase tracking-wider text-slate-400 hover:text-slate-600">60 Days</Button>
+         <Button variant="ghost" size="sm" className="h-8 px-4 text-[10px] font-bold uppercase tracking-wider text-slate-400 hover:text-slate-600">90 Days</Button>
+         <Button variant="ghost" size="sm" className="h-8 px-4 text-[10px] font-bold uppercase tracking-wider text-slate-400 hover:text-slate-600">All Time</Button>
       </GlassCard>
 
       {/* Panel Overview Row (Section 10) */}
@@ -93,17 +93,17 @@ export default async function ReportsPage() {
                   <div key={i} className="space-y-2 group cursor-pointer">
                      <div className="flex justify-between items-baseline">
                          <span className="text-xs font-bold text-slate-800">{sym.name}</span>
-                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{sym.patients} Patients reporting</span>
+                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{sym.patients} Patients reporting</span>
                      </div>
                      <div className="h-4 w-full bg-slate-50 rounded-full border border-slate-100 overflow-hidden relative">
                         <div className={`h-full ${sym.color} transition-all duration-1000 group-hover:opacity-90`} style={{ width: `${(sym.grade/4)*100}%` }} />
-                        <span className="absolute inset-y-0 left-2 flex items-center text-[9px] font-black uppercase text-white drop-shadow-sm tracking-tight leading-none">Grade Avg: {sym.grade}</span>
+                        <span className="absolute inset-y-0 left-2 flex items-center text-[9px] font-bold uppercase text-white drop-shadow-sm tracking-tight leading-none">Grade Avg: {sym.grade}</span>
                      </div>
                   </div>
                ))}
             </div>
             <div className="mt-12 flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-2xl border-dashed">
-               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">Clinical Trend Insight</p>
+               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Clinical Trend Insight</p>
                <p className="text-xs font-medium text-slate-600">Anxiety markers +14% vs previous cycle (expected pre-restaging)</p>
             </div>
          </GlassCard>
@@ -136,8 +136,8 @@ export default async function ReportsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
          {/* Education Engagement Chart Stub */}
-         <GlassCard className="bg-indigo-600 text-white border-0 shadow-xl shadow-indigo-500/20">
-            <p className="text-[10px] font-bold text-indigo-100 uppercase tracking-widest mb-4">Patient Education Hub</p>
+         <GlassCard className="bg-indigo-600 text-white border-0 shadow-sm shadow-indigo-500/20">
+            <p className="text-[10px] font-bold text-indigo-100 uppercase tracking-wider mb-4">Patient Education Hub</p>
             <div className="flex items-center gap-6">
                <div className="relative w-24 h-24">
                   <svg className="w-full h-full -rotate-90">
@@ -145,12 +145,12 @@ export default async function ReportsPage() {
                      <circle className="text-emerald-400" strokeWidth="6" strokeDasharray="276" strokeDashoffset="55" strokeLinecap="round" stroke="currentColor" fill="transparent" r="44" cx="48" cy="48" />
                   </svg>
                   <div className="absolute inset-0 flex items-center justify-center">
-                     <span className="text-2xl font-black">82%</span>
+                     <span className="text-2xl font-bold">82%</span>
                   </div>
                </div>
                <div className="space-y-1">
                   <p className="text-xs font-bold uppercase tracking-tight">Active Engagement</p>
-                  <p className="text-[10px] text-white/70 italic">38 patients actively completing learning paths this week.</p>
+                  <p className="text-[10px] text-white/70">38 patients actively completing learning paths this week.</p>
                </div>
             </div>
          </GlassCard>

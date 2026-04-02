@@ -67,7 +67,7 @@ export default async function PatientProfilePage({ params }: { params: { patient
   const activeTreatment = latestDiagnosis?.treatments.find(t => t.treatmentStatus === "ONGOING");
 
   const TabButton = ({ label, icon: Icon, active, badge }: any) => (
-    <button className={`flex items-center gap-2 px-6 py-4 text-xs font-bold uppercase tracking-widest border-b-2 transition-all ${active ? "border-indigo-600 text-indigo-600 bg-indigo-50/10" : "border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50"}`}>
+    <button className={`flex items-center gap-2 px-6 py-4 text-xs font-bold uppercase tracking-wider border-b-2 transition-all ${active ? "border-indigo-600 text-indigo-600 bg-indigo-50/10" : "border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50"}`}>
        <Icon className="w-4 h-4" />
        {label}
        {badge && <span className="px-1.5 py-0.5 rounded-full bg-slate-100 text-[9px] text-slate-500 ml-1">{badge}</span>}
@@ -83,15 +83,15 @@ export default async function PatientProfilePage({ params }: { params: { patient
                <div className="w-3 h-3 rounded-full bg-emerald-500 ring-4 ring-emerald-50" />
                <span className="text-sm font-bold">{patient.preferredName || "Anonymous Patient"}</span>
             </div>
-            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-slate-900 text-white text-[10px] font-bold uppercase tracking-widest">
+            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-slate-900 text-white text-[10px] font-bold uppercase tracking-wider">
                ICD-10: {latestDiagnosis?.icd10Code || "--"}
             </div>
-            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-slate-100 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-slate-100 text-slate-500 text-[10px] font-bold uppercase tracking-wider">
                Stage {latestDiagnosis?.overallStage.replace('STAGE_', '') || "TBD"}
             </div>
          </div>
          <div className="flex items-center gap-4">
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Navigator: <span className="text-slate-900">Nurse Team Active</span></p>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Navigator: <span className="text-slate-900">Nurse Team Active</span></p>
             <div className="w-[1px] h-4 bg-slate-200" />
             <Button variant="ghost" size="sm" className="h-8 !px-3 text-indigo-600 hover:bg-indigo-50 font-bold">Quick Triage</Button>
          </div>
@@ -99,12 +99,12 @@ export default async function PatientProfilePage({ params }: { params: { patient
 
       {/* Patient Header Card (Section 5) */}
       <GlassCard className="!p-8 overflow-hidden relative border-slate-100 shadow-md">
-         <div className="absolute top-0 right-0 p-12 opacity-5 group-hover:scale-110 transition-transform">
+         <div className="absolute top-0 right-0 p-12 opacity-5  transition-transform">
             <ShieldCheck className="w-48 h-48 text-indigo-600" />
          </div>
          <div className="flex flex-col xl:flex-row gap-12 relative z-10">
             <div className="flex items-center gap-8 min-w-[340px]">
-               <div className="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center font-bold text-3xl text-slate-400 ring-4 ring-white shadow-xl overflow-hidden relative">
+               <div className="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center font-bold text-3xl text-slate-400 ring-4 ring-white shadow-sm overflow-hidden relative">
                   {patient.profilePhotoUrl ? (
                     <Image src={patient.profilePhotoUrl} alt="" fill className="object-cover" />
                   ) : (
@@ -113,7 +113,7 @@ export default async function PatientProfilePage({ params }: { params: { patient
                </div>
                <div className="space-y-1">
                   <h2 className="text-3xl font-bold font-outfit tracking-tight">{patient.preferredName || "Patient"}</h2>
-                  <p className="text-sm font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <p className="text-sm font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
                      MRN {patient.mrn} • ABHA {patient.uhid || "NOT-LINKED"}
                   </p>
                   <p className="text-sm font-medium text-slate-500">
@@ -124,10 +124,10 @@ export default async function PatientProfilePage({ params }: { params: { patient
 
             <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-8 border-l border-slate-100 pl-4 xl:pl-12">
                <div className="space-y-3">
-                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Primary Oncology Data</p>
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Primary Oncology Data</p>
                   <div className="space-y-1">
                      <p className="text-lg font-bold text-indigo-900 leading-tight">{latestDiagnosis?.icd10Description || "Registry entry pending..."}</p>
-                     <p className="text-xs text-slate-500 font-medium italic">{latestDiagnosis?.morphologyDescription}</p>
+                     <p className="text-xs text-slate-500 font-medium">{latestDiagnosis?.morphologyDescription}</p>
                   </div>
                   <div className="flex items-center gap-4 text-xs font-bold text-slate-400 pt-2">
                      <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" /> Dx: {latestDiagnosis ? new Date(latestDiagnosis.diagnosisDate).toLocaleDateString() : "--"}</span>
@@ -135,7 +135,7 @@ export default async function PatientProfilePage({ params }: { params: { patient
                   </div>
                </div>
                <div className="space-y-3">
-                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Active Care Pathway</p>
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Active Care Pathway</p>
                   <div className="p-3 bg-slate-50 rounded-2xl border border-white">
                      <div className="flex items-center justify-between mb-2">
                         <span className="text-[10px] font-bold text-slate-400 uppercase">On-Treatment Progress</span>
@@ -175,16 +175,16 @@ export default async function PatientProfilePage({ params }: { params: { patient
                </div>
                <div className="p-8 grid grid-cols-1 md:grid-cols-3 gap-12">
                   <div className="text-center md:border-r border-slate-50 last:border-0 pl-1">
-                     <p className="text-4xl font-black font-outfit text-indigo-600 mb-1">{latestDiagnosis?.clinicalT || "T2"}</p>
-                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tumor Size (cT)</p>
+                     <p className="text-4xl font-bold font-outfit text-indigo-600 mb-1">{latestDiagnosis?.clinicalT || "T2"}</p>
+                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Tumor Size (cT)</p>
                   </div>
                   <div className="text-center md:border-r border-slate-50 last:border-0">
-                     <p className="text-4xl font-black font-outfit text-indigo-600 mb-1">{latestDiagnosis?.clinicalN || "N1"}</p>
-                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Lymph Nodes (cN)</p>
+                     <p className="text-4xl font-bold font-outfit text-indigo-600 mb-1">{latestDiagnosis?.clinicalN || "N1"}</p>
+                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Lymph Nodes (cN)</p>
                   </div>
                   <div className="text-center md:border-r border-slate-50 last:border-0">
-                     <p className="text-4xl font-black font-outfit text-indigo-600 mb-1">{latestDiagnosis?.clinicalM || "M0"}</p>
-                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Metastasis (cM)</p>
+                     <p className="text-4xl font-bold font-outfit text-indigo-600 mb-1">{latestDiagnosis?.clinicalM || "M0"}</p>
+                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Metastasis (cM)</p>
                   </div>
                </div>
             </GlassCard>
@@ -265,7 +265,7 @@ export default async function PatientProfilePage({ params }: { params: { patient
                    This patient has elected for <span className="font-bold">URGENT</span> escalation triggers. Any symptom Grade 3+ will notify the on-call Nurse Navigator and your Clinical Portal immediately.
                 </p>
                 <div className="mt-4 pt-4 border-t border-rose-100 flex items-center justify-between">
-                   <span className="text-[9px] font-bold text-rose-600 uppercase tracking-widest leading-none">Status: Standard</span>
+                   <span className="text-[9px] font-bold text-rose-600 uppercase tracking-wider leading-none">Status: Standard</span>
                    <Button variant="ghost" size="sm" className="h-7 text-[9px] font-bold uppercase text-rose-600 hover:bg-white leading-none">Modify Policy</Button>
                 </div>
             </GlassCard>

@@ -15,7 +15,7 @@ export default async function GuidesPage() {
     <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 space-y-12 animate-fade-in">
       {/* Search & Header */}
       <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-[10px] font-bold uppercase tracking-widest mb-2">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-[10px] font-bold uppercase tracking-wider mb-2">
            <GraduationCap className="w-3.5 h-3.5" />
            Patient Education Hub
         </div>

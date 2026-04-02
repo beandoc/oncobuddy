@@ -41,7 +41,7 @@ export default async function NurseLayout({ children }: { children: React.ReactN
                <div className="p-8 flex flex-col h-full">
                   <div className="flex items-baseline justify-between mb-8">
                      <h3 className="text-xl font-bold font-outfit text-indigo-900 leading-none">Operational <span className="text-indigo-400">Panel</span></h3>
-                     <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest leading-none">Quick Actions</span>
+                     <span className="text-[10px] font-bold uppercase text-slate-400 tracking-wider leading-none">Quick Actions</span>
                   </div>
                   
                   {/* Clinical Signal Box - Replaces empty space (Section A4) */}
@@ -51,13 +51,13 @@ export default async function NurseLayout({ children }: { children: React.ReactN
                            <div className="w-8 h-8 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
                               <Bell className="w-4 h-4" />
                            </div>
-                           <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest leading-none">Shift Awareness</p>
+                           <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider leading-none">Shift Awareness</p>
                         </div>
-                        <p className="text-xs font-bold text-slate-700 leading-relaxed italic">Next multidisciplinary meeting at <span className="text-indigo-600">14:00</span>. Review Panel G3 spikes before release.</p>
+                        <p className="text-xs font-bold text-slate-700 leading-relaxed">Next multidisciplinary meeting at <span className="text-indigo-600">14:00</span>. Review Panel G3 spikes before release.</p>
                      </div>
 
-                     <div className="p-6 bg-slate-900 rounded-3xl shadow-xl space-y-4 group">
-                        <p className="text-[9px] font-black uppercase text-indigo-400 tracking-[0.2em] leading-none mb-4">Protocol Watch</p>
+                     <div className="p-6 bg-slate-900 rounded-3xl shadow-sm space-y-4 group">
+                        <p className="text-[9px] font-bold uppercase text-indigo-400 tracking-[0.2em] leading-none mb-4">Protocol Watch</p>
                         <div className="space-y-3">
                            {[
                               "Validate Dexamethasone timing",
@@ -66,7 +66,7 @@ export default async function NurseLayout({ children }: { children: React.ReactN
                            ].map(item => (
                               <div key={item} className="flex items-center gap-3">
                                  <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-                                 <p className="text-[11px] font-black text-slate-300 italic group-hover:text-white transition-colors">{item}</p>
+                                 <p className="text-[11px] font-bold text-slate-300 group-hover:text-white transition-colors">{item}</p>
                               </div>
                            ))}
                         </div>
@@ -74,8 +74,8 @@ export default async function NurseLayout({ children }: { children: React.ReactN
                   </div>
                   
                   <div className="p-4 bg-white rounded-3xl border border-slate-100 shadow-sm shadow-indigo-50/20 mt-6">
-                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Patient Protocol</p>
-                     <p className="text-xs text-slate-600 leading-relaxed font-medium font-serif italic">Verify patient identity before logging proxy symptoms or updating medications.</p>
+                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-4">Patient Protocol</p>
+                     <p className="text-xs text-slate-600 leading-relaxed font-medium font-serif">Verify patient identity before logging proxy symptoms or updating medications.</p>
                   </div>
                </div>
             </aside>

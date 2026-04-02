@@ -78,8 +78,8 @@ export function DayCareUnitHub({ sessions, currentUserRole }: DayCareHubProps) {
             <Clock className="w-5 h-5 shadow-sm" />
           </div>
           <div>
-            <h3 className="text-lg font-black font-outfit text-slate-900 italic italic">{title}</h3>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Shift Capacity: {data.length} / 12</p>
+            <h3 className="text-lg font-bold font-outfit text-slate-900">{title}</h3>
+            <p className="text-[11px] text-slate-400 font-bold uppercase tracking-wider leading-none">Shift Capacity: {data.length} / 12</p>
           </div>
         </div>
       </div>
@@ -90,9 +90,9 @@ export function DayCareUnitHub({ sessions, currentUserRole }: DayCareHubProps) {
             <GlassCard key={session.id} className={`!p-0 border-0 group transition-all hover:translate-x-2 relative overflow-hidden bg-white hover:shadow-xl hover:shadow-indigo-50/50 ${session.status === DayCareStatus.RUNNING ? 'ring-2 ring-indigo-500 shadow-2xl' : ''}`}>
               {session.status === DayCareStatus.RUNNING && <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-indigo-500 animate-pulse" />}
               <div className="flex items-stretch">
-                <div className="w-20 p-6 flex flex-col items-center justify-center border-r border-slate-50 bg-slate-50/30 text-center">
-                   <p className="text-xl font-black text-slate-900 italic font-serif leading-none italic">{i + 1}</p>
-                   <p className="text-[8px] font-black uppercase text-slate-400 tracking-widest mt-2">Chair</p>
+                <div className="w-16 p-6 flex flex-col items-center justify-center border-r border-slate-50 bg-slate-50/10 text-center">
+                   <p className="text-xl font-bold text-slate-900 leading-none">{i + 1}</p>
+                   <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider mt-2">Chair</p>
                 </div>
                 <div className="flex-1 p-6 flex flex-col xl:flex-row items-center justify-between gap-8">
                   <div className="flex items-center gap-5 min-w-[300px]">

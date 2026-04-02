@@ -30,7 +30,7 @@ export default async function PatientSettingsPage() {
     <div className="space-y-6">
        <div className="flex items-center gap-3 border-b-2 border-slate-50 pb-4 ml-2">
           <Icon className="w-5 h-5 text-indigo-600" />
-          <h3 className="text-xl font-black font-outfit text-slate-900 tracking-tight italic">{title}</h3>
+          <h3 className="text-xl font-bold font-outfit text-slate-900 tracking-tight">{title}</h3>
        </div>
        <div className="grid grid-cols-1 gap-4">
           {children}
@@ -39,14 +39,14 @@ export default async function PatientSettingsPage() {
   );
 
   const SettingsItem = ({ label, sublabel, icon: Icon, actionLabel, actionType = "toggle", active = false }: any) => (
-    <div className="p-6 bg-white border-2 border-slate-100 rounded-[32px] flex items-center justify-between group hover:border-indigo-100 transition-all shadow-sm">
+    <div className="p-6 bg-white border-2 border-slate-100 rounded-xl flex items-center justify-between group hover:border-indigo-100 transition-all shadow-sm">
        <div className="flex items-center gap-5">
           <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-900 group-hover:bg-indigo-600 group-hover:text-white transition-all">
              <Icon className="w-5 h-5" />
           </div>
           <div>
-             <p className="text-sm font-black italic uppercase leading-none text-slate-900">{label}</p>
-             <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mt-1.5">{sublabel}</p>
+             <p className="text-sm font-bold uppercase leading-none text-slate-900">{label}</p>
+             <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider mt-1.5">{sublabel}</p>
           </div>
        </div>
        {actionType === "toggle" ? (
@@ -54,7 +54,7 @@ export default async function PatientSettingsPage() {
              <div className="w-4 h-4 bg-white rounded-full shadow-sm" />
           </button>
        ) : (
-          <button className="px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-100 transition-all">
+          <button className="px-4 py-2 bg-slate-50 border border-slate-100 rounded-xl text-[10px] font-bold uppercase tracking-wider text-slate-600 hover:bg-slate-100 transition-all">
              {actionLabel}
           </button>
        )}
@@ -66,8 +66,8 @@ export default async function PatientSettingsPage() {
       
       {/* Settings Header (Section B10) */}
       <div className="space-y-4">
-         <h1 className="text-4xl font-black font-outfit text-slate-950 tracking-tighter italic">Settings <span className="text-indigo-600">& Security</span></h1>
-         <p className="text-sm text-slate-600 font-medium italic italic">Manage your clinical environment and data privacy settings.</p>
+         <h1 className="text-4xl font-bold font-outfit text-slate-950 tracking-tighter">Settings <span className="text-indigo-600">& Security</span></h1>
+         <p className="text-sm text-slate-600 font-medium">Manage your clinical environment and data privacy settings.</p>
       </div>
 
       <div className="grid grid-cols-1 gap-12">
@@ -131,12 +131,12 @@ export default async function PatientSettingsPage() {
          {/* Dangerous Goods (Section B10) */}
          <div className="pt-8 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-8 opacity-60">
             <div className="space-y-1 text-center md:text-left">
-               <p className="text-xs font-black text-slate-900 uppercase">Archive Clinical Data</p>
-               <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest italic">This will not affect your hospital records.</p>
+               <p className="text-xs font-bold text-slate-900 uppercase">Archive Clinical Data</p>
+               <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">This will not affect your hospital records.</p>
             </div>
             <div className="flex items-center gap-4">
-               <Button variant="ghost" className="h-12 px-6 rounded-2xl text-rose-600 font-black text-xs uppercase tracking-widest hover:bg-rose-50 border border-transparent hover:border-rose-100">Delete Account Instance</Button>
-               <Link href="/api/auth/signout" className="h-12 px-8 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-black text-xs uppercase tracking-widest hover:bg-slate-950 transition-all shadow-xl">
+               <Button variant="ghost" className="h-12 px-6 rounded-2xl text-rose-600 font-bold text-xs uppercase tracking-wider hover:bg-rose-50 border border-transparent hover:border-rose-100">Delete Account Instance</Button>
+               <Link href="/api/auth/signout" className="h-12 px-8 bg-slate-900 text-white rounded-2xl flex items-center justify-center font-bold text-xs uppercase tracking-wider hover:bg-slate-950 transition-all shadow-sm">
                   Secure Logout
                </Link>
             </div>

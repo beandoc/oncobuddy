@@ -38,8 +38,8 @@ export default async function CaregiverMessagesPage() {
 
   const MsgBubble = ({ sender, text, time, self }: any) => (
     <div className={`max-w-[85%] md:max-w-[70%] space-y-1.5 ${self ? 'self-end' : 'self-start'}`}>
-       <p className={`text-[9px] font-black uppercase text-slate-400 tracking-widest px-1 ${self ? 'text-right' : 'text-left'}`}>{sender}</p>
-       <div className={`p-5 rounded-[28px] text-sm font-medium leading-relaxed ${self ? 'bg-teal-600 text-white rounded-br-none shadow-xl shadow-teal-100' : 'bg-white border border-slate-100 text-slate-700 rounded-bl-none shadow-sm'}`}>
+       <p className={`text-[9px] font-bold uppercase text-slate-400 tracking-wider px-1 ${self ? 'text-right' : 'text-left'}`}>{sender}</p>
+       <div className={`p-5 rounded-[28px] text-sm font-medium leading-relaxed ${self ? 'bg-teal-600 text-white rounded-br-none shadow-sm shadow-teal-100' : 'bg-white border border-slate-100 text-slate-700 rounded-bl-none shadow-sm'}`}>
           {text}
        </div>
        <p className={`text-[9px] font-bold text-slate-300 uppercase ${self ? 'text-right' : 'text-left'}`}>{time}</p>
@@ -52,7 +52,7 @@ export default async function CaregiverMessagesPage() {
       {/* Thread List - Split Pane (Section C6) */}
       <div className="w-full md:w-80 flex flex-col gap-6 h-full">
          <div className="flex items-center justify-between border-b-2 border-teal-50 pb-4">
-            <h1 className="text-2xl font-bold font-outfit text-slate-900 italic italic">Support Chats</h1>
+            <h1 className="text-2xl font-bold font-outfit text-slate-900">Support Chats</h1>
             <button className="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center text-white shadow-lg active:scale-95 transition-transform"><PlusCircle className="w-5 h-5 shadow-sm" /></button>
          </div>
          
@@ -65,11 +65,11 @@ export default async function CaregiverMessagesPage() {
             {mockThreads.map(t => (
                <div key={t.id} className={`p-5 rounded-[28px] border transition-all cursor-pointer group active:scale-[0.98] ${t.unread ? 'bg-teal-50/30 border-teal-100 shadow-lg shadow-teal-50/20' : 'bg-white border-slate-100 hover:bg-slate-50'}`}>
                   <div className="flex justify-between items-start mb-2">
-                     <p className="text-sm font-black text-slate-900 leading-none group-hover:text-teal-600">{t.sender}</p>
+                     <p className="text-sm font-bold text-slate-900 leading-none group-hover:text-teal-600">{t.sender}</p>
                      <span className="text-[10px] font-bold text-slate-300 uppercase">{t.time}</span>
                   </div>
-                  <p className="text-[10px] font-black uppercase text-slate-400 tracking-[0.1em] mb-2 leading-none italic italic">{t.role}</p>
-                  <p className="text-xs text-slate-500 line-clamp-1 font-medium italic">{t.lastMsg}</p>
+                  <p className="text-[10px] font-bold uppercase text-slate-400 tracking-[0.1em] mb-2 leading-none">{t.role}</p>
+                  <p className="text-xs text-slate-500 line-clamp-1 font-medium">{t.lastMsg}</p>
                   {t.unread && <div className="absolute top-4 right-4 w-2 h-2 bg-teal-500 rounded-full border-2 border-white" />}
                </div>
             ))}
@@ -77,7 +77,7 @@ export default async function CaregiverMessagesPage() {
       </div>
 
       {/* Thread Content (Section C6) */}
-      <GlassCard className="flex-1 !p-0 border-slate-100 shadow-2xl relative flex flex-col h-full bg-white md:bg-white/70 overflow-hidden">
+      <GlassCard className="flex-1 !p-0 border-slate-100 shadow-sm relative flex flex-col h-full bg-white md:bg-white/70 overflow-hidden">
          {/* Active Thread Header */}
          <div className="p-6 border-b border-slate-50 flex flex-col bg-white/95 backdrop-blur-sm relative z-20">
             <div className="flex items-center justify-between mb-4">
@@ -85,7 +85,7 @@ export default async function CaregiverMessagesPage() {
                   <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-400 ring-4 ring-slate-50">NM</div>
                   <div>
                      <p className="text-base font-bold text-slate-900 leading-none">Nurse Maya</p>
-                     <p className="text-[9px] font-black text-teal-600 uppercase tracking-widest mt-2 leading-none">{patient.preferredName}'s Coordinator</p>
+                     <p className="text-[9px] font-bold text-teal-600 uppercase tracking-wider mt-2 leading-none">{patient.preferredName}'s Coordinator</p>
                   </div>
                </div>
                <button className="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-teal-600 transition-colors"><ShieldCheck className="w-6 h-6" /></button>
@@ -93,7 +93,7 @@ export default async function CaregiverMessagesPage() {
             
             <div className="px-5 py-2.5 bg-teal-50/50 rounded-2xl border border-teal-100/50 flex items-center gap-3">
                <Info className="w-3.5 h-3.5 text-teal-600" />
-               <p className="text-[9px] font-bold text-teal-800/60 uppercase tracking-widest leading-none">Messages you send here are also visible to {patient.preferredName} and the care team.</p>
+               <p className="text-[9px] font-bold text-teal-800/60 uppercase tracking-wider leading-none">Messages you send here are also visible to {patient.preferredName} and the care team.</p>
             </div>
          </div>
 
@@ -113,7 +113,7 @@ export default async function CaregiverMessagesPage() {
                   {/* Triage Selector */}
                   <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-1">
                      {['General', 'Symptom Concern', 'Appointment', 'Emotional Support', 'Urgent'].map(type => (
-                        <button key={type} className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest border transition-all whitespace-nowrap ${type === 'Urgent' ? 'bg-rose-50 border-rose-100 text-rose-600 hover:bg-rose-100 hover:scale-105' : 'bg-slate-50 border-slate-100 text-slate-400 hover:border-teal-200 hover:text-teal-600'}`}>
+                        <button key={type} className={`px-4 py-2 rounded-full text-[9px] font-bold uppercase tracking-wider border transition-all whitespace-nowrap ${type === 'Urgent' ? 'bg-rose-50 border-rose-100 text-rose-600 hover:bg-rose-100 hover:scale-105' : 'bg-slate-50 border-slate-100 text-slate-400 hover:border-teal-200 hover:text-teal-600'}`}>
                            {type === 'Urgent' && <AlertCircle className="w-3.5 h-3.5 inline mr-1 transition-transform animate-pulse" />}
                            {type}
                         </button>
@@ -123,23 +123,23 @@ export default async function CaregiverMessagesPage() {
                   <div className="relative group">
                      <textarea 
                        placeholder={`Type your message to Nurse Maya... (Max 500 characters)`} 
-                       className="w-full h-32 p-7 bg-slate-50 border-2 border-slate-50 rounded-[40px] text-sm focus:bg-white focus:border-teal-100/50 transition-all font-medium resize-none placeholder:text-slate-300 no-scrollbar focus:ring-0 placeholder:italic italic" 
+                       className="w-full h-32 p-7 bg-slate-50 border-2 border-slate-50 rounded-xl text-sm focus:bg-white focus:border-teal-100/50 transition-all font-medium resize-none placeholder:text-slate-300 no-scrollbar focus:ring-0 placeholder:italic" 
                      />
                      <div className="absolute bottom-6 right-6 flex items-center gap-4">
                         <button className="p-3 text-slate-300 hover:text-teal-600 transition-colors"><Paperclip className="w-5 h-5" /></button>
-                        <button className="w-12 h-12 bg-teal-600 rounded-full flex items-center justify-center text-white shadow-xl shadow-teal-100 hover:bg-slate-950 transition-all active:scale-95"><Send className="w-5 h-5 ml-0.5" /></button>
+                        <button className="w-12 h-12 bg-teal-600 rounded-full flex items-center justify-center text-white shadow-sm shadow-teal-100 hover:bg-slate-950 transition-all active:scale-95"><Send className="w-5 h-5 ml-0.5" /></button>
                      </div>
                   </div>
                   
                   <div className="flex items-center justify-between px-2">
-                     <p className="text-[10px] font-medium text-rose-500/80 italic italic max-w-[70%]">Emergency? Do not use this chat. Call emergency services or the clinic line: 022-2222-2222</p>
-                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-300 font-mono">0 / 500</p>
+                     <p className="text-[10px] font-medium text-rose-500/80 italic max-w-[70%]">Emergency? Do not use this chat. Call emergency services or the clinic line: 022-2222-2222</p>
+                     <p className="text-[10px] font-bold uppercase tracking-wider text-slate-300 font-mono">0 / 500</p>
                   </div>
                </div>
             ) : (
-               <div className="p-8 bg-slate-50 rounded-[32px] border border-dashed border-slate-200 text-center space-y-4">
+               <div className="p-8 bg-slate-50 rounded-xl border border-dashed border-slate-200 text-center space-y-4">
                   <AlertCircle className="w-8 h-8 text-slate-300 mx-auto" />
-                  <p className="text-xs font-bold text-slate-400 italic leading-relaxed px-6">
+                  <p className="text-xs font-bold text-slate-400 leading-relaxed px-6">
                      You currently have view-only access. To send messages to the care team, ask {patient.preferredName} to update your access level in their profile settings.
                   </p>
                </div>

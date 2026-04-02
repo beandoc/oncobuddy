@@ -27,7 +27,7 @@ export default async function PatientLayout({ children }: { children: React.Reac
 
       {/* Desktop Accessibility Footer (Optional Context) */}
       <footer className="hidden md:flex h-16 border-t border-slate-100 items-center justify-center bg-white">
-         <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest leading-none">Oncobuddy Health Companion v2.4.0-P | Secure Medical Platform</p>
+         <p className="text-[10px] font-bold text-slate-300 uppercase tracking-wider leading-none">Oncobuddy Health Companion v2.4.0-P | Secure Medical Platform</p>
       </footer>
     </div>
   );

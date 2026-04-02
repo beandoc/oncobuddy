@@ -30,13 +30,13 @@ export default async function TeamPage() {
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-100 pb-10">
          <div className="space-y-2">
-            <h1 className="text-5xl font-black font-outfit tracking-tight text-slate-950 italic italic leading-none">
-              Clinical <span className="text-indigo-600 underline decoration-indigo-200 underline-offset-8">Care Team</span>
+            <h1 className="text-4xl font-bold font-outfit tracking-tight text-slate-900 leading-tight">
+              Clinical <span className="text-indigo-600">Care Team</span>
             </h1>
-            <p className="text-slate-500 font-medium italic italic opacity-80 pt-2">Institutional roster for {clinician.institution.institutionName}.</p>
+            <p className="text-slate-500 font-medium pt-1 text-base">Institutional roster for {clinician.institution.institutionName}.</p>
          </div>
          <div className="flex items-center gap-4">
-            <Button className="h-14 px-8 bg-slate-950 text-white rounded-[24px] font-black text-xs uppercase tracking-widest shadow-2xl hover:scale-105 transition-all flex items-center gap-3">
+            <Button className="h-12 px-8 bg-slate-900 text-white rounded-xl font-bold text-sm uppercase tracking-wide shadow-lg hover:bg-indigo-600 transition-all flex items-center gap-3">
                <UserPlus className="w-4 h-4" /> Add Member
             </Button>
          </div>
@@ -44,42 +44,42 @@ export default async function TeamPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
          {team.map((member, i) => (
-            <GlassCard key={member.id} className="group hover:bg-white border-white/50 hover:border-indigo-100 hover:shadow-xl transition-all cursor-pointer !p-10 rounded-[40px] relative overflow-hidden">
+            <GlassCard key={member.id} className="group hover:bg-white border-slate-100 hover:border-indigo-100 hover:shadow-lg transition-all cursor-pointer !p-6 rounded-2xl relative overflow-hidden">
                <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-600/5 blur-3xl rounded-full translate-x-8 -translate-y-8 group-hover:translate-x-4 group-hover:-translate-y-4 transition-transform" />
-               <div className="flex items-center gap-6 mb-10">
-                  <div className="w-16 h-16 rounded-[24px] bg-slate-100 flex items-center justify-center font-black text-2xl text-slate-400 border-4 border-white shadow-2xl group-hover:scale-110 group-hover:rotate-6 transition-all overflow-hidden relative">
+               <div className="flex items-center gap-5 mb-8">
+                  <div className="w-14 h-14 rounded-xl bg-slate-100 flex items-center justify-center font-bold text-2xl text-slate-400 border-2 border-white shadow-md transition-transform group-hover:scale-105 overflow-hidden relative">
                      {member.user.image ? (
                         <Image src={member.user.image} alt={`${member.user.firstName} ${member.user.lastName}`} fill className="object-cover" />
                      ) : (
                         member.user.firstName?.charAt(0)
                      )}
                   </div>
-                  <div className="space-y-1">
-                     <h3 className="text-xl font-black font-outfit text-slate-900 group-hover:text-indigo-600 transition-colors italic leading-none">{member.user.firstName} {member.user.lastName}</h3>
-                     <p className="text-[10px] font-black uppercase text-indigo-400 tracking-widest leading-none mt-2 font-serif">{member.specialization.replace(/_/g, ' ')}</p>
+                  <div className="space-y-0.5">
+                     <h3 className="text-lg font-bold font-outfit text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight">{member.user.firstName} {member.user.lastName}</h3>
+                     <p className="text-[11px] font-bold uppercase text-indigo-400 tracking-wider leading-none mt-1">{member.specialization.replace(/_/g, ' ')}</p>
                   </div>
                </div>
                
-               <div className="grid grid-cols-2 gap-4 mb-10">
-                  <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 group-hover:bg-white transition-colors">
-                     <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 italic italic underline decoration-indigo-200">Panel Size</p>
-                     <p className="text-lg font-black text-slate-700 italic italic">{member._count.patients} Cases</p>
+               <div className="grid grid-cols-2 gap-3 mb-8">
+                  <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 group-hover:bg-white transition-colors">
+                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 border-b border-indigo-100 pb-1">Panel Size</p>
+                     <p className="text-lg font-bold text-slate-800">{member._count.patients} Cases</p>
                   </div>
-                  <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 group-hover:bg-white transition-colors">
-                     <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 italic italic underline decoration-indigo-200">Duty Status</p>
-                     <div className="flex items-center gap-2">
-                        <div className={`w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]`} />
-                        <span className="text-[10px] font-black uppercase text-slate-500">On Call</span>
+                  <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 group-hover:bg-white transition-colors">
+                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 border-b border-indigo-100 pb-1">Duty Status</p>
+                     <div className="flex items-center gap-2 pt-0.5">
+                        <div className={`w-2 h-2 rounded-full bg-emerald-500 shadow-sm`} />
+                        <span className="text-[11px] font-bold uppercase text-slate-500 tracking-tight">On Call</span>
                      </div>
                   </div>
                </div>
 
                <div className="flex items-center gap-2 pt-6 border-t border-slate-50">
-                  <Button variant="ghost" className="h-10 w-10 rounded-xl bg-slate-50 hover:bg-indigo-50 text-indigo-600 !p-0 transition-transform hover:-translate-y-1 shadow-sm"><PhoneCall className="w-4 h-4" /></Button>
-                  <Button variant="ghost" className="h-10 w-10 rounded-xl bg-slate-50 hover:bg-indigo-50 text-indigo-600 !p-0 transition-transform hover:-translate-y-1 shadow-sm"><Mail className="w-4 h-4" /></Button>
-                  <Button variant="ghost" className="h-10 w-10 rounded-xl bg-slate-50 hover:bg-indigo-50 text-indigo-600 !p-0 transition-transform hover:-translate-y-1 shadow-sm"><MessageSquare className="w-4 h-4" /></Button>
+                  <Button variant="ghost" className="h-10 w-10 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 !p-0 transition-transform hover:-translate-y-0.5 shadow-sm"><PhoneCall className="w-4 h-4" /></Button>
+                  <Button variant="ghost" className="h-10 w-10 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 !p-0 transition-transform hover:-translate-y-0.5 shadow-sm"><Mail className="w-4 h-4" /></Button>
+                  <Button variant="ghost" className="h-10 w-10 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 !p-0 transition-transform hover:-translate-y-0.5 shadow-sm"><MessageSquare className="w-4 h-4" /></Button>
                   <div className="flex-1 flex justify-end">
-                     <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Member Details <ChevronRight className="w-4 h-4" /></p>
+                     <p className="text-[11px] font-bold text-indigo-600 uppercase tracking-tight opacity-0 group-hover:opacity-100 transition-all flex items-center gap-1">Member Profile <ChevronRight className="w-3.5 h-3.5" /></p>
                   </div>
                </div>
             </GlassCard>

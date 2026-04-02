@@ -48,14 +48,14 @@ export default async function NurseCarePlansPage() {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-slate-100">
          <div>
-            <h1 className="text-5xl font-black font-outfit text-slate-900 tracking-tight italic italic">Care <span className="text-indigo-600 underline underline-offset-8 decoration-indigo-100">Repository</span></h1>
-            <p className="text-base font-bold text-slate-600 italic mt-2">Managing active clinical blueprints for {activePlans.length} patients.</p>
+            <h1 className="text-5xl font-bold font-outfit text-slate-900 tracking-tight">Care <span className="text-indigo-600 underline underline-offset-8 decoration-indigo-100">Repository</span></h1>
+            <p className="text-base font-bold text-slate-600 mt-2">Managing active clinical blueprints for {activePlans.length} patients.</p>
          </div>
          <div className="flex items-center gap-3">
-            <Button variant="outline" className="h-12 px-6 gap-2 border-slate-200 text-slate-600 font-black text-[10px] uppercase tracking-widest hover:bg-slate-50">
+            <Button variant="outline" className="h-12 px-6 gap-2 border-slate-200 text-slate-600 font-bold text-[10px] uppercase tracking-wider hover:bg-slate-50">
                <Download className="w-4 h-4" /> Export All
             </Button>
-            <Button className="h-12 px-8 gap-3 bg-slate-950 text-white font-black text-[11px] uppercase tracking-widest shadow-2xl hover:scale-105 transition-all">
+            <Button className="h-12 px-8 gap-3 bg-slate-950 text-white font-bold text-[11px] uppercase tracking-wider shadow-sm hover:scale-105 transition-all">
                <Plus className="w-5 h-5" /> Initiate New Plan
             </Button>
          </div>
@@ -66,36 +66,36 @@ export default async function NurseCarePlansPage() {
          
          {/* Left Column: Active Plans Table */}
          <div className="lg:col-span-2 space-y-8">
-            <h3 className="text-2xl font-black font-outfit text-slate-900 italic">Active <span className="text-indigo-600">Blueprints</span></h3>
+            <h3 className="text-2xl font-bold font-outfit text-slate-900">Active <span className="text-indigo-600">Blueprints</span></h3>
             
             <div className="space-y-4">
                {activePlans.map((plan) => (
-                  <GlassCard key={plan.id} className="group !p-0 border-slate-100 overflow-hidden hover:border-indigo-200 transition-all shadow-sm hover:shadow-xl">
+                  <GlassCard key={plan.id} className="group !p-0 border-slate-100 overflow-hidden hover:border-indigo-200 transition-all shadow-sm hover:shadow-sm">
                      <div className="flex items-stretch">
                         <div className={`w-2 ${plan.priority === 'Urgent' ? "bg-rose-500" : plan.priority === 'High' ? "bg-amber-500" : "bg-emerald-500"}`} />
                         <div className="flex-1 p-8 grid grid-cols-1 md:grid-cols-4 gap-8 items-center">
                            <div className="space-y-1">
-                              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Patient Identity</p>
-                              <p className="text-lg font-black text-slate-900 italic group-hover:text-indigo-600 transition-colors uppercase">{plan.patient}</p>
-                              <p className="text-[10px] font-bold text-slate-500 italic">{plan.id}</p>
+                              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">Patient Identity</p>
+                              <p className="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors uppercase">{plan.patient}</p>
+                              <p className="text-[10px] font-bold text-slate-500">{plan.id}</p>
                            </div>
                            <div className="space-y-1">
-                              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Active Protocol</p>
-                              <p className="text-sm font-bold text-slate-800 italic">{plan.protocol}</p>
-                              <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mt-1">Cycle {plan.cycle}</p>
+                              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">Active Protocol</p>
+                              <p className="text-sm font-bold text-slate-800">{plan.protocol}</p>
+                              <p className="text-[10px] font-bold text-indigo-600 uppercase tracking-wider mt-1">Cycle {plan.cycle}</p>
                            </div>
                            <div className="space-y-1">
-                              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Clinical Status</p>
+                              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">Clinical Status</p>
                               <div className="flex items-center gap-2 mt-1">
                                  <div className={`w-2 h-2 rounded-full ${plan.priority === 'Urgent' ? "bg-rose-500 animate-pulse" : "bg-emerald-500"}`} />
-                                 <p className={`text-[11px] font-black uppercase tracking-tighter ${plan.priority === 'Urgent' ? "text-rose-600" : "text-emerald-700"}`}>{plan.status}</p>
+                                 <p className={`text-[11px] font-bold uppercase tracking-tighter ${plan.priority === 'Urgent' ? "text-rose-600" : "text-emerald-700"}`}>{plan.status}</p>
                               </div>
                            </div>
                            <div className="flex justify-end gap-2">
                               <Button variant="ghost" size="sm" className="w-10 h-10 !p-0 rounded-xl hover:bg-indigo-50 text-indigo-600 border border-slate-100">
                                  <FileText className="w-5 h-5" />
                               </Button>
-                              <Button variant="ghost" size="sm" className="h-10 px-6 rounded-xl border border-indigo-100 text-indigo-600 font-black text-[10px] uppercase tracking-widest hover:bg-slate-950 hover:text-white transition-all">
+                              <Button variant="ghost" size="sm" className="h-10 px-6 rounded-xl border border-indigo-100 text-indigo-600 font-bold text-[10px] uppercase tracking-wider hover:bg-slate-950 hover:text-white transition-all">
                                  Manage
                               </Button>
                            </div>
@@ -109,7 +109,7 @@ export default async function NurseCarePlansPage() {
          {/* Right Column: Templates & Supportive Blueprints */}
          <div className="space-y-10">
             <div className="space-y-6">
-               <h3 className="text-2xl font-black font-outfit text-slate-900 italic">Care <span className="text-slate-400">Templates</span></h3>
+               <h3 className="text-2xl font-bold font-outfit text-slate-900">Care <span className="text-slate-400">Templates</span></h3>
                <div className="space-y-3">
                   {[
                      { title: "Toxicity Management G3+", color: "bg-rose-50 text-rose-600" },
@@ -122,7 +122,7 @@ export default async function NurseCarePlansPage() {
                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${temp.color}`}>
                               <Clipboard className="w-5 h-5" />
                            </div>
-                           <span className="text-xs font-black uppercase tracking-widest text-slate-900">{temp.title}</span>
+                           <span className="text-xs font-bold uppercase tracking-wider text-slate-900">{temp.title}</span>
                         </div>
                         <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-indigo-600 transition-transform" />
                      </button>
@@ -130,22 +130,22 @@ export default async function NurseCarePlansPage() {
                </div>
             </div>
 
-            <GlassCard className="bg-indigo-600 text-white border-0 shadow-2xl relative overflow-hidden p-8 group">
+            <GlassCard className="bg-indigo-600 text-white border-0 shadow-sm relative overflow-hidden p-8 group">
                <div className="relative z-10 space-y-6">
                   <div className="flex items-center gap-3">
                      <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white">
                         <CheckCircle2 className="w-6 h-6" />
                      </div>
-                     <h4 className="text-xl font-black font-outfit italic italic leading-none">Compliance Audit</h4>
+                     <h4 className="text-xl font-bold font-outfit italic leading-none">Compliance Audit</h4>
                   </div>
-                  <p className="text-sm font-medium italic text-indigo-100 leading-relaxed">
+                  <p className="text-sm font-medium text-indigo-100 leading-relaxed">
                      All care plans must be re-verified by the institutional oncology board every 14 days to remain active in the clinical workflow.
                   </p>
-                  <Button variant="ghost" className="w-full bg-white/10 hover:bg-white text-white hover:text-indigo-600 font-black text-[10px] uppercase tracking-widest border-0 h-12 rounded-2xl">
+                  <Button variant="ghost" className="w-full bg-white/10 hover:bg-white text-white hover:text-indigo-600 font-bold text-[10px] uppercase tracking-wider border-0 h-12 rounded-2xl">
                      View Audit Schedule
                   </Button>
                </div>
-               <Activity className="absolute bottom-[-20px] right-[-20px] w-48 h-48 text-white/5 group-hover:scale-110 transition-transform duration-700" />
+               <Activity className="absolute bottom-[-20px] right-[-20px] w-48 h-48 text-white/5  transition-transform duration-700" />
             </GlassCard>
          </div>
 

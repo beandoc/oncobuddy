@@ -65,9 +65,9 @@ export default async function AlertInboxPage() {
            <div className="w-[1px] h-6 bg-slate-100 mx-2" />
            
            <div className="flex gap-1.5 ring-1 ring-slate-100 rounded-xl p-1 bg-slate-50/50">
-              <Button variant="ghost" size="sm" className="h-7 text-[9px] font-bold uppercase tracking-widest text-rose-600 bg-white shadow-sm px-2">Emergency</Button>
-              <Button variant="ghost" size="sm" className="h-7 text-[9px] font-bold uppercase tracking-widest text-slate-400 hover:text-slate-600 px-2">Urgent</Button>
-              <Button variant="ghost" size="sm" className="h-7 text-[9px] font-bold uppercase tracking-widest text-slate-400 hover:text-slate-600 px-2">Moderate</Button>
+              <Button variant="ghost" size="sm" className="h-7 text-[9px] font-bold uppercase tracking-wider text-rose-600 bg-white shadow-sm px-2">Emergency</Button>
+              <Button variant="ghost" size="sm" className="h-7 text-[9px] font-bold uppercase tracking-wider text-slate-400 hover:text-slate-600 px-2">Urgent</Button>
+              <Button variant="ghost" size="sm" className="h-7 text-[9px] font-bold uppercase tracking-wider text-slate-400 hover:text-slate-600 px-2">Moderate</Button>
            </div>
         </div>
 
@@ -98,7 +98,7 @@ export default async function AlertInboxPage() {
                         <p className="text-sm font-bold group-hover:text-indigo-600 transition-colors truncate">
                            {alert.log.patient.preferredName || "Anonymous Patient"}
                         </p>
-                        <span className={`text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-md ${alert.alertSeverity === AlertSeverity.URGENT ? "bg-rose-50 text-rose-600" : "bg-amber-50 text-amber-600"}`}>
+                        <span className={`text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md ${alert.alertSeverity === AlertSeverity.URGENT ? "bg-rose-50 text-rose-600" : "bg-amber-50 text-amber-600"}`}>
                            {alert.alertSeverity} SEVERITY
                         </span>
                      </div>
@@ -109,7 +109,7 @@ export default async function AlertInboxPage() {
                      <h4 className="text-sm font-bold text-slate-900 leading-snug">
                         Symptom Spike: <span className="text-indigo-600">Grade 3 Nausea</span> detected for 3 consecutive days.
                      </h4>
-                     <p className="text-[11px] text-slate-400 font-medium leading-relaxed italic">
+                     <p className="text-[11px] text-slate-400 font-medium leading-relaxed">
                         Last Logged Value: Grade 4 (Extreme) on 2026-04-01 14:12 with note: "Difficulty keeping any medications down today."
                      </p>
                   </div>
@@ -119,7 +119,7 @@ export default async function AlertInboxPage() {
                      <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-2">
                            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                           <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Nurse Navigator</p>
+                           <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider leading-none">Nurse Navigator</p>
                         </div>
                         <p className="text-xs font-bold text-slate-700">Navigator Team • <span className="text-emerald-600">Acknowledge 1h ago</span></p>
                      </div>
@@ -156,13 +156,13 @@ export default async function AlertInboxPage() {
       </div>
 
       {/* Bulk Action Bar Stub - Float Center */}
-      <div className="fixed bottom-12 left-1/2 -translate-x-1/2 bg-slate-950 text-white rounded-full px-6 py-3 flex items-center gap-6 shadow-2xl z-50 animate-in slide-in-from-bottom duration-500 scale-95 opacity-0 pointer-events-none">
-         <p className="text-xs font-bold uppercase tracking-widest whitespace-nowrap">3 Alerts Selected</p>
+      <div className="fixed bottom-12 left-1/2 -translate-x-1/2 bg-slate-950 text-white rounded-full px-6 py-3 flex items-center gap-6 shadow-sm z-50 animate-in slide-in-from-bottom duration-500 scale-95 opacity-0 pointer-events-none">
+         <p className="text-xs font-bold uppercase tracking-wider whitespace-nowrap">3 Alerts Selected</p>
          <div className="w-[1px] h-4 bg-white/20" />
          <div className="flex items-center gap-4">
-            <button className="text-xs font-bold hover:text-indigo-400 transition-colors uppercase tracking-widest">Acknowledge</button>
-            <button className="text-xs font-bold hover:text-rose-400 transition-colors uppercase tracking-widest">Escalate</button>
-            <button className="text-xs font-bold hover:text-slate-400 transition-colors uppercase tracking-widest">Acknowledge</button>
+            <button className="text-xs font-bold hover:text-indigo-400 transition-colors uppercase tracking-wider">Acknowledge</button>
+            <button className="text-xs font-bold hover:text-rose-400 transition-colors uppercase tracking-wider">Escalate</button>
+            <button className="text-xs font-bold hover:text-slate-400 transition-colors uppercase tracking-wider">Acknowledge</button>
          </div>
       </div>
     </div>

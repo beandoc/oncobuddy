@@ -95,7 +95,7 @@ export default async function NurseDashboard() {
                   </GlassCard>
                 ))
               ) : (
-                <div className="py-20 text-center text-slate-400 italic bg-slate-50/50 rounded-3xl border border-dashed">
+                <div className="py-20 text-center text-slate-400 bg-slate-50/50 rounded-3xl border border-dashed">
                    Great work! All clinical alerts are currently resolved.
                 </div>
               )}

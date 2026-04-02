@@ -43,8 +43,8 @@ export default async function CaregiverAppointmentsPage() {
       {/* Page Header (Section C5) */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
          <div className="space-y-4">
-            <h1 className="text-4xl font-bold font-outfit tracking-tight text-slate-900 italic italic">{patientName}'s <span className="text-teal-600">Visits</span></h1>
-            <p className="text-sm text-slate-500 font-medium italic italic">Help manage {patientName.split(' ')[0]}'s coordination and logistics.</p>
+            <h1 className="text-4xl font-bold font-outfit tracking-tight text-slate-900">{patientName}'s <span className="text-teal-600">Visits</span></h1>
+            <p className="text-sm text-slate-500 font-medium">Help manage {patientName.split(' ')[0]}'s coordination and logistics.</p>
          </div>
       </div>
 
@@ -63,12 +63,12 @@ export default async function CaregiverAppointmentsPage() {
 
             {(upcoming.length > 0) ? upcoming.map((app, i) => (
                <div key={app.id} className="relative pl-16 md:pl-20 group">
-                  <GlassCard className={`!p-10 border-slate-100 shadow-xl overflow-hidden group-hover:border-teal-100 transition-all ${i === 0 ? 'bg-white ring-1 ring-teal-50 shadow-teal-100/30' : 'bg-slate-50/30 border-dashed'}`}>
+                  <GlassCard className={`!p-10 border-slate-100 shadow-sm overflow-hidden group-hover:border-teal-100 transition-all ${i === 0 ? 'bg-white ring-1 ring-teal-50 shadow-teal-100/30' : 'bg-slate-50/30 border-dashed'}`}>
                      <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-10">
                         <div className="space-y-6 flex-1">
                            <div className="space-y-2">
-                              <p className="text-3xl font-bold font-outfit text-slate-900 italic italic">{new Date(app.date).toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</p>
-                              <div className="flex items-center gap-6 text-teal-600 font-black text-[10px] tracking-widest uppercase mt-4">
+                              <p className="text-3xl font-bold font-outfit text-slate-900">{new Date(app.date).toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+                              <div className="flex items-center gap-6 text-teal-600 font-bold text-[10px] tracking-wider uppercase mt-4">
                                  <span className="flex items-center gap-2"><Clock className="w-4 h-4" /> {new Date(app.date).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}</span>
                                  <div className="w-1.5 h-1.5 bg-teal-200 rounded-full" />
                                  <span>Clinic Visit</span>
@@ -81,7 +81,7 @@ export default async function CaregiverAppointmentsPage() {
                                     <User className="w-4 h-4 text-slate-400 group-hover/item:text-teal-600" />
                                  </div>
                                  <div className="space-y-1">
-                                    <p className="text-[9px] font-black uppercase text-slate-400 tracking-widest leading-none">Clinician</p>
+                                    <p className="text-[9px] font-bold uppercase text-slate-400 tracking-wider leading-none">Clinician</p>
                                     <p className="text-sm font-bold text-slate-700 leading-none">{app.attending}</p>
                                  </div>
                               </div>
@@ -90,7 +90,7 @@ export default async function CaregiverAppointmentsPage() {
                                     <MapPin className="w-4 h-4 text-slate-400 group-hover/item:text-teal-600" />
                                  </div>
                                  <div className="space-y-1">
-                                    <p className="text-[9px] font-black uppercase text-slate-400 tracking-widest leading-none">Location</p>
+                                    <p className="text-[9px] font-bold uppercase text-slate-400 tracking-wider leading-none">Location</p>
                                     <p className="text-sm font-bold text-slate-700 leading-none">{app.location}</p>
                                  </div>
                               </div>
@@ -98,17 +98,17 @@ export default async function CaregiverAppointmentsPage() {
                         </div>
 
                         {/* Prep Checklist Button (Section C5) */}
-                        <div className="w-full lg:w-80 p-8 bg-teal-50 ring-1 ring-teal-100/50 rounded-[40px] space-y-6">
+                        <div className="w-full lg:w-80 p-8 bg-teal-50 ring-1 ring-teal-100/50 rounded-xl space-y-6">
                            <div className="flex items-center justify-between gap-2">
                               <div className="flex items-center gap-2 text-teal-600">
                                  <ShieldAlert className="w-5 h-5 fill-teal-600/10" />
-                                 <span className="text-[10px] font-black uppercase tracking-widest leading-none">Help Checklist</span>
+                                 <span className="text-[10px] font-bold uppercase tracking-wider leading-none">Help Checklist</span>
                               </div>
-                              <p className="text-[9px] font-bold text-teal-400 uppercase italic">Local only</p>
+                              <p className="text-[9px] font-bold text-teal-400 uppercase">Local only</p>
                            </div>
                            <div className="space-y-4">
-                              <p className="text-xs font-bold italic italic leading-relaxed text-teal-950/70 border-b border-teal-100/50 pb-3">Jane must fast after 2am tonight.</p>
-                              <Button variant="ghost" className="w-full h-11 bg-white hover:bg-teal-100 border-teal-100/50 text-teal-600 font-bold text-[10px] uppercase tracking-widest gap-2 shadow-sm shadow-teal-500/5">
+                              <p className="text-xs font-bold italic leading-relaxed text-teal-950/70 border-b border-teal-100/50 pb-3">Jane must fast after 2am tonight.</p>
+                              <Button variant="ghost" className="w-full h-11 bg-white hover:bg-teal-100 border-teal-100/50 text-teal-600 font-bold text-[10px] uppercase tracking-wider gap-2 shadow-sm shadow-teal-500/5">
                                  <CheckSquare className="w-4 h-4" /> Start Prep List
                               </Button>
                            </div>
@@ -117,7 +117,7 @@ export default async function CaregiverAppointmentsPage() {
                   </GlassCard>
                </div>
             )) : (
-               <div className="pl-20 py-12 opacity-30 italic font-medium text-slate-400 text-sm">No upcoming appointments scheduled.</div>
+               <div className="pl-20 py-12 opacity-30 font-medium text-slate-400 text-sm">No upcoming appointments scheduled.</div>
             )}
          </div>
 
@@ -133,15 +133,15 @@ export default async function CaregiverAppointmentsPage() {
 
             {past.map(app => (
                <div key={app.id} className="relative pl-16 md:pl-20 group">
-                  <div className="p-6 bg-slate-50 border border-slate-100 rounded-[32px] flex items-center justify-between group hover:bg-white transition-all cursor-pointer">
+                  <div className="p-6 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-between group hover:bg-white transition-all cursor-pointer">
                      <div className="flex items-center gap-6">
                          <div className="text-center w-12 flex flex-col pt-1">
-                            <span className="text-[10px] font-black uppercase text-teal-600 leading-none">{new Date(app.date).toLocaleDateString(undefined, { month: 'short' })}</span>
-                            <span className="text-xl font-black font-outfit text-slate-900">{new Date(app.date).getDate()}</span>
+                            <span className="text-[10px] font-bold uppercase text-teal-600 leading-none">{new Date(app.date).toLocaleDateString(undefined, { month: 'short' })}</span>
+                            <span className="text-xl font-bold font-outfit text-slate-900">{new Date(app.date).getDate()}</span>
                          </div>
                          <div>
                             <p className="text-sm font-bold text-slate-700 leading-none group-hover:text-teal-600">{app.title}</p>
-                            <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mt-1.5 flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> Completed</p>
+                            <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider mt-1.5 flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> Completed</p>
                          </div>
                      </div>
                      <ChevronRight className="w-5 h-5 text-slate-200 group-hover:text-teal-300 transition-transform group-hover:translate-x-1" />
@@ -152,22 +152,22 @@ export default async function CaregiverAppointmentsPage() {
       </div>
 
       {/* Appointment Legend (Section C5) */}
-      <div className="p-8 border border-slate-100 rounded-[32px] bg-slate-50/50 flex flex-wrap items-center gap-8 justify-center">
+      <div className="p-8 border border-slate-100 rounded-xl bg-slate-50/50 flex flex-wrap items-center gap-8 justify-center">
          <div className="flex items-center gap-3">
             <div className="w-3 h-3 rounded-full bg-teal-500" />
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Clinic Visit</span>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Clinic Visit</span>
          </div>
          <div className="flex items-center gap-3">
             <div className="w-3 h-3 rounded-full bg-indigo-500" />
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Lab / Blood Work</span>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Lab / Blood Work</span>
          </div>
          <div className="flex items-center gap-3">
             <div className="w-3 h-3 rounded-full bg-amber-500" />
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Imaging / Scan</span>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Imaging / Scan</span>
          </div>
          <div className="flex items-center gap-3">
             <div className="w-3 h-3 rounded-full bg-rose-500" />
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest underline underline-offset-4 decoration-rose-300">Missed / Canceled</span>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider underline underline-offset-4 decoration-rose-300">Missed / Canceled</span>
          </div>
       </div>
     </div>
