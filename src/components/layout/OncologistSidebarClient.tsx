@@ -16,12 +16,13 @@ import {
   Users2, 
   Settings, 
   LogOut,
-  UserPlus
+  UserPlus,
+  Menu
 } from "lucide-react";
 
 export function OncologistSidebarClient({ session, patientCount, alertCount }: any) {
   const pathname = usePathname();
-  const { isOpen } = useNav();
+  const { isOpen, toggle } = useNav();
 
   const NavItem = ({ href, icon: Icon, label, badge }: { href: string; icon: any; label: string; badge?: number }) => {
     const active = pathname === href;
@@ -61,17 +62,35 @@ export function OncologistSidebarClient({ session, patientCount, alertCount }: a
   return (
     <div className="flex flex-col h-full bg-white border-r border-slate-100 transition-all duration-500">
       <div className={`${isOpen ? 'p-6 space-y-6' : 'p-4 space-y-5 pt-6'}`}>
-        <Link href="/oncologist/dashboard" className={`flex items-center ${isOpen ? 'gap-4' : 'justify-center'}`}>
-           <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white shrink-0">
-              <Activity className="w-6 h-6" />
-           </div>
-           {isOpen && (
-             <div className="overflow-hidden whitespace-nowrap animate-in fade-in slide-in-from-left-2 duration-500">
-                <span className="font-bold font-outfit text-xl tracking-tight text-slate-900">OncoBuddy</span>
-                <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider leading-none mt-1">Clinical Suite</p>
+        <div className={`flex items-center ${isOpen ? 'justify-between' : 'justify-center'}`}>
+          <Link href="/oncologist/dashboard" className={`flex items-center ${isOpen ? 'gap-4' : 'justify-center'}`}>
+             <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white shrink-0 shadow-lg">
+                <Activity className="w-6 h-6" />
              </div>
-           )}
-        </Link>
+             {isOpen && (
+               <div className="overflow-hidden whitespace-nowrap animate-in fade-in slide-in-from-left-2 duration-500">
+                  <span className="font-bold font-outfit text-xl tracking-tight text-slate-900">OncoBuddy</span>
+                  <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider leading-none mt-1">Clinical Suite</p>
+               </div>
+             )}
+          </Link>
+          {isOpen && (
+            <button 
+              onClick={() => toggle()}
+              className="p-2 rounded-xl hover:bg-slate-50 text-slate-400 transition-colors hidden lg:flex"
+            >
+              <Users2 className="w-4 h-4 rotate-90" />
+            </button>
+          )}
+        </div>
+        {!isOpen && (
+          <button 
+            onClick={() => toggle()}
+            className="w-10 h-10 rounded-xl hover:bg-slate-50 text-slate-400 transition-all flex items-center justify-center border border-slate-50 hidden lg:flex"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+        )}
 
         {/* Identity Core Block */}
         <div className={`flex items-center bg-slate-50 rounded-2xl border border-slate-100 translate-z-0 transition-all duration-500 ${isOpen ? 'gap-4 p-4' : 'p-2 justify-center'}`}>
