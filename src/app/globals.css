@@ -63,7 +63,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Ultra-Premium Glassmorphism Class */
 .glass-surface {
-  background: var(--glass-bg);
+  background-color: var(--glass-bg);
   border: var(--glass-border);
   box-shadow: var(--shadow-sm);
 }

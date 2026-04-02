@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { GlassCard, Button } from "@/components/ui/core";
 import Link from "next/link";
 import { PatientProfileEditor } from "@/components/dashboard/PatientProfileEditor";
+import { CaseIQEditor } from "@/components/dashboard/CaseIQEditor";
 import LabVaultStub from "@/components/dashboard/LabVaultStub";
 import { 
   Activity, 
@@ -132,45 +133,70 @@ export default async function PatientProfilePage({ params }: { params: { id: str
             {/* Lab Vault Reconciliation Hub (Request 6) */}
             <LabVaultStub />
 
+            {/* Clinical Submission Trajectory Hub */}
             <div className="flex items-center justify-between pt-16">
                <h3 className="text-2xl font-bold font-outfit text-slate-900">Symptom <span className="text-indigo-600">Trajectory</span></h3>
-               <Link href="#" className="text-[10px] font-bold text-indigo-600 uppercase tracking-wider hover:underline">Full Longitudinal Study</Link>
+               <div className="flex items-center gap-4">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest hidden md:block">Insight: Granular tracking detects toxicity spikes between cycles</p>
+                  <Link href="#" className="text-[10px] font-bold text-indigo-600 uppercase tracking-wider hover:underline">Full Longitudinal Study</Link>
+               </div>
             </div>
 
             <div className="space-y-6">
               {patient.symptomLogs.length > 0 ? (
-                patient.symptomLogs.map((log: any, idx: number) => (
-                  <GlassCard key={log.id} className="hover:bg-white border-white/50 hover:border-indigo-100 transition-all !p-8 group rounded-xl">
-                     <div className="flex items-center justify-between mb-8 pb-8 border-b border-slate-50">
-                        <div className="flex items-center gap-4">
-                           <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center border border-slate-100">
-                              <LucideHistory className="w-5 h-5 text-slate-400 group-hover:text-indigo-600 group-hover:rotate-[-12deg] transition-all" />
-                           </div>
-                           <div className="space-y-0.5">
-                              <p className="text-sm font-bold font-outfit text-slate-900">Clinical Submission {idx + 1}</p>
-                              <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">{new Date(log.logDate).toLocaleDateString('en-US', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</p>
-                           </div>
-                        </div>
-                        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] font-bold uppercase tracking-wider">
-                           <CheckCircle2 className="w-3 h-3" /> Validated
-                        </div>
-                     </div>
-                     
-                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        {log.entries.map((symp: any) => (
-                            <div key={symp.id} className="space-y-2">
-                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">{symp.ctcaeTermName.replace(/_/g, ' ')}</p>
-                                <div className="flex items-center gap-2">
-                                    <span className={`text-xl font-bold font-outfit ${symp.severity >= 3 ? "text-rose-600" : "text-slate-900"}`}>{symp.severity}</span>
-                                    <div className="h-1.5 flex-1 bg-slate-100 rounded-full overflow-hidden">
-                                        <div className={`h-full ${symp.severity >= 3 ? "bg-rose-500" : "bg-indigo-500"}`} style={{ width: `${symp.severity * 20}%` }} />
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                     </div>
-                  </GlassCard>
-                ))
+                patient.symptomLogs.map((log: any, idx: number) => {
+                  // Calculate trend based on previous submission if available
+                  const prevLog = patient.symptomLogs[idx + 1];
+                  const currentAvg = log.entries.reduce((acc: number, e: any) => acc + e.severity, 0) / (log.entries.length || 1);
+                  const prevAvg = prevLog ? prevLog.entries.reduce((acc: number, e: any) => acc + e.severity, 0) / (prevLog.entries.length || 1) : null;
+                  
+                  const isWorsening = prevAvg !== null && currentAvg > prevAvg;
+                  const isImproving = prevAvg !== null && currentAvg < prevAvg;
+
+                  return (
+                    <GlassCard key={log.id} className="hover:bg-white border-white/50 hover:border-indigo-100 transition-all !p-8 group rounded-xl relative overflow-hidden">
+                       <div className="flex items-center justify-between mb-8 pb-8 border-b border-slate-50">
+                          <div className="flex items-center gap-4">
+                             <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all ${isWorsening ? 'bg-rose-50 border-rose-100' : 'bg-slate-50 border-slate-100'}`}>
+                                <LucideHistory className={`w-5 h-5 transition-all ${isWorsening ? 'text-rose-600' : 'text-slate-400 group-hover:text-indigo-600 group-hover:rotate-[-12deg]'}`} />
+                             </div>
+                             <div className="space-y-0.5">
+                                <p className="text-sm font-bold font-outfit text-slate-900">Symptom Submission {patient.symptomLogs.length - idx}</p>
+                                <p className="text-[10px] font-bold uppercase text-slate-400 tracking-wider">
+                                  {new Date(log.logDate).toLocaleDateString('en-US', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                                </p>
+                             </div>
+                          </div>
+                          
+                          <div className="flex items-center gap-3">
+                             {prevAvg !== null && (
+                               <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tight ${isWorsening ? 'bg-rose-50 text-rose-700' : isImproving ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500'}`}>
+                                  {isWorsening ? <TrendingUp className="w-3 h-3 text-rose-500" /> : isImproving ? <TrendingUp className="w-3 h-3 text-emerald-500 rotate-180" /> : null}
+                                  {isWorsening ? 'Toxic Spike' : isImproving ? 'Recovery' : 'Baseline Shift'}
+                               </div>
+                             )}
+                             <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] font-bold uppercase tracking-wider">
+                                <CheckCircle2 className="w-3 h-3" /> Validated
+                             </div>
+                          </div>
+                       </div>
+                       
+                       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                          {log.entries.map((symp: any) => (
+                              <div key={symp.id} className="space-y-2">
+                                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">{symp.ctcaeTermName.replace(/_/g, ' ')}</p>
+                                  <div className="flex items-center gap-2">
+                                      <span className={`text-xl font-bold font-outfit ${symp.severity >= 3 ? "text-rose-600" : "text-slate-900"}`}>{symp.severity}</span>
+                                      <div className="h-1.5 flex-1 bg-slate-100 rounded-full overflow-hidden">
+                                          <div className={`h-full ${symp.severity >= 3 ? "bg-rose-500" : "bg-indigo-500"}`} style={{ width: `${symp.severity * 20}%` }} />
+                                      </div>
+                                  </div>
+                              </div>
+                          ))}
+                       </div>
+                    </GlassCard>
+                  );
+                })
               ) : (
                 <div className="p-32 text-center bg-slate-50/50 rounded-[48px] border-2 border-dashed border-slate-100">
                     <Clock className="w-12 h-12 text-slate-200 mx-auto mb-6" />
@@ -183,40 +209,16 @@ export default async function PatientProfilePage({ params }: { params: { id: str
 
          {/* Right Column: Case IQ & Intelligence */}
          <div className="space-y-10">
-            {/* Treatment Cycle HUD */}
-            <div className="space-y-4">
-                <h3 className="text-xl font-bold font-outfit text-slate-950">Case <span className="text-indigo-600 underline decoration-indigo-200">IQ</span></h3>
-                <GlassCard className="bg-slate-950 border-0 shadow-sm !p-8 rounded-[36px] space-y-8">
-                    <div className="flex justify-between items-start">
-                        <div className="space-y-1">
-                            <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.2em] font-serif">Regimen Intensity</p>
-                            <h4 className="text-2xl font-bold text-white">Protocol VII-B</h4>
-                        </div>
-                        <ShieldCheck className="w-6 h-6 text-emerald-400" />
-                    </div>
-                    
-                    <div className="space-y-3">
-                        <div className="flex justify-between text-xs font-bold uppercase text-slate-500 tracking-wider font-serif">
-                            <span>Cycle Progress</span>
-                            <span className="text-white">Cycle {activeTreatment?.cyclesCompleted || 0} of {activeTreatment?.numberOfCycles || 6}</span>
-                        </div>
-                        <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
-                            <div className="h-full bg-gradient-to-r from-indigo-500 to-emerald-500 w-[66%]" />
-                        </div>
-                    </div>
-
-                    <div className="pt-4 border-t border-white/5 space-y-4">
-                        <div className="flex items-center gap-3">
-                            <Activity className="w-4 h-4 text-indigo-400" />
-                            <p className="text-xs text-slate-400 font-medium">Next Staging Scan: <span className="text-white font-bold">14 Apr 2026</span></p>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <TrendingUp className="w-4 h-4 text-emerald-400" />
-                            <p className="text-xs text-slate-400 font-medium underline decoration-indigo-800">ECOG Status: <span className="text-white font-bold">1 (Baseline)</span></p>
-                        </div>
-                    </div>
-                </GlassCard>
-            </div>
+            {/* Case IQ Editor Hub (Request 7) */}
+            <CaseIQEditor 
+              patientId={patient.id}
+              treatmentId={activeTreatment?.id}
+              initialRegimen={activeTreatment?.treatmentName || ""}
+              initialCyclesCompleted={activeTreatment?.cyclesCompleted || 0}
+              initialTotalCycles={activeTreatment?.numberOfCycles || 6}
+              initialNextScan={activeTreatment?.nextStagingScanDate?.toISOString() || ""}
+              initialEcog={patient.performanceStatus || "1"}
+            />
 
             {/* Threshold & Alert Center */}
             <div className="space-y-4">

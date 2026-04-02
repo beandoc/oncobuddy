@@ -331,6 +331,7 @@ model Treatment {
   surgeonName           String?         @map("surgeon_name")
   surgeryName           String?         @map("surgery_name")
   totalFractionsPlanned Int?            @map("total_fractions_planned")
+  nextStagingScanDate   DateTime?       @map("next_staging_scan_date")
   diagnosis             Diagnosis       @relation(fields: [diagnosisId], references: [id])
 
   @@map("treatments")
