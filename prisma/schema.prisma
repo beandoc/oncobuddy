@@ -562,6 +562,7 @@ model Patient {
   preferredLanguage String        @default("en") @map("preferred_language")
   literacyLevel     LiteracyLevel @default(STANDARD) @map("literacy_level")
   profilePhotoUrl   String?       @map("profile_photo_url")
+  clinicalNotes     String?       @map("clinical_notes")
 
   // Contact (Sync from User mainly)
   primaryPhone           String        @map("primary_phone")
@@ -597,6 +598,7 @@ model Patient {
   thresholds        AlertThreshold[]
   notificationPrefs PatientNotificationPreference?
   consentRecords    ConsentRecord[]
+  dayCareSessions   DayCareSession[]
   alerts            Alert[]
 
   createdAt DateTime  @default(now()) @map("created_at")
@@ -623,6 +625,7 @@ model Clinician {
   acknowledgedAlerts Alert[]          @relation("AlertAcknowledge")
   createdThresholds  AlertThreshold[]
   prescribedRehab    RehabProgram[]
+  dayCareSessions    DayCareSession[]
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
@@ -1280,4 +1283,37 @@ model ConsentRecord {
 
   @@unique([patientId, consentDocumentId, consentType])
   @@map("consent_records")
+}
+
+enum DayCareShift {
+  MORNING
+  AFTERNOON
+}
+
+enum DayCareStatus {
+  SCHEDULED
+  RUNNING
+  COMPLETED
+  DEFERRED
+  CANCELLED
+}
+
+model DayCareSession {
+  id          String        @id @default(cuid())
+  patientId   String        @map("patient_id")
+  patient     Patient       @relation(fields: [patientId], references: [id])
+  clinicianId String        @map("clinician_id")
+  clinician   Clinician     @relation(fields: [clinicianId], references: [id])
+  
+  date        DateTime
+  shift       DayCareShift
+  status      DayCareStatus @default(SCHEDULED)
+  notes       String?       @db.Text
+  
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  @@unique([patientId, date, shift])
+  @@index([date])
+  @@map("day_care_sessions")
 }

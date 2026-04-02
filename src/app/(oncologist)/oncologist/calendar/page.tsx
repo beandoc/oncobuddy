@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { GlassCard, Button } from "@/components/ui/core";
 import { 
   Calendar as CalendarIcon, 
@@ -34,7 +35,11 @@ export default async function OncologistCalendar() {
       attendingClinician: session.user.id,
       scheduledDate: { gte: new Date() }
     },
-    include: { patient: true },
+    include: { 
+      patient: {
+        include: { user: true }
+      }
+    },
     orderBy: { scheduledDate: 'asc' },
     take: 10
   });
@@ -111,43 +116,55 @@ export default async function OncologistCalendar() {
          </div>
 
          <div className="space-y-4 pt-4">
-            {[
-               { time: '09:00', type: 'Clinical Review', patient: 'Arthur Morgan', status: 'Confirmed', mrn: 'TX-9041' },
-               { time: '10:30', type: 'Chemotherapy Brief', patient: 'John Doe', status: 'Pending Lab', mrn: 'TX-1022', alert: true },
-               { time: '13:00', type: 'Biopsy Consultation', patient: 'Sadie Adler', status: 'Confirmed', mrn: 'TX-5512' },
-               { time: '15:15', type: 'Panel Discussion', patient: 'Multidisciplinary', status: 'System Map', mrn: 'N/A' }
-            ].map((slot, i) => (
-               <GlassCard key={i} className={`!p-0 border-0 group transition-all hover:translate-x-2 relative overflow-hidden bg-white ${slot.alert ? 'ring-2 ring-amber-100 shadow-xl shadow-amber-50' : 'hover:shadow-xl hover:shadow-indigo-50'}`}>
-                  {slot.alert && <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-amber-500" />}
-                  <div className="flex items-stretch">
-                     <div className="w-24 p-6 flex flex-col items-center justify-center border-r border-slate-50 bg-slate-50/30">
-                        <span className="text-base font-black text-slate-900 italic font-serif leading-none">{slot.time}</span>
-                        <span className="text-[9px] font-black uppercase text-slate-400 tracking-widest mt-2">{slot.time.includes('09') || slot.time.includes('10') ? 'AM' : 'PM'}</span>
-                     </div>
-                     <div className="flex-1 p-8 flex flex-col md:flex-row items-center justify-between gap-8">
-                        <div className="flex items-center gap-6">
-                           <div className="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm border border-indigo-100 group-hover:scale-110 transition-all">
-                              <User className="w-5 h-5" />
+            {appointments.length > 0 ? (
+               appointments.map((appt: any, i: number) => {
+                  const timeStr = new Date(appt.scheduledDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                  const isAm = new Date(appt.scheduledDate).getHours() < 12;
+                  
+                  return (
+                     <GlassCard key={appt.id} className={`!p-0 border-0 group transition-all hover:translate-x-2 relative overflow-hidden bg-white hover:shadow-xl hover:shadow-indigo-50`}>
+                        <div className="flex items-stretch">
+                           <div className="w-24 p-6 flex flex-col items-center justify-center border-r border-slate-50 bg-slate-50/30">
+                              <span className="text-base font-black text-slate-900 italic font-serif leading-none">{timeStr}</span>
+                              <span className="text-[9px] font-black uppercase text-slate-400 tracking-widest mt-2">{isAm ? 'AM' : 'PM'}</span>
                            </div>
-                           <div className="space-y-1">
-                              <p className="text-sm font-black text-slate-800 leading-none italic italic underline decoration-transparent group-hover:decoration-indigo-200 decoration-2 underline-offset-4 transition-all">{slot.patient}</p>
-                              <div className="flex items-center gap-3 pt-2">
-                                 <span className="text-[9px] font-black uppercase text-slate-400 tracking-widest italic">{slot.type}</span>
-                                 <div className="w-1 h-1 rounded-full bg-slate-200" />
-                                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest italic leading-none">{slot.mrn}</span>
+                           <div className="flex-1 p-8 flex flex-col md:flex-row items-center justify-between gap-8">
+                              <div className="flex items-center gap-6">
+                                 <div className="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm border border-indigo-100 group-hover:scale-110 transition-all">
+                                    <User className="w-5 h-5" />
+                                 </div>
+                                 <div className="space-y-1">
+                                    <p className="text-sm font-black text-slate-800 leading-none italic italic underline decoration-transparent group-hover:decoration-indigo-200 decoration-2 underline-offset-4 transition-all">
+                                       {appt.patient.preferredName || `${appt.patient.user.firstName} ${appt.patient.user.lastName}`}
+                                    </p>
+                                    <div className="flex items-center gap-3 pt-2">
+                                       <span className="text-[9px] font-black uppercase text-slate-400 tracking-widest italic">{appt.appointmentType.replace(/_/g, ' ')}</span>
+                                       <div className="w-1 h-1 rounded-full bg-slate-200" />
+                                       <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest italic leading-none">{appt.patient.mrn}</span>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div className="flex items-center gap-4">
+                                 <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest leading-none border shadow-sm ${appt.status === 'CONFIRMED' ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-amber-50 border-amber-100 text-amber-600'}`}>
+                                    {appt.status}
+                                 </div>
+                                 <Link href={`/oncologist/patients/${appt.patient.publicId}`} className="h-10 w-10 p-0 border border-slate-100 rounded-xl hover:bg-slate-50 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
+                                    <ArrowUpRight className="w-4 h-4" />
+                                 </Link>
                               </div>
                            </div>
                         </div>
-                        <div className="flex items-center gap-4">
-                           <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest leading-none border shadow-sm ${slot.status === 'Confirmed' ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-amber-50 border-amber-100 text-amber-600'}`}>
-                              {slot.status}
-                           </div>
-                           <Button variant="ghost" size="sm" className="h-10 w-10 p-0 border border-slate-100 rounded-xl hover:bg-slate-50 opacity-0 group-hover:opacity-100 transition-all"><MoreHorizontal className="w-4 h-4" /></Button>
-                        </div>
-                     </div>
+                     </GlassCard>
+                  );
+               })
+            ) : (
+               <div className="py-20 text-center space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center mx-auto border border-slate-100">
+                     <CalendarIcon className="w-6 h-6 text-slate-300" />
                   </div>
-               </GlassCard>
-            ))}
+                  <p className="text-sm font-bold text-slate-400 italic">No upcoming clinical appointments synchronized for today.</p>
+               </div>
+            )}
          </div>
       </div>
 

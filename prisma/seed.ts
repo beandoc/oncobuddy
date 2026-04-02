@@ -18,15 +18,19 @@ async function main() {
   });
 
   // 2. Create Lead Oncologist (Role: ONCOLOGIST) (Section 1)
-  const oncologistPassword = await bcrypt.hash('password123', 12);
+  const oncologistPassword = await bcrypt.hash('test1234', 12);
   const oncologistUser = await prisma.user.upsert({
     where: { email: 'oncologist@oncobuddy.com' },
-    update: {},
+    update: { 
+      passwordHash: oncologistPassword,
+      firstName: 'Dr. Anvesh',
+      lastName: 'Rathod',
+    },
     create: {
       email: 'oncologist@oncobuddy.com',
       passwordHash: oncologistPassword,
-      firstName: 'Dr. Vikram',
-      lastName: 'Mehta',
+      firstName: 'Dr. Anvesh',
+      lastName: 'Rathod',
       role: Role.ONCOLOGIST,
       accountStatus: AccountStatus.ACTIVE,
       institutionId: institution.id,
@@ -44,6 +48,33 @@ async function main() {
     }
   });
 
+  // 2b. Create Onco-Nurse (Role: NURSE) (Section 12)
+  const nursePassword = await bcrypt.hash('test1234', 12);
+  const nurseUser = await prisma.user.upsert({
+    where: { email: 'nurse@oncobuddy.com' },
+    update: { passwordHash: nursePassword },
+    create: {
+      email: 'nurse@oncobuddy.com',
+      passwordHash: nursePassword,
+      firstName: 'Nurse Ananya',
+      lastName: 'Iyer',
+      role: Role.NURSE,
+      accountStatus: AccountStatus.ACTIVE,
+      institutionId: institution.id,
+    }
+  });
+
+  await prisma.clinician.upsert({
+    where: { userId: nurseUser.id },
+    update: {},
+    create: {
+      userId: nurseUser.id,
+      institutionId: institution.id,
+      specialization: 'NURSE_NAVIGATOR',
+      licenseNumber: 'NURSE-990-INDIA',
+    }
+  });
+
   // 3. Indian Patient Data - 5 High-Fidelity Test Cases (Section 4)
   const patientsData = [
     { firstName: 'Arjun', lastName: 'Sharma', mrn: 'MRN-1001', diagnosis: 'Ductal Carcinoma (Breast)', site: 'Breast (C50)', severity: AlertSeverity.URGENT },
@@ -54,10 +85,10 @@ async function main() {
   ];
 
   for (const p of patientsData) {
-    const userPassword = await bcrypt.hash('password123', 12);
+    const userPassword = await bcrypt.hash('test1234', 12);
     const user = await prisma.user.upsert({
       where: { email: `${p.firstName.toLowerCase()}@example.com` },
-      update: {},
+      update: { passwordHash: userPassword },
       create: {
         email: `${p.firstName.toLowerCase()}@example.com`,
         passwordHash: userPassword,
@@ -134,6 +165,54 @@ async function main() {
         }
       });
     }
+  }
+
+  // 4. Create Family Caregiver (Role: CAREGIVER) for Arjun Sharma (Section 4)
+  const arjun = await prisma.patient.findFirst({
+    where: { preferredName: 'Arjun' }
+  });
+
+  if (arjun) {
+    const caregiverPassword = await bcrypt.hash('test1234', 12);
+    const caregiverUser = await prisma.user.upsert({
+      where: { email: 'caregiver@example.com' },
+      update: { passwordHash: caregiverPassword },
+      create: {
+        email: 'caregiver@example.com',
+        passwordHash: caregiverPassword,
+        firstName: 'Rajesh',
+        lastName: 'Sharma',
+        role: Role.CAREGIVER,
+        accountStatus: AccountStatus.ACTIVE,
+        institutionId: institution.id,
+      }
+    });
+
+    const caregiver = await prisma.caregiver.upsert({
+      where: { userId: caregiverUser.id },
+      update: {},
+      create: {
+        userId: caregiverUser.id,
+      }
+    });
+
+    await prisma.patientCaregiverAccess.upsert({
+      where: { 
+        patientId_caregiverId_isActive: {
+          patientId: arjun.id,
+          caregiverId: caregiver.id,
+          isActive: true
+        }
+      },
+      update: {},
+      create: {
+        patientId: arjun.id,
+        caregiverId: caregiver.id,
+        accessLevel: 'VIEW_AND_LOG',
+        consentGrantedBy: arjun.userId,
+        isActive: true,
+      }
+    });
   }
 
   console.log('✅ Clinical Seeding Completed Successfully.');

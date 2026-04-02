@@ -126,6 +126,7 @@ export default async function NurseSidebar() {
             <div className="space-y-1">
                <NavItem href="/nurse/alerts" icon={AlertTriangle} label="Alert Inbox" badge={unacknowledgedAlertCount} large />
                <NavItem href="/nurse/patients" icon={Users} label="My Patients" />
+               <NavItem href="/nurse/daycare" icon={Activity} label="Day Care Unit" />
                <NavItem href="/nurse/tasks" icon={CheckSquare} label="Tasks" badge={3} />
                <NavItem href="/nurse/messages" icon={MessageSquare} label="Messages" badge={8} />
                <NavItem href="/nurse/appointments" icon={Calendar} label="Appointments" />

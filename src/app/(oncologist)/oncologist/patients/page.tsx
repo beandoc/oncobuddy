@@ -19,6 +19,7 @@ import {
   ArrowUpRight
 } from "lucide-react";
 import { Role } from "@prisma/client";
+import Link from "next/link";
 
 /**
  * Oncologist Patient Panel - Screen 3.
@@ -159,9 +160,11 @@ export default async function OncologistPatientPanel() {
                               <Button variant="ghost" className="h-9 px-4 rounded-xl border border-slate-100 hover:bg-indigo-50 text-indigo-600 font-bold text-[10px] uppercase tracking-widest transition-all">
                                  <History className="w-4 h-4" />
                               </Button>
-                              <Button variant="ghost" className="h-9 w-9 rounded-xl border border-slate-100 hover:bg-indigo-50 text-indigo-600 flex items-center justify-center transition-all group">
-                                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                              </Button>
+                              <Link href={`/oncologist/patients/${patient.publicId}`}>
+                                 <Button variant="ghost" className="h-9 w-9 rounded-xl border border-slate-100 hover:bg-indigo-50 text-indigo-600 flex items-center justify-center transition-all group">
+                                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                 </Button>
+                              </Link>
                            </div>
                         </td>
                      </tr>

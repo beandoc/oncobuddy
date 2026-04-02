@@ -10,9 +10,8 @@ import { logAudit } from "@/lib/audit";
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { 
-    strategy: "database", // Ensures server-side session storage (Prisma-backed)
-    maxAge: 24 * 60 * 60, // Default 24h, overridden by role-based logic or middleware check
-    updateAge: 5 * 60, // 5m heartbeat
+    strategy: "jwt", // Required for Credentials provider in evaluation phase
+    maxAge: 24 * 60 * 60, // Default 24h
   },
   pages: {
     signIn: "/login",
@@ -97,38 +96,42 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }
   },
   callbacks: {
-    async session({ session, user }) {
-      if (session?.user && user) {
-        const dbUser = user as any; // Loaded by PrismaAdapter
-        
-        session.user.id = dbUser.id;
-        session.user.role = dbUser.role as Role;
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.role = (user as any).role;
+        token.institutionId = (user as any).institutionId;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session?.user && token) {
+        session.user.id = token.id as string;
+        session.user.role = token.role as Role;
+        session.user.institutionId = token.institutionId as string;
         
         // --- High Criticality: Attach Authorized Patient Contexts ---
         if (session.user.role === Role.ONCOLOGIST || session.user.role === Role.NURSE) {
           const clinician = await prisma.clinician.findUnique({
-            where: { userId: dbUser.id },
+            where: { userId: session.user.id },
             include: { patients: { where: { endedAt: null } } }
           });
           session.user.clinicianId = clinician?.id;
           session.user.authorizedPatientIds = clinician?.patients.map((p: any) => p.patientId) || [];
-          
-          // idle timeout check logic (ideally handled via middleware/jwt callbacks)
         } else if (session.user.role === Role.PATIENT) {
           const patient = await prisma.patient.findUnique({
-            where: { userId: dbUser.id }
+            where: { userId: session.user.id }
           });
           session.user.patientId = patient?.id;
           session.user.authorizedPatientIds = patient?.id ? [patient.id] : [];
         } else if (session.user.role === Role.CAREGIVER) {
           const caregiver = await prisma.caregiver.findUnique({
-            where: { userId: dbUser.id },
+            where: { userId: session.user.id },
             include: { patients: { where: { isActive: true } } }
           });
           session.user.caregiverId = caregiver?.id;
           session.user.authorizedPatientIds = caregiver?.patients.map((p: any) => p.patientId) || [];
           
-          // View Access Map
           const accessMap: Record<string, string> = {};
           caregiver?.patients.forEach((p: any) => {
              accessMap[p.patientId] = p.accessLevel;
@@ -152,6 +155,7 @@ declare module "next-auth" {
       clinicianId?: string;
       patientId?: string;
       caregiverId?: string;
+      institutionId?: string;
       authorizedPatientIds: string[];
       caregiverAccessMap?: Record<string, string>;
     }

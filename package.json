@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
@@ -30,6 +31,7 @@
     "next-auth": "^5.0.0-beta.30",
     "next-intl": "^4.8.4",
     "otplib": "^13.4.0",
+    "postcss": "^8.5.8",
     "qrcode": "^1.5.4",
     "react": "18.3",
     "react-dom": "18.3",
@@ -52,13 +54,14 @@
     "@types/react": "^18.3.28",
     "@types/react-dom": "^18.3.7",
     "@vitest/coverage-v8": "^4.1.2",
+    "autoprefixer": "^10.4.27",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.1",
     "prisma": "^5.22.0",
-    "tailwindcss": "^4",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5",
     "vitest": "^4.1.2"
   },

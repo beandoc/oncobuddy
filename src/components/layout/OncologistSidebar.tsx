@@ -8,6 +8,7 @@ import {
   Bell, 
   Calendar, 
   MessageSquare, 
+  Activity,
   BookOpen, 
   Inbox, 
   Database, 
@@ -106,8 +107,9 @@ export async function OncologistSidebar() {
         <SectionLabel>Clinical</SectionLabel>
         <NavItem href="/oncologist/dashboard" icon={LayoutGrid} label="Dashboard" />
         <NavItem href="/oncologist/patients" icon={Users} label="My Patients" />
+        <NavItem href="/oncologist/daycare" icon={Activity} label="Day Care Unit" />
         <NavItem href="/oncologist/alerts" icon={Bell} label="Alert Inbox" badge={alertCount} />
-        <NavItem href="/oncologist/appointments" icon={Calendar} label="Appointments" />
+        <NavItem href="/oncologist/calendar" icon={Calendar} label="Appointments" />
         <NavItem href="/oncologist/messages" icon={MessageSquare} label="Messages" />
 
         <SectionLabel>Clinical Tools</SectionLabel>
